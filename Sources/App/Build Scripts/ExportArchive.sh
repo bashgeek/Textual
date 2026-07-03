@@ -81,8 +81,8 @@ mv "${WORKING_ZIP_PATH}" "${ZIP_EXPORT_PATH}"
 
 ONLINE_PATH_BASE="${EXPORT_PATH_NAME}/${ARCHSPEC_TITLE}/Textual"
 
-ONLINE_DMG_PATH_STABLE="/textual/downloads/builds/stable/${ONLINE_PATH_BASE}.zip"
-ONLINE_ZIP_PATH_STABLE="/textual/downloads/builds/stable/${ONLINE_PATH_BASE}.dmg"
+ONLINE_DMG_PATH_STABLE="/textual/downloads/builds/stable/${ONLINE_PATH_BASE}.dmg"
+ONLINE_ZIP_PATH_STABLE="/textual/downloads/builds/stable/${ONLINE_PATH_BASE}.zip"
 ONLINE_ZIP_PATH_BETA="/textual/downloads/builds/beta/${ONLINE_PATH_BASE}.zip"
 
 ONLINE_EXPORTER="cached.codeux.com"
