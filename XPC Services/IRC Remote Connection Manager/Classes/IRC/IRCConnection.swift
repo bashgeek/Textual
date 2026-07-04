@@ -460,14 +460,6 @@ fileprivate extension ConnectionSocket
 {
 	static func socket(with config: IRCConnectionConfig) -> ConnectionSocket & ConnectionSocketProtocol
 	{
-#if canImport(Network)
-		if #available(macOS 10.14, *) {
-			if (config.connectionPrefersModernSockets) {
-				return ConnectionSocketNWF(with: config)
-			}
-		}
-#endif
-
-		return ConnectionSocketClassic(with: config)
+		return ConnectionSocketNWF(with: config)
 	}
 }

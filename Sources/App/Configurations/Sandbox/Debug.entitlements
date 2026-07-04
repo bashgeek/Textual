@@ -4,13 +4,6 @@
 <dict>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
-	<key>com.apple.security.application-groups</key>
-	<array>
-		<string>com.codeux.apps.textual</string>
-		<string>com.codeux.apps.textual.group</string>
-		<string>8482Q6EPL6.com.codeux.apps.textual</string>
-		<string>8482Q6EPL6.com.codeux.irc.textual</string>
-	</array>
 	<key>com.apple.security.automation.apple-events</key>
 	<true/>
 	<key>com.apple.security.cs.disable-library-validation</key>
@@ -32,10 +25,10 @@
 		<string>com.apple.itunes</string>
 		<string>com.apple.safari</string>
 	</array>
-	<key>com.apple.security.temporary-exception.shared-preference.read-write</key>
+	<key>com.apple.security.temporary-exception.mach-lookup.global-name</key>
 	<array>
-		<string>com.codeux.apps.textual</string>
-		<string>com.codeux.apps.textual-mas</string>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)-spks</string>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)-spki</string>
 	</array>
 </dict>
 </plist>

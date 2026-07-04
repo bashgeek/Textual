@@ -3614,11 +3614,6 @@ NS_ASSUME_NONNULL_BEGIN
 	[menuController() openStandaloneStoreWebpage:sender];
 }
 
-- (void)manageLicense:(id)sender
-{
-	[menuController() manageLicense:sender];
-}
-
 - (void)showWelcomeSheet:(id)sender
 {
 	[menuController() showWelcomeSheet:sender];
