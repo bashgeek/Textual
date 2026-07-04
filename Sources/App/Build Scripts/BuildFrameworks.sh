@@ -22,7 +22,6 @@ xcb() {
 # Assumes the name and filename of the framework is the same just without spaces.
 frameworks=(
     'Auto Hyperlinks'
-    'Encryption Kit'
     'Cocoa Extensions'
 )
 

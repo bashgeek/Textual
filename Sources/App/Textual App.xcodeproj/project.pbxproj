@@ -315,20 +315,16 @@
 		4C06E43620EC539E0055D09A /* AutoHyperlinks.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF76A371A91153A0088BF9A /* AutoHyperlinks.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		4C06E43720EC539E0055D09A /* CocoaExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF76A391A91153A0088BF9A /* CocoaExtensions.framework */; };
 		4C06E43820EC539E0055D09A /* CocoaExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF76A391A91153A0088BF9A /* CocoaExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		4C06E43920EC539E0055D09A /* EncryptionKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C8F2F5D1AAE6467007821CC /* EncryptionKit.framework */; };
-		4C06E43A20EC539E0055D09A /* EncryptionKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C8F2F5D1AAE6467007821CC /* EncryptionKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4C06E43B20EC539E0055D09A /* GRMustache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC4A7371F8A1404008FF15F /* GRMustache.framework */; };
 		4C06E43C20EC539E0055D09A /* GRMustache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC4A7371F8A1404008FF15F /* GRMustache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4C06E44120EC539E0055D09A /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C24DC751A93C9CE0098D1BE /* Sparkle.framework */; };
 		4C06E44220EC539E0055D09A /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C24DC751A93C9CE0098D1BE /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4C06E47320EC541C0055D09A /* AutoHyperlinks.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF76A371A91153A0088BF9A /* AutoHyperlinks.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		4C06E47520EC541C0055D09A /* CocoaExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF76A391A91153A0088BF9A /* CocoaExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		4C06E47720EC541C0055D09A /* EncryptionKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C8F2F5D1AAE6467007821CC /* EncryptionKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4C06E47920EC541C0055D09A /* GRMustache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC4A7371F8A1404008FF15F /* GRMustache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4C06E47F20EC541C0055D09A /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C24DC751A93C9CE0098D1BE /* Sparkle.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4C06E48120EC54260055D09A /* AutoHyperlinks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF76A371A91153A0088BF9A /* AutoHyperlinks.framework */; };
 		4C06E48220EC54260055D09A /* CocoaExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF76A391A91153A0088BF9A /* CocoaExtensions.framework */; };
-		4C06E48320EC54260055D09A /* EncryptionKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C8F2F5D1AAE6467007821CC /* EncryptionKit.framework */; };
 		4C06E48420EC54260055D09A /* GRMustache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC4A7371F8A1404008FF15F /* GRMustache.framework */; };
 		4C06E48720EC54260055D09A /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C24DC751A93C9CE0098D1BE /* Sparkle.framework */; };
 		4C06E48820EC542C0055D09A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CCE521A18C7BE0600D49601 /* AudioToolbox.framework */; };
@@ -1180,7 +1176,6 @@
 			files = (
 				4C06E43620EC539E0055D09A /* AutoHyperlinks.framework in Embed Frameworks */,
 				4C06E43820EC539E0055D09A /* CocoaExtensions.framework in Embed Frameworks */,
-				4C06E43A20EC539E0055D09A /* EncryptionKit.framework in Embed Frameworks */,
 				4C06E43C20EC539E0055D09A /* GRMustache.framework in Embed Frameworks */,
 				4C06E44220EC539E0055D09A /* Sparkle.framework in Embed Frameworks */,
 			);
@@ -1195,7 +1190,6 @@
 			files = (
 				4C06E47320EC541C0055D09A /* AutoHyperlinks.framework in Embed Frameworks */,
 				4C06E47520EC541C0055D09A /* CocoaExtensions.framework in Embed Frameworks */,
-				4C06E47720EC541C0055D09A /* EncryptionKit.framework in Embed Frameworks */,
 				4C06E47920EC541C0055D09A /* GRMustache.framework in Embed Frameworks */,
 				4C06E47F20EC541C0055D09A /* Sparkle.framework in Embed Frameworks */,
 			);
@@ -1896,7 +1890,6 @@
 		4C83B9101BA9BEB800BD7718 /* Chat Filters.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "Chat Filters.bundle"; path = "../../.tmp/SharedBuildProducts-Extensions/Chat Filters.bundle"; sourceTree = SOURCE_ROOT; };
 		4C8878032C33706E0016DB98 /* TPCSandboxMigration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TPCSandboxMigration.m; sourceTree = "<group>"; };
 		4C8878062C3371470016DB98 /* TPCSandboxMigrationPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TPCSandboxMigrationPrivate.h; sourceTree = "<group>"; };
-		4C8F2F5D1AAE6467007821CC /* EncryptionKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EncryptionKit.framework; path = "../../.tmp/SharedBuildProducts-Frameworks/EncryptionKit.framework"; sourceTree = SOURCE_ROOT; };
 		4C8F3FD62C31AF6E00118AAF /* THOPluginManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = THOPluginManager.h; sourceTree = "<group>"; };
 		4C8F3FDB2C31B15200118AAF /* THOPluginItemLogging.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = THOPluginItemLogging.m; sourceTree = "<group>"; };
 		4C956893194A8862003D97FD /* Smiley Converter.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "Smiley Converter.bundle"; path = "../../.tmp/SharedBuildProducts-Extensions/Smiley Converter.bundle"; sourceTree = SOURCE_ROOT; };
@@ -1942,7 +1935,6 @@
 				4C06E49320EC542C0055D09A /* WebKit.framework in Frameworks */,
 				4C06E48120EC54260055D09A /* AutoHyperlinks.framework in Frameworks */,
 				4C06E48220EC54260055D09A /* CocoaExtensions.framework in Frameworks */,
-				4C06E48320EC54260055D09A /* EncryptionKit.framework in Frameworks */,
 				4C06E48420EC54260055D09A /* GRMustache.framework in Frameworks */,
 				4C06E48720EC54260055D09A /* Sparkle.framework in Frameworks */,
 			);
@@ -1960,7 +1952,6 @@
 				4C2F42052C3F4218000D962D /* UserNotifications.framework in Frameworks */,
 				4C06E42D20EC53620055D09A /* IOKit.framework in Frameworks */,
 				4C06E44120EC539E0055D09A /* Sparkle.framework in Frameworks */,
-				4C06E43920EC539E0055D09A /* EncryptionKit.framework in Frameworks */,
 				4C06E42F20EC53620055D09A /* QuartzCore.framework in Frameworks */,
 				4C06E43020EC53620055D09A /* Security.framework in Frameworks */,
 				4C06E43320EC53620055D09A /* SystemConfiguration.framework in Frameworks */,
@@ -3298,7 +3289,6 @@
 			children = (
 				4CF76A371A91153A0088BF9A /* AutoHyperlinks.framework */,
 				4CF76A391A91153A0088BF9A /* CocoaExtensions.framework */,
-				4C8F2F5D1AAE6467007821CC /* EncryptionKit.framework */,
 				4CC4A7371F8A1404008FF15F /* GRMustache.framework */,
 				4C24DC751A93C9CE0098D1BE /* Sparkle.framework */,
 			);
