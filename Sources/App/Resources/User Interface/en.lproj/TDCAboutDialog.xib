@@ -16,10 +16,10 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window allowsToolTipsWhenApplicationIsInactive="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="disallowed" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
-            <rect key="contentRect" x="1150" y="679" width="218" height="244"/>
+            <rect key="contentRect" x="1150" y="679" width="218" height="260"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="219" height="244"/>
+                <rect key="frame" x="0.0" y="0.0" width="219" height="260"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView translatesAutoresizingMaskIntoConstraints="NO" id="3">
@@ -48,6 +48,17 @@
                         </textFieldCell>
                         <accessibility description="Version Information"/>
                     </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GHB-Lk-git">
+                        <rect key="frame" x="42" y="60" width="135" height="23"/>
+                        <buttonCell key="cell" type="roundTextured" title="View on GitHub" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GHC-Lk-git">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <accessibility description="View on GitHub"/>
+                        <connections>
+                            <action selector="openGitHub:" target="-2" id="GHD-Lk-git"/>
+                        </connections>
+                    </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="40">
                         <rect key="frame" x="42" y="18" width="135" height="23"/>
                         <buttonCell key="cell" type="roundTextured" title="Acknowledgements" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="41">
@@ -89,6 +100,8 @@ Gw
                     <constraint firstAttribute="bottom" secondItem="40" secondAttribute="bottom" constant="20" symbolic="YES" id="VzH-QN-2U2"/>
                     <constraint firstItem="40" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="cgP-eI-aZl"/>
                     <constraint firstItem="7" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="8" symbolic="YES" id="eHu-4Q-o7e"/>
+                    <constraint firstItem="GHB-Lk-git" firstAttribute="top" secondItem="7" secondAttribute="bottom" constant="8" id="GHE-Lk-git"/>
+                    <constraint firstItem="GHB-Lk-git" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="GHF-Lk-git"/>
                     <constraint firstItem="5" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="vBb-oA-EXK"/>
                 </constraints>
             </view>

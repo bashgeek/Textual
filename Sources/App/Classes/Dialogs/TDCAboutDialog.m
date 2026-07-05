@@ -47,6 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) IBOutlet NSTextField *versionInfoTextField;
 
 - (IBAction)displayAcknowledgements:(id)sender;
+- (IBAction)openGitHub:(id)sender;
 @end
 
 @implementation TDCAboutDialog
@@ -81,6 +82,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)displayAcknowledgements:(id)sender
 {
 	[menuController() openAcknowledgements:sender];
+}
+
+- (void)openGitHub:(id)sender
+{
+	[RZWorkspace() openURL:[NSURL URLWithString:@"https://github.com/bashgeek/Textual"]];
 }
 
 - (void)windowWillClose:(NSNotification *)note

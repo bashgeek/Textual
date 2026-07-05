@@ -63,7 +63,6 @@ enum
 	MTMMAppAboutApp = 100, // "About Textual"
 	MTMMAppAboutAppSeparator = 101, // "-"
 	MTMMAppPreferences = 102, // "Preferences…"
-	MTMMAppManageLicense = 103, // "Manage license…"
 //	MTMMAppInAppPurchase = 104, // "In-app Purchase…"
 	MTMMAppCheckForUpdates = 105, // "Check for updates…"
 	MTMMAppCheckForUpdatesSeparator = 106, // "-"

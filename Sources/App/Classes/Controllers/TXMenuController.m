@@ -263,7 +263,6 @@ NS_ASSUME_NONNULL_BEGIN
 		switch (tag) {
 			case MTMMAppAboutApp: // "About Textual"
 			case MTMMAppPreferences: // "Preferences…"
-			case MTMMAppManageLicense: // "Manage license…"
 			case MTMMAppCheckForUpdates: // "Check for updates…"
 			case MTMMHelpAdvancedMenuEnableDeveloperMode: // "Enable Developer Mode"
 			case MTMMHelpAdvancedMenuHiddenPreferences: // "Hidden Preferences…"
@@ -358,12 +357,6 @@ NS_ASSUME_NONNULL_BEGIN
 			return YES;
 		}
 
-		case MTMMAppManageLicense: // "Manage license…"
-		{
-			menuItem.hidden = YES;
-
-			return YES;
-		}
 		case MTMMAppCheckForUpdates: // "Check for Updates"
 		{
 			return YES;
