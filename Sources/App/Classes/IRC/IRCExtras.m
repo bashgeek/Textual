@@ -115,21 +115,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 		[menuController() navigateToTreeItemAtURL:url];
 	}
-	else if ([action isEqualToString:@"knowledge-base"])
-	{
-		[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual/wiki" inBackground:NO];
-	}
 	else if ([action isEqualToString:@"newsletter"])
 	{
 		[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual" inBackground:NO];
-	}
-	else if ([action isEqualToString:@"support-channel"])
-	{
-		[menuController() connectToTextualHelpChannel:nil];
-	}
-	else if ([action isEqualToString:@"testing-channel"])
-	{
-		[menuController() connectToTextualTestingChannel:nil];
 	}
 }
 

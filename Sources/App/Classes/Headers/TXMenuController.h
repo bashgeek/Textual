@@ -213,31 +213,6 @@ enum
 
 	/* Main menu - Help menu */
 	MTMMHelpAcknowledgements = 900, // "Acknowledgements"
-	MTMMHelpLicenseAgreement = 901, // "License Agreement"
-	MTMMHelpPrivacyPolicy = 902, // "Privacy Policy"
-	MTMMHelpPrivacyPolicySeparator = 903, // "-"
-	MTMMHelpFrequentlyAskedQuestions = 904, // "Frequently Asked Questions"
-	MTMMHelpKnowledgeBaseMenu = 905, // "Knowledge Base"
-	/* Highest: 9050016 */
-	MTMMHelpKBMenuKnowledgeBaseHome = 9050000, // "Knowledge Base Home"
-	MTMMHelpKBMenuKnowledgeBaseHomeSeparator = 9050001, // "-"
-	MTMMHelpKBMenuChatEncryption = 9050004, // "Chat Encryption"
-	MTMMHelpKBMenuCommandReference = 9050005, // "Command Reference"
-	MTMMHelpKBMenuFeatureRequests = 9050006, // "Feature Requests"
-	MTMMHelpKBMenuKeyboardShortcuts = 9050007, // "Keyboard Shortcuts"
-	MTMMHelpKBMenuMemoryManagement = 9050008, // "Memory Management"
-	MTMMHelpKBMenuNetworkTimeouts = 9050016, // "Network Timeouts"
-	MTMMHelpKBMenuTextFormatting = 9050009, // "Text Formatting"
-	MTMMHelpKBMenuStylingInformation = 9050010, // "Styling Information"
-	MTMMHelpKBMenuStylingInformationSeparator = 9050011, // "-"
-	MTMMHelpKBMenuConnectingWithCertificate = 9050012, // "Connecting with Certificate"
-	MTMMHelpKBMenuConnectingToBouncer = 9050013, // "Connecting to a ZNC Bouncer"
-	MTMMHelpKBMenuConnectingToBouncerSeparator = 9050014, // "-"
-	MTMMHelpKBMenuDCCFileTransferInformation = 9050015, // "DCC File Transfer Information"
-	MTMMHelpKnowledgeBaseMenuSeparator = 906, // "-"
-	MTMMHelpConnectToHelpChannel = 907, // "Connect to Help Channel"
-	MTMMHelpConnectToTestingChannel = 908, // "Connect to Testing Channel"
-	MTMMHelpConnectToTestingChannelSeparator = 909, // "-"
 	MTMMHelpAdvancedMenu = 910, // "Advanced"
 	MTMMHelpAdvancedMenuEnableDeveloperMode = 9100000, // "Enable Developer Mode"
 	MTMMHelpAdvancedMenuEnableDeveloperModeSeparator = 9100001, // "-"
@@ -383,9 +358,6 @@ enum
 
 - (IBAction)connect:(id)sender;
 - (IBAction)connectBypassingProxy:(id)sender;
-
-- (IBAction)connectToTextualHelpChannel:(id)sender;
-- (IBAction)connectToTextualTestingChannel:(id)sender;
 
 - (IBAction)disconnect:(id)sender;
 - (IBAction)cancelReconnection:(id)sender;
