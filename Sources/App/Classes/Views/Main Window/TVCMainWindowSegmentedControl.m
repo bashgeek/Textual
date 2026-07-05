@@ -69,9 +69,13 @@ NS_ASSUME_NONNULL_BEGIN
 	if ([TPCPreferences hideMainWindowSegmentedController]) {
 		[self.segmentedControllerLeadingConstraint archiveConstantAndZeroOut];
 		[self.segmentedControllerWidthConstraint archiveConstantAndZeroOut];
+
+		self.hidden = YES;
 	} else {
 		[self.segmentedControllerLeadingConstraint restoreArchivedConstant];
 		[self.segmentedControllerWidthConstraint restoreArchivedConstant];
+
+		self.hidden = NO;
 	}
 }
 
