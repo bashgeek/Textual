@@ -46,6 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)applicationWakeStepTwo;
 
 - (void)prepareThirdPartyServiceSparkleFramework;
+- (void)checkForUpdatesFromGitHub:(BOOL)userInitiated;
 @end
 
 NS_ASSUME_NONNULL_END

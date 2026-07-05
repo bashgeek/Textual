@@ -65,10 +65,6 @@
 #import "TXMasterControllerPrivate.h"
 #import "IRCClient.h"
 
-#if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
-#import <Sparkle/Sparkle.h>
-#endif
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TXMasterController ()
@@ -86,9 +82,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSUInteger applicationLaunchRemainder;
 @property (nonatomic, strong) nw_path_monitor_t pathMonitor;
 
-#if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
-@property (nonatomic, strong, readwrite) SPUStandardUpdaterController *updateController;
-#endif
 @end
 
 @implementation TXMasterController
@@ -224,30 +217,76 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)prepareThirdPartyServiceSparkleFramework
 {
-#if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
-	  SPUStandardUpdaterController *controller =
-	[[SPUStandardUpdaterController alloc] initWithStartingUpdater:NO
-												  updaterDelegate:(id <SPUUpdaterDelegate>)self
-											   userDriverDelegate:nil];
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(30 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		[self checkForUpdatesFromGitHub:NO];
+	});
+}
 
-	self.updateController = controller;
+- (void)checkForUpdatesFromGitHub:(BOOL)userInitiated
+{
+	NSURL *apiURL = [NSURL URLWithString:@"https://api.github.com/repos/bashgeek/Textual/releases/latest"];
 
-	SPUUpdater *updater = controller.updater;
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:apiURL
+	                                                       cachePolicy:NSURLRequestReloadIgnoringCacheData
+	                                                   timeoutInterval:30.0];
 
-	if ([updater respondsToSelector:@selector(clearFeedURLFromUserDefaults)]) {
-		[updater performSelector:@selector(clearFeedURLFromUserDefaults)];
-	} else {
-		[RZUserDefaults() removeObjectForKey:@"SUFeedURL"];
-	}
+	[request setValue:@"Textual IRC" forHTTPHeaderField:@"User-Agent"];
 
-	NSError *error;
+	NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request
+	                                                             completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (error || data == nil) {
+				if (userInitiated) {
+					NSAlert *alert = [[NSAlert alloc] init];
+					alert.messageText = @"Update Check Failed";
+					alert.informativeText = error.localizedDescription ?: @"Could not contact GitHub.";
+					[alert addButtonWithTitle:@"OK"];
+					[alert runModal];
+				}
+				return;
+			}
 
-	(void)[updater startUpdater:&error];
+			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+			NSString *latestTag = json[@"tag_name"];
 
-	if (error) {
-		LogToConsoleError("Sparkle failed to start updater: %{public}@", error.description);
-	}
-#endif
+			if (!latestTag) {
+				if (userInitiated) {
+					NSAlert *alert = [[NSAlert alloc] init];
+					alert.messageText = @"Update Check Failed";
+					alert.informativeText = @"Could not parse release information from GitHub.";
+					[alert addButtonWithTitle:@"OK"];
+					[alert runModal];
+				}
+				return;
+			}
+
+			NSString *latestVersion = [latestTag hasPrefix:@"v"] ? [latestTag substringFromIndex:1] : latestTag;
+			NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+
+			if ([currentVersion compare:latestVersion options:NSNumericSearch] == NSOrderedAscending) {
+				NSAlert *alert = [[NSAlert alloc] init];
+				alert.messageText = @"Update Available";
+				alert.informativeText = [NSString stringWithFormat:@"Textual %@ is available. You have %@.", latestTag, currentVersion];
+				[alert addButtonWithTitle:@"View on GitHub"];
+				[alert addButtonWithTitle:@"Later"];
+
+				if ([alert runModal] == NSAlertFirstButtonReturn) {
+					NSString *urlString = json[@"html_url"];
+					if (urlString) {
+						[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
+					}
+				}
+			} else if (userInitiated) {
+				NSAlert *alert = [[NSAlert alloc] init];
+				alert.messageText = @"You're Up to Date";
+				alert.informativeText = [NSString stringWithFormat:@"Textual %@ is the latest version.", currentVersion];
+				[alert addButtonWithTitle:@"OK"];
+				[alert runModal];
+			}
+		});
+	}];
+
+	[task resume];
 }
 
 - (void)prepareThirdPartyServices
@@ -591,27 +630,6 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	[self terminateGracefully];
 }
-
-#pragma mark -
-#pragma mark Sparkle Delegate
-
-#if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
-- (void)updaterWillRelaunchApplication:(SPUUpdater *)updater
-{
-	self.applicationIsTerminating = YES;
-}
-
-- (NSSet<NSString *> *)allowedChannelsForUpdater:(SPUUpdater *)updater
-{
-	BOOL receiveBetaUpdates = [TPCPreferences receiveBetaUpdates];
-
-	if (receiveBetaUpdates) {
-		return [NSSet setWithObject:@"beta"];
-	}
-
-	return [NSSet set];
-}
-#endif
 
 @end
 

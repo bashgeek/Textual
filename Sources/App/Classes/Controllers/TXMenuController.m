@@ -80,10 +80,6 @@
 #import "TXWindowControllerPrivate.h"
 #import "TXMenuControllerPrivate.h"
 
-#if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
-#import <Sparkle/Sparkle.h>
-#endif
-
 NS_ASSUME_NONNULL_BEGIN
 
 #define	_popWindowViewIfExists(c)	if ([windowController() maybeBringWindowForward:(c)]) {		\
@@ -370,10 +366,6 @@ NS_ASSUME_NONNULL_BEGIN
 		}
 		case MTMMAppCheckForUpdates: // "Check for Updates"
 		{
-#if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 0
-			menuItem.hidden = YES;
-#endif
-
 			return YES;
 		}
 
@@ -2814,11 +2806,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)checkForUpdates:(id)sender
 {
-#if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
-	SPUStandardUpdaterController *controller = masterController().updateController;
-
-	[controller checkForUpdates:sender];
-#endif
+	[masterController() checkForUpdatesFromGitHub:YES];
 }
 
 #pragma mark -

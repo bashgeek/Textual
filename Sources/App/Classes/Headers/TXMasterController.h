@@ -57,14 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, weak) TXMenuController *menuController;
 
 @property (nonatomic, assign) BOOL skipTerminateSave;
-@end
 
-#if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
-@class SPUStandardUpdaterController;
-
-@interface TXMasterController (Sparkle)
-@property (readonly) SPUStandardUpdaterController *updateController;
+- (void)checkForUpdatesFromGitHub:(BOOL)userInitiated;
 @end
-#endif
 
 NS_ASSUME_NONNULL_END
