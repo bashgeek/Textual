@@ -274,7 +274,7 @@ final class ConnectionSocketNWF: ConnectionSocket, ConnectionSocketProtocol, @un
 				case .ipv6(let address):
 					return address.rawValue.IPv6Address
 				@unknown default:
-					fatalError("Unexpected switch case")
+					return nil
 			}
 		}
 
@@ -513,8 +513,10 @@ final class ConnectionSocketNWF: ConnectionSocket, ConnectionSocketProtocol, @un
 				return ConnectionError(nwPOSIXError: errorCode.rawValue)
 			case .tls(let errorCode):
 				return ConnectionError(nwTLSError: errorCode)
+			case .wifiAware(let errorCode):
+				return ConnectionError(otherError: "Wi-Fi Aware error: \(errorCode)")
 			@unknown default:
-				fatalError("Unexpected switch case")
+				return ConnectionError(otherError: "Unknown NWError: \(error)")
 		}
 	}
 }

@@ -63,11 +63,11 @@ final class RCMProcessMain: NSObject, RCMConnectionManagerServerProtocol {
 		connection?.close()
 	}
 
-	func sendData(_ data: Data) {
-		sendData(data, bypassQueue: false)
+	func send(_ data: Data) {
+		send(data, bypassQueue: false)
 	}
 
-	func sendData(_ data: Data, bypassQueue: Bool) {
+	func send(_ data: Data, bypassQueue: Bool) {
 		precondition(connection != nil, "Method invoked without performing setup first")
 		connection?.send(data, bypassQueue: bypassQueue)
 	}
