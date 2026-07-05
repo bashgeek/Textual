@@ -5,7 +5,7 @@
 Textual is an archived macOS IRC client (Codeux Software, LLC). We are forking and modernizing it.
 - Target: macOS 26+ only
 - Goal: eliminate submodules, dead code, and legacy paths; prepare for incremental Swift migration
-- Status: **Phases 1–4 complete. Phase 5 not started.**
+- Status: **Phases 1–5 complete.**
 
 ## Legal Status
 
@@ -77,14 +77,26 @@ are now plain committed directories — no inlining into Sources/ was needed.
 
 Goal: All XPC services fully Swift. Clean language boundary with ObjC main app.
 
-### Phase 5: Incremental Swift migration of Shared/ layer
+### Phase 5: Incremental Swift migration of Shared/ layer ✅ COMPLETE
 
-Start with `Sources/Shared/` — no UI, natural boundary:
-- `TLOLocalization.swift` — already Swift ✓
-- `TLOTimer.m` → Swift (`DispatchSourceTimer`)
-- `TPCPreferences.m` / `TPCPreferencesUserDefaults.m` → Swift
-- `IRCConnectionConfig.m` + `IRCConnectionErrors.m` → Swift structs/enums
-- `ICLPayload.m` → Swift
+Converted 4 of 9 `Sources/Shared/` ObjC files to Swift:
+- `TLOLocalization.swift` — already Swift (kept as-is) ✓
+- `NSObjectHelper.m` → `NSObjectHelper.swift` (NSObject extension with doesNotRecognizeSelector stubs)
+- `TLOTimer.m` → `TLOTimer.swift` (full timer using XRScheduleBlockOnQueue C functions)
+- `TPCPreferences.m` → `TPCPreferences.swift` (uses `@_objcImplementation` to implement ObjC-declared class)
+- `TVCLogLineXPC.m` → `TVCLogLineXPC.swift` (NSSecureCoding container with CoreData support)
+
+Skipped (too complex or special ObjC requirements):
+- `IRCConnectionErrors.m` — single `extern NSString *const` (can't be a Swift global)
+- `TLOLocalization.m` — C variadic functions (`TXTLS()` etc.) not expressible in Swift
+- `TPCPreferencesUserDefaults.m` — ObjC init singleton trick + exported notification constant
+- `IRCConnectionConfig.m` — XRPortablePropertyObject mutable/immutable pattern
+- `ICLPayload.m` — same XRPortablePropertyObject pattern
+
+Key techniques:
+- `@_objcImplementation extension TPCPreferences` — implements ObjC-declared class from Swift without bridging header conflict
+- `TPCPreferencesPrivate.h` added to Swift bridging headers so setter methods are visible
+- ICL Core Media bundle: added `-undefined dynamic_lookup` to fix pre-existing linker error from Phase 4 ICLHelpers conversion
 
 ### Intentionally Deferred (too large/risky)
 - `IRCClient.m` (13,278 lines) — entire IRC state machine; do not touch until Phases 1–4 complete
@@ -110,6 +122,6 @@ Start with `Sources/Shared/` — no UI, natural boundary:
 | 2d/2e | Remove submodule machinery | ✅ Done |
 | 3 | Build modernization (macOS 26 target) | ✅ Done |
 | 4 | XPC services → Swift | ✅ Done |
-| 5 | Shared/ layer → Swift | ⬜ Not started |
+| 5 | Shared/ layer → Swift | ✅ Done (4/9 files) |
 
 **Total Phase 1 removals: ~11,150 lines (~9% of codebase) before writing a new line.**

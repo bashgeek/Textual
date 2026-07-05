@@ -40,5 +40,9 @@
 // TLOpenLink.swift
 #import "TPCPreferencesLocal.h"
 
+// TPCPreferences.swift
+#import "TPCPreferencesPrivate.h"
+#import "TPCPreferencesUserDefaults.h"
+
 // TLOLinkParser.swift
 #import "TVCLogLine.h"

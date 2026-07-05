@@ -45,4 +45,5 @@
 #import "ICLPayloadPrivate.h"
 
 #import "TPCPreferences.h"
+#import "TPCPreferencesPrivate.h"
 #import "TPCPreferencesUserDefaults.h"

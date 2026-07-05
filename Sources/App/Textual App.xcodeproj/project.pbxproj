@@ -375,7 +375,7 @@
 		4C06E5B320EC553A0055D09A /* TDCWelcomeSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31528B20EB673E00448776 /* TDCWelcomeSheet.m */; };
 		4C06E5B420EC553A0055D09A /* TDCWindowBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31528420EB673E00448776 /* TDCWindowBase.m */; };
 		4C06E5B520EC553A0055D09A /* NSColorHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E520EB673E00448776 /* NSColorHelper.m */; };
-		4C06E5B620EC553A0055D09A /* NSObjectHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E2A120EC4FA50055D09A /* NSObjectHelper.m */; };
+		DD000001DDDDDDDDDDDDDD01 /* NSObjectHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000001DDDDDDDDDDDDDD00 /* NSObjectHelper.swift */; };
 		4C06E5B720EC553A0055D09A /* NSStringHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E720EB673E00448776 /* NSStringHelper.m */; };
 		4C06E5B820EC553A0055D09A /* NSTableViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E820EB673E00448776 /* NSTableViewHelper.m */; };
 		4C06E5B920EC553A0055D09A /* NSViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E620EB673E00448776 /* NSViewHelper.m */; };
@@ -427,13 +427,13 @@
 		4C06E5F120EC553A0055D09A /* TLOSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31515820EB673E00448776 /* TLOSoundPlayer.m */; };
 		4C06E5F220EC553A0055D09A /* TLOSpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31515720EB673E00448776 /* TLOSpeechSynthesizer.m */; };
 		4C06E5F320EC553A0055D09A /* TLOSpokenNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31515A20EB673E00448776 /* TLOSpokenNotification.m */; };
-		4C06E5F420EC553A0055D09A /* TLOTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E29320EC4F570055D09A /* TLOTimer.m */; };
+		DD000002DDDDDDDDDDDDDD01 /* TLOTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000002DDDDDDDDDDDDDD00 /* TLOTimer.swift */; };
 		4C06E5F520EC553A0055D09A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31514420EB673E00448776 /* main.m */; };
 		4C06E5F820EC553A0055D09A /* TPCThemeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31511F20EB673E00448776 /* TPCThemeController.m */; };
 		4C06E5F920EC553A0055D09A /* TPCTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31512020EB673E00448776 /* TPCTheme.m */; };
 		4C06E5FA20EC553A0055D09A /* TPCApplicationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31511420EB673E00448776 /* TPCApplicationInfo.m */; };
 		4C06E5FB20EC553A0055D09A /* TPCPathInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31511A20EB673E00448776 /* TPCPathInfo.m */; };
-		4C06E5FC20EC553A0055D09A /* TPCPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E28820EC4F000055D09A /* TPCPreferences.m */; };
+		DD000003DDDDDDDDDDDDDD01 /* TPCPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000003DDDDDDDDDDDDDD00 /* TPCPreferences.swift */; };
 		4C06E5FD20EC553A0055D09A /* TPCPreferencesLocal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31511520EB673E00448776 /* TPCPreferencesLocal.m */; };
 		4C06E5FE20EC553A0055D09A /* TPCPreferencesImportExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31511620EB673E00448776 /* TPCPreferencesImportExport.m */; };
 		4C06E5FF20EC553A0055D09A /* TPCPreferencesReload.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31512120EB673E00448776 /* TPCPreferencesReload.m */; };
@@ -444,7 +444,7 @@
 		4C06E60620EC553A0055D09A /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E36320EC51370055D09A /* GCDAsyncSocket.m */; settings = {COMPILER_FLAGS = "-Wno-implicit-retain-self"; }; };
 		4C06E60720EC553A0055D09A /* GCDAsyncSocketExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E36520EC51370055D09A /* GCDAsyncSocketExtensions.m */; };
 		4C06E60920EC553A0055D09A /* ICLPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E38B20EC51370055D09A /* ICLPayload.m */; };
-		4C06E60A20EC553A0055D09A /* TVCLogLineXPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E38620EC51370055D09A /* TVCLogLineXPC.m */; };
+		DD000004DDDDDDDDDDDDDD01 /* TVCLogLineXPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000004DDDDDDDDDDDDDD00 /* TVCLogLineXPC.swift */; };
 		4C06E60B20EC553A0055D09A /* TVCChannelSelectionOutlineCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152AE20EB673E00448776 /* TVCChannelSelectionOutlineCellView.m */; };
 		4C06E60C20EC553A0055D09A /* TVCChannelSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152AF20EB673E00448776 /* TVCChannelSelectionViewController.m */; };
 		4C06E60D20EC553A0055D09A /* TVCLogControllerHistoricLogFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152C220EB673E00448776 /* TVCLogControllerHistoricLogFile.m */; };
@@ -527,7 +527,7 @@
 		4C06E66C20EC55B90055D09A /* TDCWelcomeSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31528B20EB673E00448776 /* TDCWelcomeSheet.m */; };
 		4C06E66D20EC55B90055D09A /* TDCWindowBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31528420EB673E00448776 /* TDCWindowBase.m */; };
 		4C06E66E20EC55B90055D09A /* NSColorHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E520EB673E00448776 /* NSColorHelper.m */; };
-		4C06E66F20EC55B90055D09A /* NSObjectHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E2A120EC4FA50055D09A /* NSObjectHelper.m */; };
+		DD000001DDDDDDDDDDDDDD02 /* NSObjectHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000001DDDDDDDDDDDDDD00 /* NSObjectHelper.swift */; };
 		4C06E67020EC55B90055D09A /* NSStringHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E720EB673E00448776 /* NSStringHelper.m */; };
 		4C06E67120EC55B90055D09A /* NSTableViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E820EB673E00448776 /* NSTableViewHelper.m */; };
 		4C06E67220EC55B90055D09A /* NSViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E620EB673E00448776 /* NSViewHelper.m */; };
@@ -579,13 +579,13 @@
 		4C06E6AA20EC55B90055D09A /* TLOSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31515820EB673E00448776 /* TLOSoundPlayer.m */; };
 		4C06E6AB20EC55B90055D09A /* TLOSpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31515720EB673E00448776 /* TLOSpeechSynthesizer.m */; };
 		4C06E6AC20EC55B90055D09A /* TLOSpokenNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31515A20EB673E00448776 /* TLOSpokenNotification.m */; };
-		4C06E6AD20EC55B90055D09A /* TLOTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E29320EC4F570055D09A /* TLOTimer.m */; };
+		DD000002DDDDDDDDDDDDDD02 /* TLOTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000002DDDDDDDDDDDDDD00 /* TLOTimer.swift */; };
 		4C06E6AE20EC55B90055D09A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31514420EB673E00448776 /* main.m */; };
 		4C06E6B120EC55B90055D09A /* TPCThemeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31511F20EB673E00448776 /* TPCThemeController.m */; };
 		4C06E6B220EC55B90055D09A /* TPCTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31512020EB673E00448776 /* TPCTheme.m */; };
 		4C06E6B320EC55B90055D09A /* TPCApplicationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31511420EB673E00448776 /* TPCApplicationInfo.m */; };
 		4C06E6B420EC55B90055D09A /* TPCPathInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31511A20EB673E00448776 /* TPCPathInfo.m */; };
-		4C06E6B520EC55B90055D09A /* TPCPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E28820EC4F000055D09A /* TPCPreferences.m */; };
+		DD000003DDDDDDDDDDDDDD02 /* TPCPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000003DDDDDDDDDDDDDD00 /* TPCPreferences.swift */; };
 		4C06E6B620EC55B90055D09A /* TPCPreferencesLocal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31511520EB673E00448776 /* TPCPreferencesLocal.m */; };
 		4C06E6B720EC55B90055D09A /* TPCPreferencesImportExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31511620EB673E00448776 /* TPCPreferencesImportExport.m */; };
 		4C06E6B820EC55B90055D09A /* TPCPreferencesReload.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C31512120EB673E00448776 /* TPCPreferencesReload.m */; };
@@ -596,7 +596,7 @@
 		4C06E6BF20EC55B90055D09A /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E36320EC51370055D09A /* GCDAsyncSocket.m */; settings = {COMPILER_FLAGS = "-Wno-implicit-retain-self"; }; };
 		4C06E6C020EC55B90055D09A /* GCDAsyncSocketExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E36520EC51370055D09A /* GCDAsyncSocketExtensions.m */; };
 		4C06E6C220EC55B90055D09A /* ICLPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E38B20EC51370055D09A /* ICLPayload.m */; };
-		4C06E6C320EC55B90055D09A /* TVCLogLineXPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C06E38620EC51370055D09A /* TVCLogLineXPC.m */; };
+		DD000004DDDDDDDDDDDDDD02 /* TVCLogLineXPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000004DDDDDDDDDDDDDD00 /* TVCLogLineXPC.swift */; };
 		4C06E6C420EC55B90055D09A /* TVCChannelSelectionOutlineCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152AE20EB673E00448776 /* TVCChannelSelectionOutlineCellView.m */; };
 		4C06E6C520EC55B90055D09A /* TVCChannelSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152AF20EB673E00448776 /* TVCChannelSelectionViewController.m */; };
 		4C06E6C620EC55B90055D09A /* TVCLogControllerHistoricLogFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152C220EB673E00448776 /* TVCLogControllerHistoricLogFile.m */; };
@@ -1355,12 +1355,12 @@
 		4C06E27520EC4E850055D09A /* TPCPreferencesUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TPCPreferencesUserDefaults.h; path = ../Shared/Headers/TPCPreferencesUserDefaults.h; sourceTree = SOURCE_ROOT; };
 		4C06E27620EC4E860055D09A /* TPCPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TPCPreferences.h; path = ../Shared/Headers/TPCPreferences.h; sourceTree = SOURCE_ROOT; };
 		4C06E27720EC4E860055D09A /* TLOLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TLOLocalization.h; path = ../Shared/Headers/TLOLocalization.h; sourceTree = SOURCE_ROOT; };
-		4C06E28820EC4F000055D09A /* TPCPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TPCPreferences.m; path = ../Shared/Preferences/TPCPreferences.m; sourceTree = SOURCE_ROOT; };
+		DD000003DDDDDDDDDDDDDD00 /* TPCPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TPCPreferences.swift; path = ../Shared/Preferences/TPCPreferences.swift; sourceTree = SOURCE_ROOT; };
 		4C06E28920EC4F000055D09A /* TPCPreferencesUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TPCPreferencesUserDefaults.m; path = ../Shared/Preferences/TPCPreferencesUserDefaults.m; sourceTree = SOURCE_ROOT; };
 		4C06E29220EC4F570055D09A /* TLOLocalization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TLOLocalization.m; path = ../Shared/Library/TLOLocalization.m; sourceTree = SOURCE_ROOT; };
-		4C06E29320EC4F570055D09A /* TLOTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TLOTimer.m; path = ../Shared/Library/TLOTimer.m; sourceTree = SOURCE_ROOT; };
+		DD000002DDDDDDDDDDDDDD00 /* TLOTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TLOTimer.swift; path = ../Shared/Library/TLOTimer.swift; sourceTree = SOURCE_ROOT; };
 		4C06E29C20EC4F880055D09A /* IRCConnectionConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IRCConnectionConfig.m; path = ../Shared/IRC/IRCConnectionConfig.m; sourceTree = SOURCE_ROOT; };
-		4C06E2A120EC4FA50055D09A /* NSObjectHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSObjectHelper.m; path = "../Shared/Helpers/Cocoa (Objective-C)/NSObjectHelper.m"; sourceTree = SOURCE_ROOT; };
+		DD000001DDDDDDDDDDDDDD00 /* NSObjectHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NSObjectHelper.swift; path = "../Shared/Helpers/Cocoa (Objective-C)/NSObjectHelper.swift"; sourceTree = SOURCE_ROOT; };
 		4C06E2A820EC4FF00055D09A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Prompts.strings; sourceTree = "<group>"; };
 		4C06E2AA20EC4FF00055D09A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/OffTheRecord.strings; sourceTree = "<group>"; };
 		4C06E2AC20EC4FF00055D09A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/CommonErrors.strings; sourceTree = "<group>"; };
@@ -1393,7 +1393,7 @@
 		4C06E37F20EC51370055D09A /* RCMConnectionManagerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMConnectionManagerProtocol.h; sourceTree = "<group>"; };
 		4C06E38020EC51370055D09A /* ICLInlineContentProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICLInlineContentProtocol.h; sourceTree = "<group>"; };
 		4C06E38120EC51370055D09A /* HLSHistoricLogProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLSHistoricLogProtocol.h; sourceTree = "<group>"; };
-		4C06E38620EC51370055D09A /* TVCLogLineXPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVCLogLineXPC.m; sourceTree = "<group>"; };
+		DD000004DDDDDDDDDDDDDD00 /* TVCLogLineXPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVCLogLineXPC.swift; sourceTree = "<group>"; };
 		4C06E38B20EC51370055D09A /* ICLPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLPayload.m; sourceTree = "<group>"; };
 		4C06E41020EC52240055D09A /* TVCLogLineXPCPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVCLogLineXPCPrivate.h; sourceTree = "<group>"; };
 		4C06E41520EC52D50055D09A /* ICLPayloadLocalPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICLPayloadLocalPrivate.h; sourceTree = "<group>"; };
@@ -2146,7 +2146,7 @@
 		4C06E38520EC51370055D09A /* Channel View */ = {
 			isa = PBXGroup;
 			children = (
-				4C06E38620EC51370055D09A /* TVCLogLineXPC.m */,
+				DD000004DDDDDDDDDDDDDD00 /* TVCLogLineXPC.swift */,
 			);
 			path = "Channel View";
 			sourceTree = "<group>";
@@ -2219,7 +2219,7 @@
 				4C31511E20EB673E00448776 /* Themes */,
 				4C31511420EB673E00448776 /* TPCApplicationInfo.m */,
 				4C31511A20EB673E00448776 /* TPCPathInfo.m */,
-				4C06E28820EC4F000055D09A /* TPCPreferences.m */,
+				DD000003DDDDDDDDDDDDDD00 /* TPCPreferences.swift */,
 				4C31511520EB673E00448776 /* TPCPreferencesLocal.m */,
 				4C31511620EB673E00448776 /* TPCPreferencesImportExport.m */,
 				4C31512120EB673E00448776 /* TPCPreferencesReload.m */,
@@ -2317,7 +2317,7 @@
 				4C31515820EB673E00448776 /* TLOSoundPlayer.m */,
 				4C31515720EB673E00448776 /* TLOSpeechSynthesizer.m */,
 				4C31515A20EB673E00448776 /* TLOSpokenNotification.m */,
-				4C06E29320EC4F570055D09A /* TLOTimer.m */,
+				DD000002DDDDDDDDDDDDDD00 /* TLOTimer.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -2897,7 +2897,7 @@
 			isa = PBXGroup;
 			children = (
 				4C3152E520EB673E00448776 /* NSColorHelper.m */,
-				4C06E2A120EC4FA50055D09A /* NSObjectHelper.m */,
+				DD000001DDDDDDDDDDDDDD00 /* NSObjectHelper.swift */,
 				4C3152E720EB673E00448776 /* NSStringHelper.m */,
 				4C3152E820EB673E00448776 /* NSTableViewHelper.m */,
 				4C3152E620EB673E00448776 /* NSViewHelper.m */,
@@ -4440,7 +4440,7 @@
 				4C06E5B320EC553A0055D09A /* TDCWelcomeSheet.m in Sources */,
 				4C06E5B420EC553A0055D09A /* TDCWindowBase.m in Sources */,
 				4C06E5B520EC553A0055D09A /* NSColorHelper.m in Sources */,
-				4C06E5B620EC553A0055D09A /* NSObjectHelper.m in Sources */,
+				DD000001DDDDDDDDDDDDDD01 /* NSObjectHelper.swift in Sources */,
 				4C06E5B720EC553A0055D09A /* NSStringHelper.m in Sources */,
 				4C06E5B820EC553A0055D09A /* NSTableViewHelper.m in Sources */,
 				4C06E5B920EC553A0055D09A /* NSViewHelper.m in Sources */,
@@ -4495,14 +4495,14 @@
 				4C06E5F120EC553A0055D09A /* TLOSoundPlayer.m in Sources */,
 				4C06E5F220EC553A0055D09A /* TLOSpeechSynthesizer.m in Sources */,
 				4C06E5F320EC553A0055D09A /* TLOSpokenNotification.m in Sources */,
-				4C06E5F420EC553A0055D09A /* TLOTimer.m in Sources */,
+				DD000002DDDDDDDDDDDDDD01 /* TLOTimer.swift in Sources */,
 				4C06E5F520EC553A0055D09A /* main.m in Sources */,
 				4C06E5F820EC553A0055D09A /* TPCThemeController.m in Sources */,
 				4C06E5F920EC553A0055D09A /* TPCTheme.m in Sources */,
 				4C06E5FA20EC553A0055D09A /* TPCApplicationInfo.m in Sources */,
 				4C06E5FB20EC553A0055D09A /* TPCPathInfo.m in Sources */,
 				4C469E3C20EC5BDB00094EA4 /* TLOpenLink.swift in Sources */,
-				4C06E5FC20EC553A0055D09A /* TPCPreferences.m in Sources */,
+				DD000003DDDDDDDDDDDDDD01 /* TPCPreferences.swift in Sources */,
 				4C06E5FD20EC553A0055D09A /* TPCPreferencesLocal.m in Sources */,
 				4C06E5FE20EC553A0055D09A /* TPCPreferencesImportExport.m in Sources */,
 				4C06E5FF20EC553A0055D09A /* TPCPreferencesReload.m in Sources */,
@@ -4513,7 +4513,7 @@
 				4C06E60620EC553A0055D09A /* GCDAsyncSocket.m in Sources */,
 				4C06E60720EC553A0055D09A /* GCDAsyncSocketExtensions.m in Sources */,
 				4C06E60920EC553A0055D09A /* ICLPayload.m in Sources */,
-				4C06E60A20EC553A0055D09A /* TVCLogLineXPC.m in Sources */,
+				DD000004DDDDDDDDDDDDDD01 /* TVCLogLineXPC.swift in Sources */,
 				4C06E60B20EC553A0055D09A /* TVCChannelSelectionOutlineCellView.m in Sources */,
 				4C8F3FDD2C31B15B00118AAF /* THOPluginItemLogging.m in Sources */,
 				4C06E60C20EC553A0055D09A /* TVCChannelSelectionViewController.m in Sources */,
@@ -4608,7 +4608,7 @@
 				4C06E66C20EC55B90055D09A /* TDCWelcomeSheet.m in Sources */,
 				4C06E66D20EC55B90055D09A /* TDCWindowBase.m in Sources */,
 				4C06E66E20EC55B90055D09A /* NSColorHelper.m in Sources */,
-				4C06E66F20EC55B90055D09A /* NSObjectHelper.m in Sources */,
+				DD000001DDDDDDDDDDDDDD02 /* NSObjectHelper.swift in Sources */,
 				4C06E67020EC55B90055D09A /* NSStringHelper.m in Sources */,
 				4C06E67120EC55B90055D09A /* NSTableViewHelper.m in Sources */,
 				4C06E67220EC55B90055D09A /* NSViewHelper.m in Sources */,
@@ -4663,14 +4663,14 @@
 				4C06E6AA20EC55B90055D09A /* TLOSoundPlayer.m in Sources */,
 				4C06E6AB20EC55B90055D09A /* TLOSpeechSynthesizer.m in Sources */,
 				4C06E6AC20EC55B90055D09A /* TLOSpokenNotification.m in Sources */,
-				4C06E6AD20EC55B90055D09A /* TLOTimer.m in Sources */,
+				DD000002DDDDDDDDDDDDDD02 /* TLOTimer.swift in Sources */,
 				4C06E6AE20EC55B90055D09A /* main.m in Sources */,
 				4C06E6B120EC55B90055D09A /* TPCThemeController.m in Sources */,
 				4C06E6B220EC55B90055D09A /* TPCTheme.m in Sources */,
 				4C06E6B320EC55B90055D09A /* TPCApplicationInfo.m in Sources */,
 				4C06E6B420EC55B90055D09A /* TPCPathInfo.m in Sources */,
 				4C469E3E20EC5BDB00094EA4 /* TLOpenLink.swift in Sources */,
-				4C06E6B520EC55B90055D09A /* TPCPreferences.m in Sources */,
+				DD000003DDDDDDDDDDDDDD02 /* TPCPreferences.swift in Sources */,
 				4C06E6B620EC55B90055D09A /* TPCPreferencesLocal.m in Sources */,
 				4C06E6B720EC55B90055D09A /* TPCPreferencesImportExport.m in Sources */,
 				4C06E6B820EC55B90055D09A /* TPCPreferencesReload.m in Sources */,
@@ -4681,7 +4681,7 @@
 				4C06E6BF20EC55B90055D09A /* GCDAsyncSocket.m in Sources */,
 				4C06E6C020EC55B90055D09A /* GCDAsyncSocketExtensions.m in Sources */,
 				4C06E6C220EC55B90055D09A /* ICLPayload.m in Sources */,
-				4C06E6C320EC55B90055D09A /* TVCLogLineXPC.m in Sources */,
+				DD000004DDDDDDDDDDDDDD02 /* TVCLogLineXPC.swift in Sources */,
 				4C06E6C420EC55B90055D09A /* TVCChannelSelectionOutlineCellView.m in Sources */,
 				4C8F3FDC2C31B15B00118AAF /* THOPluginItemLogging.m in Sources */,
 				4C06E6C520EC55B90055D09A /* TVCChannelSelectionViewController.m in Sources */,

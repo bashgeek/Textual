@@ -50,7 +50,7 @@ final class Connection: NSObject, ConnectionSocketDelegate
 	{
 		return TLOTimer(actionBlock: { [weak self] _ in
 			self?.onFloodControlTimer()
-		}, on: DispatchQueue.global(qos: .default))
+		}, onQueue: DispatchQueue.global(qos: .default))
 	}()
 
 	fileprivate var floodControlCurrentMessageCount = 0

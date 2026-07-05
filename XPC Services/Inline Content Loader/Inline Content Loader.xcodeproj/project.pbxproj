@@ -43,7 +43,7 @@
 		4C469F8A20EC60F100094EA4 /* ICMInlineVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F6620EC60F000094EA4 /* ICMInlineVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C469F8B20EC60F100094EA4 /* ICMInlineHTML.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F6720EC60F000094EA4 /* ICMInlineHTML.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C469F8C20EC60F100094EA4 /* ICMInlineImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F6820EC60F000094EA4 /* ICMInlineImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4C469FC220EC610000094EA4 /* TPCPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F9220EC610000094EA4 /* TPCPreferences.m */; };
+		DD000003DDDDDDDDDDDDDD03 /* TPCPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000003DDDDDDDDDDDDDD00 /* TPCPreferences.swift */; };
 		4C469FC320EC610000094EA4 /* TPCPreferencesUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F9320EC610000094EA4 /* TPCPreferencesUserDefaults.m */; };
 		4C469FCF20EC610000094EA4 /* TPCPreferencesUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469FA520EC610000094EA4 /* TPCPreferencesUserDefaults.h */; };
 		4C469FD520EC610000094EA4 /* TPCPreferences.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469FAC20EC610000094EA4 /* TPCPreferences.h */; };
@@ -138,7 +138,7 @@
 		CC000019CCCCCCCCCCCCCC00 /* ICMInlineVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICMInlineVideo.swift; sourceTree = "<group>"; };
 		CC000017CCCCCCCCCCCCCC00 /* ICMInlineImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICMInlineImage.swift; sourceTree = "<group>"; };
 		CC000015CCCCCCCCCCCCCC00 /* ICMInlineHTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICMInlineHTML.swift; sourceTree = "<group>"; };
-		4C469F9220EC610000094EA4 /* TPCPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPCPreferences.m; sourceTree = "<group>"; };
+		DD000003DDDDDDDDDDDDDD00 /* TPCPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TPCPreferences.swift; sourceTree = "<group>"; };
 		4C469F9320EC610000094EA4 /* TPCPreferencesUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPCPreferencesUserDefaults.m; sourceTree = "<group>"; };
 		4C469FA520EC610000094EA4 /* TPCPreferencesUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCPreferencesUserDefaults.h; sourceTree = "<group>"; };
 		4C469FAC20EC610000094EA4 /* TPCPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCPreferences.h; sourceTree = "<group>"; };
@@ -353,7 +353,7 @@
 		4C469F9120EC610000094EA4 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				4C469F9220EC610000094EA4 /* TPCPreferences.m */,
+				DD000003DDDDDDDDDDDDDD00 /* TPCPreferences.swift */,
 				4C469F9320EC610000094EA4 /* TPCPreferencesUserDefaults.m */,
 			);
 			path = Preferences;
@@ -624,7 +624,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C469FC220EC610000094EA4 /* TPCPreferences.m in Sources */,
+				DD000003DDDDDDDDDDDDDD03 /* TPCPreferences.swift in Sources */,
 				4C469FC320EC610000094EA4 /* TPCPreferencesUserDefaults.m in Sources */,
 				CC000018CCCCCCCCCCCCCC00 /* ICMInlineVideo.swift in Sources */,
 				CC000008CCCCCCCCCCCCCC00 /* ICLHelpers.swift in Sources */,

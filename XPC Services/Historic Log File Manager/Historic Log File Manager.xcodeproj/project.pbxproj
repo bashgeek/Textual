@@ -12,7 +12,7 @@
 		BB000003BBBBBBBBBBBBBB01 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000003BBBBBBBBBBBBBB00 /* main.swift */; };
 		BB000004BBBBBBBBBBBBBB01 /* HLSHistoricLogProcessMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000004BBBBBBBBBBBBBB00 /* HLSHistoricLogProcessMain.swift */; };
 		BB000005BBBBBBBBBBBBBB01 /* HLSHistoricLogLineEntityMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000005BBBBBBBBBBBBBB00 /* HLSHistoricLogLineEntityMigration.swift */; };
-		4C469E9620EC5ED500094EA4 /* TVCLogLineXPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469E9520EC5ED500094EA4 /* TVCLogLineXPC.m */; };
+		DD000004DDDDDDDDDDDDDD03 /* TVCLogLineXPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000004DDDDDDDDDDDDDD00 /* TVCLogLineXPC.swift */; };
 		4C469E9C20EC5F7700094EA4 /* HistoricLogFileStorageModel.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4C469E9820EC5F7700094EA4 /* HistoricLogFileStorageModel.xcmappingmodel */; };
 		4C469E9D20EC5F7700094EA4 /* HistoricLogFileStorageModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C469E9920EC5F7700094EA4 /* HistoricLogFileStorageModel.xcdatamodeld */; };
 		4C58C6E21E15428300934680 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C58C6E11E15428300934680 /* CoreData.framework */; };
@@ -34,7 +34,7 @@
 		BB000005BBBBBBBBBBBBBB00 /* HLSHistoricLogLineEntityMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HLSHistoricLogLineEntityMigration.swift; path = Classes/HLSHistoricLogLineEntityMigration.swift; sourceTree = SOURCE_ROOT; };
 		BB000006BBBBBBBBBBBBBB00 /* HLSSwiftBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HLSSwiftBridgingHeader.h; path = Classes/Headers/Private/HLSSwiftBridgingHeader.h; sourceTree = SOURCE_ROOT; };
 		4C469E7520EC5E9C00094EA4 /* TVCLogLineXPCPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVCLogLineXPCPrivate.h; sourceTree = "<group>"; };
-		4C469E9520EC5ED500094EA4 /* TVCLogLineXPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVCLogLineXPC.m; sourceTree = "<group>"; };
+		DD000004DDDDDDDDDDDDDD00 /* TVCLogLineXPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVCLogLineXPC.swift; sourceTree = "<group>"; };
 		4C469E9820EC5F7700094EA4 /* HistoricLogFileStorageModel.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = HistoricLogFileStorageModel.xcmappingmodel; sourceTree = "<group>"; };
 		4C469E9A20EC5F7700094EA4 /* LogControllerStorageModel (model 2).xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "LogControllerStorageModel (model 2).xcdatamodel"; sourceTree = "<group>"; };
 		4C469E9B20EC5F7700094EA4 /* LogControllerStorageModel (model 3).xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "LogControllerStorageModel (model 3).xcdatamodel"; sourceTree = "<group>"; };
@@ -192,7 +192,7 @@
 		4C469E9420EC5ED500094EA4 /* Channel View */ = {
 			isa = PBXGroup;
 			children = (
-				4C469E9520EC5ED500094EA4 /* TVCLogLineXPC.m */,
+				DD000004DDDDDDDDDDDDDD00 /* TVCLogLineXPC.swift */,
 			);
 			path = "Channel View";
 			sourceTree = "<group>";
@@ -378,7 +378,7 @@
 				BB000002BBBBBBBBBBBBBB01 /* HLSHistoricLogViewContext.swift in Sources */,
 				BB000005BBBBBBBBBBBBBB01 /* HLSHistoricLogLineEntityMigration.swift in Sources */,
 				BB000004BBBBBBBBBBBBBB01 /* HLSHistoricLogProcessMain.swift in Sources */,
-				4C469E9620EC5ED500094EA4 /* TVCLogLineXPC.m in Sources */,
+				DD000004DDDDDDDDDDDDDD03 /* TVCLogLineXPC.swift in Sources */,
 				BB000001BBBBBBBBBBBBBB01 /* HSLHistoricLogProcessDelegate.swift in Sources */,
 				4C469E9D20EC5F7700094EA4 /* HistoricLogFileStorageModel.xcdatamodeld in Sources */,
 				4CBDFBEA2C3ED3920003B272 /* TPCPreferencesUserDefaults.m in Sources */,

@@ -35,55 +35,59 @@
  *
  *********************************************************************** */
 
-NS_ASSUME_NONNULL_BEGIN
-
-@implementation NSObject (TXObjectHelper)
-
-- (void)applicationDidFinishLaunching
+extension NSObject
 {
-	[self doesNotRecognizeSelector:_cmd];
+	@objc
+	func applicationDidFinishLaunching()
+	{
+		doesNotRecognizeSelector(NSSelectorFromString("applicationDidFinishLaunching"))
+	}
+
+	@objc
+	func preferencesChanged()
+	{
+		doesNotRecognizeSelector(NSSelectorFromString("preferencesChanged"))
+	}
+
+	@objc
+	func prepareInitialState()
+	{
+		doesNotRecognizeSelector(NSSelectorFromString("prepareInitialState"))
+	}
+
+	@objc
+	func prepareForApplicationTermination()
+	{
+		doesNotRecognizeSelector(NSSelectorFromString("prepareForApplicationTermination"))
+	}
+
+	@objc
+	func prepareForPermanentDestruction()
+	{
+		doesNotRecognizeSelector(NSSelectorFromString("prepareForPermanentDestruction"))
+	}
+
+	@objc
+	class func preferencesChanged()
+	{
+		fatalError("\(Self.self) does not implement +preferencesChanged")
+	}
+
+	@objc
+	class func prepareInitialState()
+	{
+		fatalError("\(Self.self) does not implement +prepareInitialState")
+	}
+
+	@objc
+	class func prepareForApplicationTermination()
+	{
+		fatalError("\(Self.self) does not implement +prepareForApplicationTermination")
+	}
+
+	@objc
+	class func prepareForPermanentDestruction()
+	{
+		fatalError("\(Self.self) does not implement +prepareForPermanentDestruction")
+	}
 }
-
-- (void)preferencesChanged
-{
-	[self doesNotRecognizeSelector:_cmd];
-}
-
-- (void)prepareInitialState
-{
-	[self doesNotRecognizeSelector:_cmd];
-}
-
-- (void)prepareForApplicationTermination
-{
-	[self doesNotRecognizeSelector:_cmd];
-}
-
-- (void)prepareForPermanentDestruction
-{
-	[self doesNotRecognizeSelector:_cmd];
-}
-
-+ (void)preferencesChanged
-{
-	[self doesNotRecognizeSelector:_cmd];
-}
-
-+ (void)prepareInitialState
-{
-	[self doesNotRecognizeSelector:_cmd];
-}
-
-+ (void)prepareForApplicationTermination
-{
-	[self doesNotRecognizeSelector:_cmd];
-}
-
-+ (void)prepareForPermanentDestruction
-{
-	[self doesNotRecognizeSelector:_cmd];
-}
-
-@end
-
-NS_ASSUME_NONNULL_END

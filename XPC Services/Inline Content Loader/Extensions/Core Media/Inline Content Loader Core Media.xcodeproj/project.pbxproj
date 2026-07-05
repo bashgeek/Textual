@@ -583,6 +583,7 @@
 			buildSettings = {
 				GCC_PREFIX_HEADER = "${PROJECT_DIR}/Classes/Headers/Private/ICPCoreMediaPCHPrivate.h";
 				INFOPLIST_FILE = "Resources/Property Lists/Info.plist";
+				OTHER_LDFLAGS = "-undefined dynamic_lookup";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.codeux.app-extensions.InlineContentLoader-CoreMedia";
 				PRODUCT_NAME = "Core Media";
 				WRAPPER_EXTENSION = mediaPlugin;
@@ -594,6 +595,7 @@
 			buildSettings = {
 				GCC_PREFIX_HEADER = "${PROJECT_DIR}/Classes/Headers/Private/ICPCoreMediaPCHPrivate.h";
 				INFOPLIST_FILE = "Resources/Property Lists/Info.plist";
+				OTHER_LDFLAGS = "-undefined dynamic_lookup";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.codeux.app-extensions.InlineContentLoader-CoreMedia";
 				PRODUCT_NAME = "Core Media";
 				WRAPPER_EXTENSION = mediaPlugin;
