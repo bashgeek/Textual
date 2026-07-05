@@ -99,19 +99,5 @@
 			</array>
 		</dict>
 	</array>
-	<key>SUAllowsAutomaticUpdates</key>
-	<true/>
-	<key>SUBundleName</key>
-	<string>Textual</string>
-	<key>SUEnableDownloaderService</key>
-	<false/>
-	<key>SUEnableInstallerLauncherService</key>
-	<true/>
-	<key>SUEnableSystemProfiling</key>
-	<false/>
-	<key>SUFeedURL</key>
-	<string>https://updates.textualapp.com/sparkle/feeds/v7/feed-one-merged.xml</string>
-	<key>SUScheduledCheckInterval</key>
-	<string>345600</string>
 </dict>
 </plist>
