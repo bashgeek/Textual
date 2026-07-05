@@ -293,10 +293,6 @@ NS_ASSUME_NONNULL_BEGIN
 			case MTMMViewToggleFullscreen: // "Toggle Fullscreen"
 			case MTMMWindowMainWindow: // "Main Window"
 			case MTMMHelpAcknowledgements: // "Acknowledgements"
-			case MTMMHelpLicenseAgreement: // "License Agreement"
-			case MTMMHelpPrivacyPolicy: // "Privacy Policy"
-			case MTMMHelpFrequentlyAskedQuestions: // "Frequently Asked Questions"
-			case MTMMHelpKnowledgeBaseMenu: // "Knowledge Base"
 			case MTMMHelpAdvancedMenu: // "Advanced"
 			case MTMMHelpAdvancedMenuExportPreferences: // "Export Preferences"
 			{
@@ -306,10 +302,6 @@ NS_ASSUME_NONNULL_BEGIN
 			}
 			default:
 			{
-				if (menuItem.parentItem.tag == MTMMHelpKnowledgeBaseMenu) {
-					validationResult = YES;
-				}
-
 				break;
 			}
 		} // switch
@@ -2373,33 +2365,6 @@ NS_ASSUME_NONNULL_BEGIN
 	[RZWorkspace() openURL:Acknowledgements];
 }
 
-- (void)openHelpMenuItem:(id)sender
-{
-	NSParameterAssert(sender != nil);
-
-	NSDictionary *_helpMenuLinks = @{
-	   @(MTMMHelpLicenseAgreement) 					: @"https://github.com/bashgeek/Textual/blob/master/LICENSE",
-	   @(MTMMHelpPrivacyPolicy) 					: @"https://github.com/bashgeek/Textual",
-	   @(MTMMHelpFrequentlyAskedQuestions) 			: @"https://github.com/bashgeek/Textual/discussions",
-	   @(MTMMHelpKBMenuKnowledgeBaseHome) 			: @"https://github.com/bashgeek/Textual/wiki",
-	   @(MTMMHelpKBMenuChatEncryption) 				: @"https://github.com/bashgeek/Textual/wiki",
-	   @(MTMMHelpKBMenuCommandReference) 			: @"https://github.com/bashgeek/Textual/wiki",
-	   @(MTMMHelpKBMenuFeatureRequests) 			: @"https://github.com/bashgeek/Textual/issues",
-	   @(MTMMHelpKBMenuKeyboardShortcuts) 			: @"https://github.com/bashgeek/Textual/wiki",
-	   @(MTMMHelpKBMenuMemoryManagement) 			: @"https://github.com/bashgeek/Textual/wiki",
-	   @(MTMMHelpKBMenuNetworkTimeouts)				: @"https://github.com/bashgeek/Textual/wiki",
-	   @(MTMMHelpKBMenuTextFormatting) 				: @"https://github.com/bashgeek/Textual/wiki",
-	   @(MTMMHelpKBMenuStylingInformation) 			: @"https://github.com/bashgeek/Textual/wiki",
-	   @(MTMMHelpKBMenuConnectingWithCertificate) 	: @"https://github.com/bashgeek/Textual/wiki",
-	   @(MTMMHelpKBMenuConnectingToBouncer)			: @"https://github.com/bashgeek/Textual/wiki",
-	   @(MTMMHelpKBMenuDCCFileTransferInformation) 	: @"https://github.com/bashgeek/Textual/wiki"
-	};
-
-	NSString *link = _helpMenuLinks[@([sender tag])];
-
-	[TLOpenLink openWithString:link inBackground:NO];
-}
-
 - (void)openStandaloneStoreWebpage:(id)sender
 {
 	[TLOpenLink openWithString:@"https://www.textualapp.com/standalone-store" inBackground:NO];
@@ -2408,16 +2373,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)contactSupport:(id)sender
 {
 	[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual/issues" inBackground:NO];
-}
-
-- (void)connectToTextualHelpChannel:(id)sender
-{
-	[IRCExtras createConnectionToServer:@"irc.libera.chat +6697" channelList:@"#textual" connectWhenCreated:YES mergeConnectionIfPossible:YES selectFirstChannelAdded:YES];
-}
-
-- (void)connectToTextualTestingChannel:(id)sender
-{
-	[IRCExtras createConnectionToServer:@"irc.libera.chat +6697" channelList:@"#textual-testing" connectWhenCreated:YES mergeConnectionIfPossible:YES selectFirstChannelAdded:YES];
 }
 
 #pragma mark -

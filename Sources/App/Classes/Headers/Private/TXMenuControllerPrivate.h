@@ -50,8 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (IBAction)performNavigationAction:(id)sender;
 
-- (IBAction)openHelpMenuItem:(id)sender;
-
 - (IBAction)joinChannelClicked:(id)sender;
 
 - (void)memberChangeColor:(NSString *)nickname;
