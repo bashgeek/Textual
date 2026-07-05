@@ -22,17 +22,17 @@
 
 /* Begin PBXFileReference section */
 		4C442C881E13B3D200B187F4 /* Scrollback History Manager.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = "Scrollback History Manager.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BB000001BBBBBBBBBBBBBB00 /* HSLHistoricLogProcessDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSLHistoricLogProcessDelegate.swift; sourceTree = "<group>"; };
-		BB000002BBBBBBBBBBBBBB00 /* HLSHistoricLogViewContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HLSHistoricLogViewContext.swift; sourceTree = "<group>"; };
-		BB000003BBBBBBBBBBBBBB00 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		BB000001BBBBBBBBBBBBBB00 /* HSLHistoricLogProcessDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HSLHistoricLogProcessDelegate.swift; path = Classes/HSLHistoricLogProcessDelegate.swift; sourceTree = SOURCE_ROOT; };
+		BB000002BBBBBBBBBBBBBB00 /* HLSHistoricLogViewContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HLSHistoricLogViewContext.swift; path = Classes/HLSHistoricLogViewContext.swift; sourceTree = SOURCE_ROOT; };
+		BB000003BBBBBBBBBBBBBB00 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = main.swift; path = Classes/main.swift; sourceTree = SOURCE_ROOT; };
 		4C469E4720EC5E5300094EA4 /* HLSHistoricLogViewContextPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLSHistoricLogViewContextPrivate.h; sourceTree = "<group>"; };
 		4C469E4820EC5E5300094EA4 /* HSLHistoricLogProcessDelegatePrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSLHistoricLogProcessDelegatePrivate.h; sourceTree = "<group>"; };
 		4C469E4920EC5E5300094EA4 /* HLSHistoricLogProcessMainPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLSHistoricLogProcessMainPrivate.h; sourceTree = "<group>"; };
 		4C469E4A20EC5E5300094EA4 /* HLSHistoricLogLineEntityMigrationPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLSHistoricLogLineEntityMigrationPrivate.h; sourceTree = "<group>"; };
 		4C469E4B20EC5E5300094EA4 /* HSLHistoricLogPCHPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSLHistoricLogPCHPrivate.h; sourceTree = "<group>"; };
-		BB000004BBBBBBBBBBBBBB00 /* HLSHistoricLogProcessMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HLSHistoricLogProcessMain.swift; sourceTree = "<group>"; };
-		BB000005BBBBBBBBBBBBBB00 /* HLSHistoricLogLineEntityMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HLSHistoricLogLineEntityMigration.swift; sourceTree = "<group>"; };
-		BB000006BBBBBBBBBBBBBB00 /* HLSSwiftBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLSSwiftBridgingHeader.h; sourceTree = "<group>"; };
+		BB000004BBBBBBBBBBBBBB00 /* HLSHistoricLogProcessMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HLSHistoricLogProcessMain.swift; path = Classes/HLSHistoricLogProcessMain.swift; sourceTree = SOURCE_ROOT; };
+		BB000005BBBBBBBBBBBBBB00 /* HLSHistoricLogLineEntityMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HLSHistoricLogLineEntityMigration.swift; path = Classes/HLSHistoricLogLineEntityMigration.swift; sourceTree = SOURCE_ROOT; };
+		BB000006BBBBBBBBBBBBBB00 /* HLSSwiftBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HLSSwiftBridgingHeader.h; path = Classes/Headers/Private/HLSSwiftBridgingHeader.h; sourceTree = SOURCE_ROOT; };
 		4C469E7520EC5E9C00094EA4 /* TVCLogLineXPCPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVCLogLineXPCPrivate.h; sourceTree = "<group>"; };
 		4C469E9520EC5ED500094EA4 /* TVCLogLineXPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVCLogLineXPC.m; sourceTree = "<group>"; };
 		4C469E9820EC5F7700094EA4 /* HistoricLogFileStorageModel.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = HistoricLogFileStorageModel.xcmappingmodel; sourceTree = "<group>"; };

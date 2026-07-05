@@ -38,7 +38,7 @@
 import Foundation
 import os.log
 
-private let ICLInlineContentErrorDomain: NSErrorDomain = "ICLInlineContentErrorDomain"
+private let ICLInlineContentErrorDomain: String = "ICLInlineContentErrorDomain"
 
 @objc final class ICLProcessMain: NSObject, ICLInlineContentServerProtocol, @unchecked Sendable {
 	private let serviceConnection: NSXPCConnection
@@ -53,12 +53,12 @@ private let ICLInlineContentErrorDomain: NSErrorDomain = "ICLInlineContentErrorD
 
 	// MARK: - Module Registry
 
-	private static let moduleReferences: NSCache<NSString, ICLInlineContentModule> = NSCache()
+	nonisolated(unsafe) private static let moduleReferences: NSCache<NSString, ICLInlineContentModule> = NSCache()
 
 	/* Modules dict is built once on first access (thread-safe via static let).
 	 warmServiceByLoadingPluginsAtLocations: must be called before URL processing. */
 	private static let modules: [String: [AnyClass]] = {
-		let pluginModules: [AnyClass] = ICLPluginManager.sharedPluginManager().modules
+		let pluginModules: [AnyClass] = ICLPluginManager.shared().modules
 		let allModules: [AnyClass] = pluginModules + [ICMAssessedMedia.self]
 
 		var result: [String: [AnyClass]] = [:]
@@ -79,20 +79,20 @@ private let ICLInlineContentErrorDomain: NSErrorDomain = "ICLInlineContentErrorD
 	// MARK: - Process Management
 
 	private static let pluginLoadLock = NSLock()
-	private static var pluginsLoaded = false
+	nonisolated(unsafe) private static var pluginsLoaded = false
 
-	func warmServiceByLoadingPluginsAtLocations(_ pluginLocations: [URL]) {
+	func warmServiceByLoadingPlugins(atLocations pluginLocations: [URL]) {
 		Self.pluginLoadLock.lock()
 		defer { Self.pluginLoadLock.unlock() }
 		guard !Self.pluginsLoaded else { return }
 		Self.pluginsLoaded = true
-		ICLPluginManager.sharedPluginManager().loadPlugins(atLocations: pluginLocations)
+		ICLPluginManager.shared().loadPlugins(atLocations: pluginLocations)
 	}
 
 	private static let defaultsLock = NSLock()
-	private static var defaultsRegistered = false
+	nonisolated(unsafe) private static var defaultsRegistered = false
 
-	func warmServiceByRegisteringDefaults(_ defaults: [String: Any]) {
+	func warmService(byRegisteringDefaults defaults: [String: Any]) {
 		Self.defaultsLock.lock()
 		defer { Self.defaultsLock.unlock() }
 		guard !Self.defaultsRegistered else { return }
@@ -102,7 +102,7 @@ private let ICLInlineContentErrorDomain: NSErrorDomain = "ICLInlineContentErrorD
 
 	// MARK: - XPC Interface
 
-	func processURL(_ url: URL, withUniqueIdentifier uniqueIdentifier: String, atLineNumber lineNumber: String, index: Int, inView viewIdentifier: String) {
+	func processURL(_ url: URL, withUniqueIdentifier uniqueIdentifier: String, atLineNumber lineNumber: String, index: UInt, inView viewIdentifier: String) {
 		guard let payload = ICLPayloadMutable(url: url, withUniqueIdentifier: uniqueIdentifier, atLineNumber: lineNumber, index: index, inView: viewIdentifier) else { return }
 		processPayload(payload)
 	}

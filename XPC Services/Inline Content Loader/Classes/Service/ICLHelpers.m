@@ -37,6 +37,8 @@
 
 #import "ICLHelpers.h"
 
+NSString * const ICLInlineContentErrorDomain = @"ICLInlineContentErrorDomain";
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation ICLHelpers

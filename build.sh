@@ -29,7 +29,7 @@ if [[ -n "${CODE_SIGN_IDENTITY:-}" ]]; then
 fi
 
 printf '%s\n' "${D}  Cleaning build caches...${Z}"
-rm -rf "$BUILD_DIR" .tmp
+rm -rf "$BUILD_DIR" .tmp 2>/dev/null || true
 find Frameworks "XPC Services" "Sources/Plugins" \
     -maxdepth 2 \( -name build -o -name .tmp \) -type d \
     -print0 2>/dev/null | xargs -0 rm -rf

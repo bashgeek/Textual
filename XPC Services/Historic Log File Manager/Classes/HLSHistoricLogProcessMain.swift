@@ -95,10 +95,10 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 
 	// MARK: - HLSHistoricLogServerProtocol
 
-	func openDatabase(inDirectory directory: String, withCompletionBlock completionBlock: ((Bool) -> Void)?) {
+	func openDatabase(inDirectory directory: String, withCompletionBlock completionBlock: (@Sendable (Bool) -> Void)?) {
 		setDatabasePath(inDirectory: directory)
 
-		Logging.defaultSubsystem?.info("Opening database at path: \((databasePath as NSString).standardizingPath)")
+		Logging.defaultSubsystem?.info("Opening database at path: \((self.databasePath as NSString).standardizingPath)")
 
 		let success = createBaseModel()
 
@@ -107,6 +107,12 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 		guard success else { return }
 
 		rescheduleSave()
+	}
+
+	func openDatabase(inDirectory directory: String) async -> Bool {
+		await withCheckedContinuation { continuation in
+			openDatabase(inDirectory: directory, withCompletionBlock: { result in continuation.resume(returning: result) })
+		}
 	}
 
 	func setMaximumLineCount(_ count: UInt) {
@@ -175,7 +181,7 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 		}
 	}
 
-	func saveData(withCompletionBlock completionBlock: (() -> Void)?) {
+	func saveData(completionBlock: (@Sendable () -> Void)?) {
 		guard !isPerformingSave else { return }
 		isPerformingSave = true
 
@@ -203,38 +209,41 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 		}
 	}
 
+	func saveData() async {
+		await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+			saveData(completionBlock: { continuation.resume() })
+		}
+	}
+
 	func fetchEntries(forView viewId: String, ascending: Bool, fetchLimit: UInt,
-	                  limitToDate: Date?, withCompletionBlock completionBlock: @escaping ([TVCLogLineXPC]) -> Void) {
+	                  limitTo limitToDate: Date?, withCompletionBlock completionBlock: ([TVCLogLineXPC]) -> Void) {
 		let viewContext = context(forView: viewId)
 
-		viewContext.performAndWait {
+		let entries: [TVCLogLineXPC] = viewContext.performAndWait {
 			let fetchRequest = self.fetchRequest(forView: viewContext.hls_viewId,
 				ascending: ascending, fetchLimit: fetchLimit,
 				limitToDate: limitToDate, resultType: .managedObjectResultType)
 
 			guard let fetchedObjects = try? viewContext.fetch(fetchRequest) as? [NSManagedObject] else {
-				return
+				return []
 			}
 
 			Logging.defaultSubsystem?.debug("\(fetchedObjects.count, privacy: .public) results fetched for view \(viewId, privacy: .public)")
 
-			let entries = self.xpcObjects(from: fetchedObjects)
-			completionBlock(entries)
+			return self.xpcObjects(from: fetchedObjects)
 		}
+		completionBlock(entries)
 	}
 
 	func fetchEntries(forView viewId: String, withUniqueIdentifier uniqueId: String,
 	                  beforeFetchLimit fetchLimitBefore: UInt, afterFetchLimit fetchLimitAfter: UInt,
-	                  limitToDate: Date?, withCompletionBlock completionBlock: @escaping ([TVCLogLineXPC]) -> Void) {
+	                  limitTo limitToDate: Date?, withCompletionBlock completionBlock: ([TVCLogLineXPC]) -> Void) {
 		let viewContext = context(forView: viewId)
 
-		viewContext.performAndWait {
+		let entries: [TVCLogLineXPC] = viewContext.performAndWait {
 			let firstEntryId = self.identifier(in: viewContext, forUniqueIdentifier: uniqueId, performOnQueue: false)
 
-			guard firstEntryId != UInt.max else {
-				completionBlock([])
-				return
-			}
+			guard firstEntryId != UInt.max else { return [] }
 
 			let lowestEntryId = Int(firstEntryId) - Int(fetchLimitBefore)
 			let highestEntryId = Int(firstEntryId) + Int(fetchLimitAfter)
@@ -245,28 +254,26 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 				highestEntryIdentifier: highestEntryId,
 				limitToDate: limitToDate, resultType: .managedObjectResultType)
 
-			guard let fetchedObjects = try? viewContext.fetch(fetchRequest) as? [NSManagedObject] else {
-				return
-			}
+			guard let fetchedObjects = try? viewContext.fetch(fetchRequest) as? [NSManagedObject] else { return [] }
 
 			Logging.defaultSubsystem?.debug("\(fetchedObjects.count, privacy: .public) results fetched for view \(viewId, privacy: .public)")
 
-			let entries = self.xpcObjects(from: fetchedObjects)
-			completionBlock(entries)
+			return self.xpcObjects(from: fetchedObjects)
 		}
+		completionBlock(entries)
 	}
 
 	func fetchEntries(forView viewId: String, beforeUniqueIdentifier uniqueId: String,
-	                  fetchLimit: UInt, limitToDate: Date?,
-	                  withCompletionBlock completionBlock: @escaping ([TVCLogLineXPC]) -> Void) {
+	                  fetchLimit: UInt, limitTo limitToDate: Date?,
+	                  withCompletionBlock completionBlock: ([TVCLogLineXPC]) -> Void) {
 		fetchEntries(forView: viewId, withUniqueIdentifier: uniqueId,
 			fetchType: .before, fetchLimit: fetchLimit,
 			limitToDate: limitToDate, withCompletionBlock: completionBlock)
 	}
 
 	func fetchEntries(forView viewId: String, afterUniqueIdentifier uniqueId: String,
-	                  fetchLimit: UInt, limitToDate: Date?,
-	                  withCompletionBlock completionBlock: @escaping ([TVCLogLineXPC]) -> Void) {
+	                  fetchLimit: UInt, limitTo limitToDate: Date?,
+	                  withCompletionBlock completionBlock: ([TVCLogLineXPC]) -> Void) {
 		fetchEntries(forView: viewId, withUniqueIdentifier: uniqueId,
 			fetchType: .after, fetchLimit: fetchLimit,
 			limitToDate: limitToDate, withCompletionBlock: completionBlock)
@@ -274,17 +281,14 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 
 	func fetchEntries(forView viewId: String, afterUniqueIdentifier uniqueIdAfter: String,
 	                  beforeUniqueIdentifier uniqueIdBefore: String, fetchLimit: UInt,
-	                  withCompletionBlock completionBlock: @escaping ([TVCLogLineXPC]) -> Void) {
+	                  withCompletionBlock completionBlock: ([TVCLogLineXPC]) -> Void) {
 		let viewContext = context(forView: viewId)
 
-		viewContext.performAndWait {
+		let entries: [TVCLogLineXPC] = viewContext.performAndWait {
 			let firstEntryId = self.identifier(in: viewContext, forUniqueIdentifier: uniqueIdAfter, performOnQueue: false)
 			let secondEntryId = self.identifier(in: viewContext, forUniqueIdentifier: uniqueIdBefore, performOnQueue: false)
 
-			guard firstEntryId != UInt.max, secondEntryId != UInt.max else {
-				completionBlock([])
-				return
-			}
+			guard firstEntryId != UInt.max, secondEntryId != UInt.max else { return [] }
 
 			let lowestEntryId = Int(firstEntryId) + 1
 			let highestEntryId = Int(secondEntryId) - 1
@@ -295,33 +299,28 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 				highestEntryIdentifier: highestEntryId,
 				limitToDate: nil, resultType: .managedObjectResultType)
 
-			guard let fetchedObjects = try? viewContext.fetch(fetchRequest) as? [NSManagedObject] else {
-				return
-			}
+			guard let fetchedObjects = try? viewContext.fetch(fetchRequest) as? [NSManagedObject] else { return [] }
 
 			Logging.defaultSubsystem?.debug("\(fetchedObjects.count, privacy: .public) results fetched for view \(viewId, privacy: .public)")
 
-			let entries = self.xpcObjects(from: fetchedObjects)
-			completionBlock(entries)
+			return self.xpcObjects(from: fetchedObjects)
 		}
+		completionBlock(entries)
 	}
 
 	// MARK: - Private fetch helpers
 
 	private func fetchEntries(forView viewId: String, withUniqueIdentifier uniqueId: String,
 	                          fetchType: UniqueIdentifierFetchType, fetchLimit: UInt,
-	                          limitToDate: Date?, withCompletionBlock completionBlock: @escaping ([TVCLogLineXPC]) -> Void) {
+	                          limitToDate: Date?, withCompletionBlock completionBlock: ([TVCLogLineXPC]) -> Void) {
 		precondition(fetchLimit > 0)
 
 		let viewContext = context(forView: viewId)
 
-		viewContext.performAndWait {
+		let entries: [TVCLogLineXPC] = viewContext.performAndWait {
 			let firstEntryId = self.identifier(in: viewContext, forUniqueIdentifier: uniqueId, performOnQueue: false)
 
-			guard firstEntryId != UInt.max else {
-				completionBlock([])
-				return
-			}
+			guard firstEntryId != UInt.max else { return [] }
 
 			let lowestEntryId: Int
 			let highestEntryId: Int
@@ -341,15 +340,13 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 				highestEntryIdentifier: highestEntryId,
 				limitToDate: limitToDate, resultType: .managedObjectResultType)
 
-			guard let fetchedObjects = try? viewContext.fetch(fetchRequest) as? [NSManagedObject] else {
-				return
-			}
+			guard let fetchedObjects = try? viewContext.fetch(fetchRequest) as? [NSManagedObject] else { return [] }
 
 			Logging.defaultSubsystem?.debug("\(fetchedObjects.count, privacy: .public) results fetched for view \(viewId, privacy: .public)")
 
-			let entries = self.xpcObjects(from: fetchedObjects)
-			completionBlock(entries)
+			return self.xpcObjects(from: fetchedObjects)
 		}
+		completionBlock(entries)
 	}
 
 	private func fetchRequest(forView viewId: String, fetchLimit: UInt,
@@ -468,7 +465,7 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 		let timer = DispatchSource.makeTimerSource(queue: .main)
 		timer.schedule(deadline: .now() + interval, repeating: interval)
 		timer.setEventHandler { [weak self] in
-			self?.saveData(withCompletionBlock: nil)
+			self?.saveData(completionBlock: nil)
 		}
 		timer.resume()
 		saveTimer = timer
@@ -593,7 +590,7 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 
 	private func notifyClientOfDeletedIdentifiers(_ identifiers: [String],
 	                                              in viewContext: HLSHistoricLogViewContext) {
-		remoteObjectProxy?.willDelete(uniqueIdentifiers: identifiers, inView: viewContext.hls_viewId)
+		remoteObjectProxy?.willDeleteUniqueIdentifiers(identifiers, inView: viewContext.hls_viewId)
 	}
 
 	// MARK: - Context management

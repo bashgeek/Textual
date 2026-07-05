@@ -41,7 +41,7 @@ final class HSLHistoricLogProcessDelegate: NSObject, NSXPCListenerDelegate {
 	func listener(_ listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
 		let exportedInterface = NSXPCInterface(with: HLSHistoricLogServerProtocol.self)
 
-		let logLineClasses: Set<AnyHashable> = [NSArray.self, TVCLogLineXPC.self]
+		let logLineClasses = NSSet(array: [NSArray.self as AnyObject, TVCLogLineXPC.self as AnyObject]) as! Set<AnyHashable>
 
 		exportedInterface.setClasses(logLineClasses,
 			for: NSSelectorFromString("fetchEntriesForView:ascending:fetchLimit:limitToDate:withCompletionBlock:"),

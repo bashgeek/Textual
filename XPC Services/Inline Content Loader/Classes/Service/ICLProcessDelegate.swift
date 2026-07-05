@@ -42,7 +42,7 @@ final class ICLProcessDelegate: NSObject, NSXPCListenerDelegate {
 		let exportedInterface = NSXPCInterface(with: ICLInlineContentServerProtocol.self)
 
 		exportedInterface.setClasses(
-			[NSArray.self, NSURL.self] as NSSet,
+			NSSet(array: [NSArray.self as AnyObject, NSURL.self as AnyObject]) as! Set<AnyHashable>,
 			for: NSSelectorFromString("warmServiceByLoadingPluginsAtLocations:"),
 			argumentIndex: 0,
 			ofReply: false

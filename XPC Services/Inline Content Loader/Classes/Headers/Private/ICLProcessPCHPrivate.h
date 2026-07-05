@@ -40,3 +40,5 @@
 #import <GRMustache/GRMustache.h>
 
 #import "StaticDefinitions.h"
+
+extern NSErrorDomain const ICLInlineContentErrorDomain;
