@@ -50,13 +50,13 @@ public class LoggingDeprecated : NSObject
 	/// 3. OSLog.default (on macOS 10.12 and later)
 	///
 	@objc
-	public static var defaultSubsystem: OSLog?
+	public nonisolated(unsafe) static var defaultSubsystem: OSLog?
 
 	///
 	/// Flag to enable debug log type
 	///
 	@objc
-	public static var debugLogging = false
+	public nonisolated(unsafe) static var debugLogging = false
 
 	@objc
 	public enum `Type` : Int

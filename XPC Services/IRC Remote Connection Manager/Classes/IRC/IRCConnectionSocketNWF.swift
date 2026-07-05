@@ -35,11 +35,9 @@
 *
 *********************************************************************** */
 
-#if canImport(Network)
 import Network
 
-@available(macOS 10.14, *)
-final class ConnectionSocketNWF: ConnectionSocket, ConnectionSocketProtocol
+final class ConnectionSocketNWF: ConnectionSocket, ConnectionSocketProtocol, @unchecked Sendable
 {
 	fileprivate var readInBuffer: Data?
 
@@ -633,5 +631,3 @@ fileprivate extension ConnectionError
 		self.init(tlsError: errorCode)
 	}
 }
-
-#endif

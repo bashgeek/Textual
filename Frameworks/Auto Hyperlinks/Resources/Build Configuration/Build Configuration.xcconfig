@@ -79,5 +79,5 @@ STRIP_STYLE = non-global
 SWIFT_COMPILATION_MODE = wholemodule
 SWIFT_INSTALL_OBJC_HEADER = NO // We expose through custom interfaces
 SWIFT_OPTIMIZATION_LEVEL = -O
-SWIFT_VERSION = 5.0
+SWIFT_VERSION = 6.0
 VERSION_INFO_BUILDER = Codeux Software, LLC
