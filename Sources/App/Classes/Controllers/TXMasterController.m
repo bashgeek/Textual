@@ -515,27 +515,30 @@ NS_ASSUME_NONNULL_BEGIN
 	}
 
 	/* We want certain things to 100% happen before the app completely closes.
-	 This block that is performed below loops until all these actions are completed.
 	 Notable actions: gracefully leaving IRC, saving historic logs, etc. */
-	XRPerformBlockAsynchronouslyOnGlobalQueueWithPriority(^{
-		do {
-			/* We wait until this value reaches zero so that
-			 view controllers had the chance to perform any
-			 changes they want to historic log. */
-			if (self.terminatingClientCount == 0) {
-				[TVCLogControllerHistoricLogSharedInstance() prepareForApplicationTermination];
+	[self performApplicationTerminationStepTwoPoll];
+}
 
-				self.terminateHistoricLogSaveFinished = YES;
-			}
+- (void)performApplicationTerminationStepTwoPoll
+{
+	if (self.terminatingClientCount == 0) {
+		[TVCLogControllerHistoricLogSharedInstance() prepareForApplicationTermination];
 
-			/* Sleep a little bit so we aren't looping a lot. */
-			[NSThread sleepForTimeInterval:0.5];
-		} while (self.isSafeToPerformApplicationTermination == NO);
+		self.terminateHistoricLogSaveFinished = YES;
+	}
 
-		XRPerformBlockAsynchronouslyOnMainQueue(^{
-			[self performApplicationTerminationStepThree];
+	if (self.isSafeToPerformApplicationTermination == NO) {
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)),
+					   dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+			[self performApplicationTerminationStepTwoPoll];
 		});
-	}, DISPATCH_QUEUE_PRIORITY_HIGH);
+
+		return;
+	}
+
+	XRPerformBlockAsynchronouslyOnMainQueue(^{
+		[self performApplicationTerminationStepThree];
+	});
 }
 
 - (void)performApplicationTerminationStepThree

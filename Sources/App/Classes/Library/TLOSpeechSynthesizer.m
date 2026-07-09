@@ -97,10 +97,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)speakNextItemWhenSystemFinishes
 {
-	/* This method sleeps the thread for one second each pass then
-	 to check if another application on the system is speaking. */
-	while ([NSSpeechSynthesizer isAnyApplicationSpeaking]) {
-		[NSThread sleepForTimeInterval:1.0];
+	if ([NSSpeechSynthesizer isAnyApplicationSpeaking]) {
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)),
+					   dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+			[self speakNextItemWhenSystemFinishes];
+		});
+
+		return;
 	}
 
 	self.isWaitingForSystemToStopSpeaking = NO;

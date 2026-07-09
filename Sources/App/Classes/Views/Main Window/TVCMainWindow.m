@@ -233,6 +233,7 @@ NSString * const TVCMainWindowSelectionChangedNotification = @"TVCMainWindowSele
 		return;
 	}
 
+	[self cancelPerformRequestsWithSelector:@selector(toggleFullscreenAfterLaunch)];
 	[self performSelectorInCommonModes:@selector(toggleFullscreenAfterLaunch) withObject:nil afterDelay:1.0];
 }
 

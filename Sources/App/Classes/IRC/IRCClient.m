@@ -8704,6 +8704,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		 this is the best patch. At least for right now. */
 
 		if (self.isConnectedToZNC) {
+			[self cancelPerformRequestsWithSelector:@selector(performAutoJoin)];
 			[self performSelectorInCommonModes:@selector(performAutoJoin) withObject:nil afterDelay:3.0];
 		} else {
 			[self startAutojoinDelayedWarningTimer];
@@ -8711,6 +8712,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	}
 
 	/* We need time for the server to send its configuration */
+	[self cancelPerformRequestsWithSelector:@selector(populateISONTrackedUsersList)];
 	[self performSelectorInCommonModes:@selector(populateISONTrackedUsersList) withObject:nil afterDelay:10.0];
 }
 
@@ -11342,6 +11344,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		return;
 	}
 
+	[self cancelPerformRequestsWithSelector:@selector(autoConnectPerformConnect)];
 	[self performSelectorInCommonModes:@selector(autoConnectPerformConnect) withObject:nil afterDelay:connectDelay];
 }
 
@@ -11366,6 +11369,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 	[self printDebugInformationToConsole:TXTLS(@"IRC[3s6-e6]", connectDelay)];
 
+	[self cancelPerformRequestsWithSelector:@selector(autoConnectAfterWakeUpPerformConnect)];
 	[self performSelectorInCommonModes:@selector(autoConnectAfterWakeUpPerformConnect) withObject:nil afterDelay:connectDelay];
 }
 
@@ -11445,6 +11449,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 	/* We give it two seconds before forcefully breaking so that the graceful
 	 quit with the quit message above can be performed. */
+	[self cancelPerformRequestsWithSelector:@selector(disconnect)];
 	[self performSelectorInCommonModes:@selector(disconnect) withObject:nil afterDelay:2.0];
 }
 

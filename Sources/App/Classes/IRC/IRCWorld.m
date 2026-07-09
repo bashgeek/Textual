@@ -195,6 +195,7 @@ NSString * const IRCWorldWillDestroyChannelNotification = @"IRCWorldWillDestroyC
 	if (self.preferencesDidChangeTimerIsActive == NO) {
 		self.preferencesDidChangeTimerIsActive = YES;
 
+		[self cancelPerformRequestsWithSelector:@selector(informAllViewsUserDefaultsDidChange)];
 		[self performSelectorInCommonModes:@selector(informAllViewsUserDefaultsDidChange) withObject:nil afterDelay:1.0];
 	}
 }

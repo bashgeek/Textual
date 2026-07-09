@@ -149,6 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 	/* Do not push the loading screen right away. Add a little delay to give everything
 	 a chance to settle down before presenting the changes to the user. */
+	[self cancelPerformRequestsWithSelector:@selector(importPostflightCleanup:)];
 	[self performSelectorInCommonModes:@selector(importPostflightCleanup:) withObject:propertyList.allKeys afterDelay:2.0];
 }
 

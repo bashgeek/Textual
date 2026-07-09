@@ -156,6 +156,7 @@ NS_ASSUME_NONNULL_BEGIN
 	if (self.isWaitingForWrites == NO) {
 		self.isWaitingForWrites = YES;
 
+		[self cancelPerformRequestsWithSelector:@selector(queuedWritesTimer)];
 		[self performSelectorInCommonModes:@selector(queuedWritesTimer) withObject:nil afterDelay:1.0];
 	}
 }

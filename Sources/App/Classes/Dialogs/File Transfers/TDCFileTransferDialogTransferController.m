@@ -677,6 +677,7 @@ NS_ASSUME_NONNULL_BEGIN
 		return;
 	}
 
+	[self cancelPerformRequestsWithSelector:@selector(transferResumeRequestTimeout)];
 	[self performSelectorInCommonModes:@selector(transferResumeRequestTimeout) withObject:nil afterDelay:_resumeAcceptTimeout];
 
 	self.transferStatus = TDCFileTransferDialogTransferStatusWaitingForResumeAccept;
