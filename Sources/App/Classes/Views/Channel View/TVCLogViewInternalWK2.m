@@ -301,6 +301,8 @@ static NSUInteger _numberOfViews = 0;
 	if (self.t_viewIsLoading == NO && self.t_viewIsNavigating == NO) {
 		[self stopObservingLoadingProperty];
 
+		[self.t_parentView cancelPerformRequestsWithSelector:@selector(informDelegateWebViewFinishedLoading)];
+
 		[self.t_parentView performSelectorInCommonModes:@selector(informDelegateWebViewFinishedLoading) withObject:nil afterDelay:1.2];
 	}
 }

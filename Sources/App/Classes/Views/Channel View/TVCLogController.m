@@ -83,7 +83,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readwrite, getter=viewIsLoaded) BOOL loaded;
 @property (nonatomic, assign) BOOL terminating;
 @property (nonatomic, assign) BOOL historyLoadedForFirstTime;
-@property (nonatomic, assign) BOOL reloadingHistory;
 @property (nonatomic, assign) BOOL reloadingTheme;
 @property (nonatomic, assign) BOOL pendingThemeReload;
 @property (nonatomic, assign) BOOL historyLoaded;
@@ -573,11 +572,11 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 		BOOL lazyLoadHistory = [RZUserDefaults() boolForKey:@"Optimizations -> Load History Lazily"];
 
 		if (lazyLoadHistory && self.visible == NO) {
+			/* historyLoaded stays NO intentionally — notifyDidBecomeVisible
+			   will call maybeReloadHistory, which retries once the channel is shown. */
 			return;
 		}
 	}
-
-	self.reloadingHistory = YES;
 
 	void (^reloadBlock)(NSArray *) = ^(NSArray<TVCLogLine *> *objects) {
 		TVCLogLine *lastLine = objects.lastObject;
@@ -596,8 +595,6 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 		}
 
 		[self reloadOldLines:objects isReload:(firstTimeLoadingHistory == NO)];
-
-		self.reloadingHistory = NO;
 
 		self.historyLoaded = YES;
 		self.historyLoadedForFirstTime = YES;
@@ -1004,8 +1001,6 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 	self.lastLine = nil;
 
 	self.loaded = NO;
-
-	self.reloadingHistory = NO;
 
 	self.historyLoaded = NO;
 
