@@ -45,9 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TLOInternetAddressLookup ()
 @property (nonatomic, weak) id requestDelegate;
-@property (nonatomic, strong) NSURLConnection *connection;
-@property (nonatomic, strong) NSURLResponse *connectionResponse;
-@property (nonatomic, strong) NSMutableData *connectionResponseData;
+@property (nonatomic, strong, nullable) NSURLSessionDataTask *dataTask;
 @property (nonatomic, copy, nullable) NSString *address;
 @end
 
@@ -86,15 +84,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)cancelLookup
 {
-	[self _teardownConnectionRequest];
+	NSURLSessionDataTask *task = self.dataTask;
+	self.dataTask = nil;
+
+	[task cancel];
 }
 
 - (void)setupConnectionRequest
 {
-	NSAssert((self.connection == nil),
-		@"A lookup is already in progress");
-
-	self.connectionResponseData = [NSMutableData data];
+	NSAssert((self.dataTask == nil), @"A lookup is already in progress");
 
 	NSURL *requestURL = [NSURL URLWithString:[self addressSourceURL]];
 
@@ -104,23 +102,50 @@ NS_ASSUME_NONNULL_BEGIN
 
 	request.HTTPMethod = @"GET";
 
-	self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+	NSURLSessionConfiguration *config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+
+	NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+														  delegate:nil
+													 delegateQueue:[NSOperationQueue mainQueue]];
+
+	self.dataTask = [session dataTaskWithRequest:request
+							  completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+		[self _processResponse:response data:data error:error];
+	}];
+
+	[self.dataTask resume];
 }
 
-- (void)_teardownConnectionRequest
+- (void)_processResponse:(nullable NSURLResponse *)response data:(nullable NSData *)data error:(nullable NSError *)error
 {
-	if (self.connection) {
-		[self.connection cancel];
+	if (self.dataTask == nil) {
+		return; // Cancelled before this callback arrived
 	}
 
-	self.connection = nil;
-	self.connectionResponse = nil;
-	self.connectionResponseData = nil;
+	if (error != nil) {
+		LogToConsole("Lookup failed with error: %{public}@", error.localizedDescription);
+	} else if (data.length > 1024) {
+		LogToConsoleError("Too much data has been received for this to be a valid request");
+	} else if ([response isKindOfClass:[NSHTTPURLResponse class]] &&
+			   [(NSHTTPURLResponse *)response statusCode] == 200)
+	{
+		NSString *address = [NSString stringWithData:data encoding:NSUTF8StringEncoding];
+
+		address = [address stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+		if ((address.isIPv4Address && self.IPv4AddressIsValid) ||
+			(address.isIPv6Address && self.IPv6AddressIsValid))
+		{
+			self.address = address;
+		}
+	}
+
+	[self teardownConnectionRequest];
 }
 
 - (void)teardownConnectionRequest
 {
-	[self _teardownConnectionRequest];
+	self.dataTask = nil;
 
 	[self informDelegate];
 
@@ -132,7 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
 	if ([TPCPreferences fileTransferIPAddressDetectionMethod] == TXFileTransferIPAddressMethodRouterAndThirdParty) {
 		return [self thirdPartySourceURL];
 	}
-	
+
 	return @"https://api.ipify.org/";
 }
 
@@ -151,7 +176,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark Connection Delegate
+#pragma mark Delegate
 
 - (void)informDelegate
 {
@@ -176,63 +201,6 @@ NS_ASSUME_NONNULL_BEGIN
 	if ([self.requestDelegate respondsToSelector:@selector(internetAddressLookupFailed)]) {
 		[self.requestDelegate internetAddressLookupFailed];
 	}
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-	id connectionResponse = self.connectionResponse;
-
-	// connectionResponse may not be NSHTTPURLResponse if the website
-	// requested performs a location redirect to a data resource.
-	if ([connectionResponse isKindOfClass:[NSHTTPURLResponse class]]) {
-		BOOL isValidResponse = ([connectionResponse statusCode] == 200);
-
-		if (isValidResponse) {
-			NSData *addressData = self.connectionResponseData;
-
-			NSString *address = [NSString stringWithData:addressData encoding:NSUTF8StringEncoding];
-
-			address = [address stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
-			if ((address.isIPv4Address && self.IPv4AddressIsValid) ||
-				(address.isIPv6Address && self.IPv6AddressIsValid))
-			{
-				self.address = address;
-			}
-		}
-	}
-
-	[self teardownConnectionRequest];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-	LogToConsole("Lookup failed with error: %{public}@", error.localizedDescription);
-
-	[self teardownConnectionRequest];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-	[self.connectionResponseData appendData:data];
-
-	// There is no reasonable explanation for the content of a request,
-	// without headers, to exceed this length when it's sent in plain text.
-	if (self.connectionResponseData.length > 1024) {
-		LogToConsoleError("Too much data has been received for this to be a valid request");
-
-		[self teardownConnectionRequest];
-	}
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-	self.connectionResponse = response;
-}
-
-- (nullable NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse
-{
-	return nil;
 }
 
 @end
