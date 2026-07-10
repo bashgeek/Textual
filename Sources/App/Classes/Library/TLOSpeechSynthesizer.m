@@ -35,16 +35,17 @@
  *
  *********************************************************************** */
 
+#import <AVFoundation/AVFoundation.h>
+
 #import "IRCClientPrivate.h"
 #import "TLOSpokenNotificationPrivate.h"
 #import "TLOSpeechSynthesizerPrivate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TLOSpeechSynthesizer ()
-@property (nonatomic, strong) NSSpeechSynthesizer *speechSynthesizer;
+@interface TLOSpeechSynthesizer () <AVSpeechSynthesizerDelegate>
+@property (nonatomic, strong) AVSpeechSynthesizer *speechSynthesizer;
 @property (nonatomic, strong) NSMutableArray *itemsToBeSpoken;
-@property (nonatomic, assign) BOOL isWaitingForSystemToStopSpeaking;
 @end
 
 @implementation TLOSpeechSynthesizer
@@ -64,8 +65,8 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	self.itemsToBeSpoken = [NSMutableArray array];
 
-	self.speechSynthesizer = [NSSpeechSynthesizer new];
-	self.speechSynthesizer.delegate = (id)self;
+	self.speechSynthesizer = [AVSpeechSynthesizer new];
+	self.speechSynthesizer.delegate = self;
 
 	self.isStopped = NO;
 }
@@ -95,22 +96,6 @@ NS_ASSUME_NONNULL_BEGIN
 	}
 }
 
-- (void)speakNextItemWhenSystemFinishes
-{
-	if ([NSSpeechSynthesizer isAnyApplicationSpeaking]) {
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)),
-					   dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-			[self speakNextItemWhenSystemFinishes];
-		});
-
-		return;
-	}
-
-	self.isWaitingForSystemToStopSpeaking = NO;
-
-	[self speakNextItem];
-}
-
 - (void)speakNextItem
 {
 	if (self.isStopped) {
@@ -124,25 +109,11 @@ NS_ASSUME_NONNULL_BEGIN
 			return;
 		}
 
-		if ([NSSpeechSynthesizer isAnyApplicationSpeaking]) {
-			if (self.isWaitingForSystemToStopSpeaking == NO) {
-				self.isWaitingForSystemToStopSpeaking = YES;
-
-				XRPerformBlockAsynchronouslyOnGlobalQueueWithPriority(^{
-					[self speakNextItemWhenSystemFinishes];
-				}, DISPATCH_QUEUE_PRIORITY_LOW);
-			}
-
-			return;
-		}
-
 		[self.itemsToBeSpoken removeObjectAtIndex:0];
 
 		if ([nextMessage isKindOfClass:[TLOSpokenNotification class]]) {
 			nextMessage = [(IRCClient *)[nextMessage client] formatNotificationToSpeak:nextMessage];
 
-			// Returning nil does not throw an assert so that the client can chose
-			// to reject specific events for whatever reason it wants.
 			if (nextMessage == nil) {
 				[self speakNextItem];
 
@@ -150,7 +121,9 @@ NS_ASSUME_NONNULL_BEGIN
 			}
 		}
 
-		[self.speechSynthesizer startSpeakingString:nextMessage];
+		AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:nextMessage];
+
+		[self.speechSynthesizer speakUtterance:utterance];
 	}
 }
 
@@ -160,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
 		return;
 	}
 
-	[self.speechSynthesizer stopSpeaking]; // Will call delegate to do next item
+	[self.speechSynthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
 }
 
 - (void)stopSpeakingIfSet
@@ -169,7 +142,7 @@ NS_ASSUME_NONNULL_BEGIN
 		return;
 	}
 
-	[self.speechSynthesizer stopSpeaking];
+	[self.speechSynthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
 }
 
 - (BOOL)isSpeaking
@@ -213,9 +186,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark Delegate Callback
+#pragma mark Delegate Callbacks
 
-- (void)speechSynthesizer:(NSSpeechSynthesizer *)sender didFinishSpeaking:(BOOL)finishedSpeaking
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance
+{
+	[self speakNextItem];
+}
+
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didCancelSpeechUtterance:(AVSpeechUtterance *)utterance
 {
 	[self speakNextItem];
 }
