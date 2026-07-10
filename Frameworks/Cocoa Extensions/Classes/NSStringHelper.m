@@ -980,7 +980,7 @@ COCOA_EXTENSIONS_IGNORE_DEPRECATION_END
 {
 	NSParameterAssert(regex != nil);
 
-	NSRange emptyRange = NSEmptyRange();
+	NSRange emptyRange = NSMakeRange(NSNotFound, 0);
 
 	NSUInteger stringLength = self.length;
 
@@ -1193,7 +1193,8 @@ COCOA_EXTENSIONS_IGNORE_DEPRECATION_END
 - (nullable NSString *)percentEncodedString
 {
 	return [self stringByAddingPercentEncodingWithAllowedCharacters:
-			[NSCharacterSet percentEncodedCharacterSet]];
+			[NSCharacterSet characterSetWithCharactersInString:
+			 @"-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~"]];
 }
 
 - (nullable NSString *)percentEncodedURLUser

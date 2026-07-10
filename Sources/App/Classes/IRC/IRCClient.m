@@ -7839,7 +7839,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		return;
 	}
 
-	if ([batchToken onlyContainsCharactersFromCharacterSet:[NSCharacterSet Ato9UnderscoreDash]] == NO) {
+	if ([batchToken onlyContainsCharactersFromCharacterSet:[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-"]] == NO) {
 		LogToConsoleError("Cannot process BATCH command because the batch token contains illegal characters");
 
 		return;
@@ -10474,7 +10474,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 	NSTimeInterval interval = [TPCPreferences autojoinDelayAfterIdentification];
 
-	if (CGFloatAreEqual(interval, 0.0)) {
+	if (fabs(interval) <= __DBL_EPSILON__) {
 		[self onAutojoinTimer];
 
 		return;

@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 	NSString *stringValue = objectIn.t_scannerString;
 
 	if (stringValue.length == 0) {
-		completionBlock(nil, NSEmptyRange(), NSEmptyRange());
+		completionBlock(nil, NSMakeRange(NSNotFound, 0), NSMakeRange(NSNotFound, 0));
 
 		return;
 	}
@@ -126,7 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
 		LogToConsoleDebugWithSubsystem(_CSFrameworkInternalLogSubsystem(),
 			"Failed to scan quote group because string value is too short.");
 
-		completionBlock(nil, NSEmptyRange(), NSEmptyRange());
+		completionBlock(nil, NSMakeRange(NSNotFound, 0), NSMakeRange(NSNotFound, 0));
 
 		return;
 	}
@@ -169,7 +169,7 @@ NS_ASSUME_NONNULL_BEGIN
 			"Failed to scan quote group because there is not an opening quote or "
 			"the string value does not begin with a quote.");
 
-		completionBlock(nil, NSEmptyRange(), NSEmptyRange());
+		completionBlock(nil, NSMakeRange(NSNotFound, 0), NSMakeRange(NSNotFound, 0));
 
 		return;
 	}
@@ -199,7 +199,7 @@ NS_ASSUME_NONNULL_BEGIN
 			LogToConsoleDebugWithSubsystem(_CSFrameworkInternalLogSubsystem(),
 			 "Failed to scan quote group because all possible characters have been exhausted.");
 
-			completionBlock(nil, NSEmptyRange(), NSEmptyRange());
+			completionBlock(nil, NSMakeRange(NSNotFound, 0), NSMakeRange(NSNotFound, 0));
 
 			return;
 		}
@@ -241,7 +241,7 @@ NS_ASSUME_NONNULL_BEGIN
 					"A possible end quote was found. It however is escaped by an uneven number of "
 					"slashes which makes it unusable as a closing quote.");
 
-				completionBlock(nil, NSEmptyRange(), NSEmptyRange());
+				completionBlock(nil, NSMakeRange(NSNotFound, 0), NSMakeRange(NSNotFound, 0));
 
 				return;
 			}
@@ -258,7 +258,7 @@ NS_ASSUME_NONNULL_BEGIN
 					"Failed to scan quote group because the right side of the closing quote "
 					"is not a newline or whitespace.");
 
-				completionBlock(nil, NSEmptyRange(), NSEmptyRange());
+				completionBlock(nil, NSMakeRange(NSNotFound, 0), NSMakeRange(NSNotFound, 0));
 
 				return;
 			}

@@ -354,7 +354,7 @@ NSString * const TVCLogViewCommonUserAgentString = @"Textual/0.1 (+https://githu
 	}
 	else if ([scriptResult isKindOfClass:[NSNumber class]])
 	{
-		if ([scriptResult isBooleanValue]) {
+		if (CFGetTypeID((__bridge CFTypeRef)(scriptResult)) == CFBooleanGetTypeID()) {
 			if ([scriptResult boolValue]) {
 				return @"true";
 			} else {
@@ -586,7 +586,7 @@ NSString * const TVCLogViewCommonUserAgentString = @"Textual/0.1 (+https://githu
 	}
 	else if ([object isKindOfClass:[NSNumber class]])
 	{
-		if ([object isBooleanValue]) {
+		if (CFGetTypeID((__bridge CFTypeRef)(object)) == CFBooleanGetTypeID()) {
 			if ([object boolValue]) {
 				return @"true";
 			} else {

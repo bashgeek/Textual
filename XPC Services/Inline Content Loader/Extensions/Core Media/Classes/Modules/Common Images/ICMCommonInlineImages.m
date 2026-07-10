@@ -158,7 +158,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 		NSString *s = [urlPath substringFromIndex:3];
 
-		if ([s onlyContainsCharactersFromCharacterSet:[NSCharacterSet Ato9UnderscoreDash]]) {
+		if ([s onlyContainsCharactersFromCharacterSet:[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-"]]) {
 			return [NSString stringWithFormat:@"https://www.instagram.com/p/%@/media/?size=l", s];
 		}
 	}

@@ -680,7 +680,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 			NSRange completionRangePosition = [self.currentTextViewStringValue rangeOfString:userCompletionSuffix options:0 range:completionSearchRange];
 
-			if (NSRangeIsValid(completionRangePosition) && completionRangePosition.length < 30) {
+			if ((completionRangePosition.location != NSNotFound) && completionRangePosition.length < 30) {
 				NSRange whitespaceSearchRange = NSMakeRange(selectedRange.location,
 															completionRangePosition.location - selectedRange.location);
 
@@ -768,9 +768,9 @@ complete_operation:
 
 	self.currentTextViewStringValue = nil;
 
-	self.rangeOfTextSelection = NSEmptyRange();
+	self.rangeOfTextSelection = NSMakeRange(NSNotFound, 0);
 
-	self.selectionRangeAfterLastCompletion = NSEmptyRange();
+	self.selectionRangeAfterLastCompletion = NSMakeRange(NSNotFound, 0);
 
 	self.completionIsMovingForward = NO;
 }

@@ -36,6 +36,7 @@
  *
  *********************************************************************** */
 
+#import <CommonCrypto/CommonDigest.h>
 #import <SecurityInterface/SFChooseIdentityPanel.h>
 
 #import "NSStringHelper.h"
@@ -62,6 +63,41 @@
 #import "TDCServerPropertiesSheetPrivate.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+static NSString *_DataSHA1(NSData *data) {
+	uint8_t digest[CC_SHA1_DIGEST_LENGTH];
+	CC_SHA1(data.bytes, (CC_LONG)data.length, digest);
+	NSMutableString *out = [NSMutableString stringWithCapacity:(CC_SHA1_DIGEST_LENGTH * 2)];
+	for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) { [out appendFormat:@"%02x", digest[i]]; }
+	return out;
+}
+
+static NSString *_DataSHA256(NSData *data) {
+	uint8_t digest[CC_SHA256_DIGEST_LENGTH];
+	CC_SHA256(data.bytes, (CC_LONG)data.length, digest);
+	NSMutableString *out = [NSMutableString stringWithCapacity:(CC_SHA256_DIGEST_LENGTH * 2)];
+	for (int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++) { [out appendFormat:@"%02x", digest[i]]; }
+	return out;
+}
+
+static NSString *_DataSHA512(NSData *data) {
+	uint8_t digest[CC_SHA512_DIGEST_LENGTH];
+	CC_SHA512(data.bytes, (CC_LONG)data.length, digest);
+	NSMutableString *out = [NSMutableString stringWithCapacity:(CC_SHA512_DIGEST_LENGTH * 2)];
+	for (int i = 0; i < CC_SHA512_DIGEST_LENGTH; i++) { [out appendFormat:@"%02x", digest[i]]; }
+	return out;
+}
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+static NSString *_DataMD5(NSData *data) {
+	uint8_t digest[CC_MD5_DIGEST_LENGTH];
+	CC_MD5(data.bytes, (CC_LONG)data.length, digest);
+	NSMutableString *out = [NSMutableString stringWithCapacity:(CC_MD5_DIGEST_LENGTH * 2)];
+	for (int i = 0; i < CC_MD5_DIGEST_LENGTH; i++) { [out appendFormat:@"%02x", digest[i]]; }
+	return out;
+}
+#pragma clang diagnostic pop
 
 #define _tableDragToken		@"TDCServerPropertiesSheetTableDragToken"
 
@@ -1544,10 +1580,10 @@ TEXTUAL_IGNORE_DEPRECATION_END
 	if (certificateDataRef) {
 		NSData *certificateData = (__bridge NSData *)certificateDataRef;
 
-		*sha512FingerprintOut = certificateData.sha512;
-		*sha2FingerprintOut = certificateData.sha256;
-		*sha1FingerprintOut = certificateData.sha1;
-		*md5FingerprintOut = certificateData.md5;
+		*sha512FingerprintOut = _DataSHA512(certificateData);
+		*sha2FingerprintOut = _DataSHA256(certificateData);
+		*sha1FingerprintOut = _DataSHA1(certificateData);
+		*md5FingerprintOut = _DataMD5(certificateData);
 
 		CFRelease(certificateDataRef);
 	}

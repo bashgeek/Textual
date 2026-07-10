@@ -55,6 +55,34 @@
 #import "TVCLogLine.h"
 #import "TVCLogRenderer.h"
 
+static NSFont *_ConvertFontToItalics(NSFont *font)
+{
+	NSFont *theFont = [[NSFontManager sharedFontManager] convertFont:font toHaveTrait:NSItalicFontMask];
+
+	if (([[NSFontManager sharedFontManager] traitsOfFont:font] & NSItalicFontMask) == 0) {
+		static const CGFloat kRotation = -14.0;
+
+		NSAffineTransform *fontTransform = [NSAffineTransform transform];
+		NSAffineTransform *italicTransform = [NSAffineTransform transform];
+
+		[fontTransform scaleBy:font.pointSize];
+
+		NSAffineTransformStruct s = { .m11 = 1, .m12 = 0,
+			.m21 = (-tan(kRotation * (acos(0) / 90))), .m22 = 1, .tX = 0, .tY = 0 };
+		italicTransform.transformStruct = s;
+
+		[fontTransform appendTransform:italicTransform];
+
+		NSFont *transformed = [NSFont fontWithDescriptor:theFont.fontDescriptor textTransform:fontTransform];
+
+		if (transformed) {
+			return transformed;
+		}
+	}
+
+	return font;
+}
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TVCLogRenderer ()
@@ -603,8 +631,8 @@ NSString * const TVCLogRendererResultsOriginalBodyWithoutEffectsAttribute = @"TV
 	if ([attributesIn containsKey:TVCLogRendererFormattingItalicTextAttribute]) {
 		boldItalicFont = [RZFontManager() convertFont:boldItalicFont toHaveTrait:NSItalicFontMask];
 
-		if ([boldItalicFont fontTraitSet:NSItalicFontMask] == NO) {
-			boldItalicFont = boldItalicFont.convertToItalics;
+		if (([[NSFontManager sharedFontManager] traitsOfFont:boldItalicFont] & NSItalicFontMask) == 0) {
+			boldItalicFont = _ConvertFontToItalics(boldItalicFont);
 		}
 
 		attributesOut[IRCTextFormatterItalicAttributeName] = @(YES);

@@ -102,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
 	NSString *videoIdentifier = urlPath;
 
 	if ([videoIdentifier onlyContainsCharactersFromCharacterSet:
-		 [NSCharacterSet Ato9UnderscoreDashForwardSlash]] == NO)
+		 [NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-/"]] == NO)
 	{
 		return nil;
 	}

@@ -192,9 +192,9 @@ COCOA_EXTENSIONS_IGNORE_DEPRECATION_END
 		CGFloat greenValue = self.greenComponent;
 		CGFloat blueValue = self.blueComponent;
 
-		if (CGFloatAreEqual(redValue, greenValue) &&
-			CGFloatAreEqual(greenValue, blueValue) &&
-			CGFloatAreEqual(redValue, blueValue))
+		if (fabs(redValue - greenValue) <= __DBL_EPSILON__ &&
+			fabs(greenValue - blueValue) <= __DBL_EPSILON__ &&
+			fabs(redValue - blueValue) <= __DBL_EPSILON__)
 		{
 			return YES;
 		}

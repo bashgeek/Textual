@@ -1228,7 +1228,7 @@ static inline BOOL _reevaluateFileDuringSetOrUnset(NSURL *fileURL, NSURL * __str
 
 		NSUInteger targetVersion = [templateVersions unsignedIntegerForKey:applicationVersion];
 
-		if (NSNumberInRange(targetVersion, _templateEngineVersionMinimum, _templateEngineVersionMaximum)) {
+		if (targetVersion >= _templateEngineVersionMinimum && targetVersion <= _templateEngineVersionMaximum) {
 			templateEngineVersion = targetVersion;
 
 			usesIncompatibleTemplateEngineVersion = NO;
@@ -1238,7 +1238,7 @@ static inline BOOL _reevaluateFileDuringSetOrUnset(NSURL *fileURL, NSURL * __str
 	if (templateEngineVersion == 0) {
 		NSUInteger defaultVersion = [templateVersions unsignedIntegerForKey:@"default"];
 
-		if (NSNumberInRange(defaultVersion, _templateEngineVersionMinimum, _templateEngineVersionMaximum)) {
+		if (defaultVersion >= _templateEngineVersionMinimum && defaultVersion <= _templateEngineVersionMaximum) {
 			templateEngineVersion = defaultVersion;
 
 			usesIncompatibleTemplateEngineVersion = NO;
@@ -1321,7 +1321,7 @@ static inline BOOL _reevaluateFileDuringSetOrUnset(NSURL *fileURL, NSURL * __str
 
 	NSString *fontName = [fontDictionary stringForKey:@"Font Name"];
 
-	if (fontName == nil || [NSFont fontIsAvailable:fontName] == NO) {
+	if (fontName == nil || [NSFont fontWithName:fontName size:9.0] == nil) {
 		return nil;
 	}
 

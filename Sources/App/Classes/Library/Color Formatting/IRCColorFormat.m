@@ -172,7 +172,7 @@ NSString * const IRCTextFormatterSpoilerAttributeName = @"IRCTextFormatterSpoile
 			{
 				controlCharacter = IRCTextFormatterEffectColorAsDigitCharacter;
 
-				valueOut = [value integerStringValueWithLeadingZero];
+				valueOut = [NSString stringWithFormat:@"%02ld", (long)[value integerValue]];
 			}
 
 			if (valueOut == nil) {
@@ -825,7 +825,7 @@ NSString * const IRCTextFormatterSpoilerAttributeName = @"IRCTextFormatterSpoile
 			 }
 			 case IRCTextFormatterEffectBold:
 			 {
-				 if ([baseFont fontTraitSet:NSBoldFontMask] == NO) {
+				 if (([[NSFontManager sharedFontManager] traitsOfFont:baseFont] & NSBoldFontMask) == 0) {
 					 baseFont = [RZFontManager() convertFont:baseFont toHaveTrait:NSBoldFontMask];
 				 }
 
@@ -839,7 +839,7 @@ NSString * const IRCTextFormatterSpoilerAttributeName = @"IRCTextFormatterSpoile
 			 }
 			 case IRCTextFormatterEffectItalic:
 			 {
-				 if ([baseFont fontTraitSet:NSItalicFontMask] == NO) {
+				 if (([[NSFontManager sharedFontManager] traitsOfFont:baseFont] & NSItalicFontMask) == 0) {
 					 baseFont = [RZFontManager() convertFont:baseFont toHaveTrait:NSItalicFontMask];
 				 }
 
@@ -957,7 +957,7 @@ NSString * const IRCTextFormatterSpoilerAttributeName = @"IRCTextFormatterSpoile
 			 }
 			 case IRCTextFormatterEffectBold:
 			 {
-				 if ([baseFont fontTraitSet:NSBoldFontMask]) {
+				 if ([[NSFontManager sharedFontManager] traitsOfFont:baseFont] & NSBoldFontMask) {
 					 baseFont = [RZFontManager() convertFont:baseFont toNotHaveTrait:NSBoldFontMask];
 
 					 if (baseFont) {
@@ -971,7 +971,7 @@ NSString * const IRCTextFormatterSpoilerAttributeName = @"IRCTextFormatterSpoile
 			 }
 			 case IRCTextFormatterEffectItalic:
 			 {
-				 if ([baseFont fontTraitSet:NSItalicFontMask]) {
+				 if ([[NSFontManager sharedFontManager] traitsOfFont:baseFont] & NSItalicFontMask) {
 					 baseFont = [RZFontManager() convertFont:baseFont toNotHaveTrait:NSItalicFontMask];
 
 					 if (baseFont) {

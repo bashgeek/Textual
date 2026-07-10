@@ -578,7 +578,7 @@ NSUInteger const TPCPreferencesDictionaryVersion = 602;
 {
 	NSParameterAssert(value != nil);
 
-	if ([NSFont fontIsAvailable:value]) {
+	if ([NSFont fontWithName:value size:9.0] != nil) {
 		[self setThemeChannelViewFontName:value];
 	} else {
 		[RZUserDefaults() setBool:YES forKey:TPCPreferencesThemeFontNameMissingLocallyDefaultsKey];

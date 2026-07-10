@@ -146,7 +146,7 @@ typedef NS_ENUM(NSUInteger, ICMTwitchLiveContentTypeContent)
 			return nil;
 		}
 
-		if ([contentIdentifier onlyContainsCharactersFromCharacterSet:[NSCharacterSet Ato9Underscore]] == NO) {
+		if ([contentIdentifier onlyContainsCharactersFromCharacterSet:[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"]] == NO) {
 			return nil;
 		}
 

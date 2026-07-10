@@ -971,7 +971,7 @@ typedef NSMutableDictionary	<NSString *, TPCTheme *> 	*TPCThemeControllerThemeLi
 
 	NSString *fontName = [TPCPreferences themeChannelViewFontName];
 
-	if ([NSFont fontIsAvailable:fontName] == NO) {
+	if ([NSFont fontWithName:fontName size:9.0] == nil) {
 		if ( suggestedFontName) {
 			*suggestedFontName = [TPCPreferences themeChannelViewFontNameDefault];
 		}
