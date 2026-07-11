@@ -41,6 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TPCSandboxMigration : NSObject
 + (void)migrateResources;
++ (void)offerLegacyImportIfNeeded;
++ (void)importLegacySettingsManually;
 @end
 
 NS_ASSUME_NONNULL_END

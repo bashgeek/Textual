@@ -141,6 +141,9 @@ NS_ASSUME_NONNULL_BEGIN
 	/* Migrate files and preferences */
 	[TPCSandboxMigration migrateResources];
 
+	/* Offer one-time import from previous Textual if settings are present */
+	[TPCSandboxMigration offerLegacyImportIfNeeded];
+
 	/* Initialize preferences */
 	[TPCPreferences initPreferences];
 

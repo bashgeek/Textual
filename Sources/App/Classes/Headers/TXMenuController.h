@@ -222,6 +222,7 @@ enum
 	MTMMHelpAdvancedMenuImportPreferences = 9100005, // "Import Preferences"
 	MTMMHelpAdvancedMenuImportPreferencesSeparator = 9100006, // "-"
 	MTMMHelpAdvancedMenuResetDontAskMeWarnings = 9100007, // "Reset 'Don't Ask Me' Warnings"
+	MTMMHelpAdvancedMenuImportLegacySettings = 9100008, // "Import from Previous Textual…"
 
 	/* WebKit channel name menu */
 	MTWKChannelNameJoinChannel = 1000, // "Join Channel"
@@ -377,6 +378,7 @@ enum
 
 - (IBAction)exportPreferences:(id)sender;
 - (IBAction)importPreferences:(id)sender;
+- (IBAction)importLegacySettings:(id)sender;
 
 - (IBAction)memberAddIgnore:(id)sender;
 - (IBAction)memberModifyIgnore:(id)sender;

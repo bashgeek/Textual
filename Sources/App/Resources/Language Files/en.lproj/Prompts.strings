@@ -192,3 +192,10 @@ Information encrypted using: %2$@";
 Would you like to clear up disk space by removing this content from the old location?";
 "q3t-45" = "I would like to remove the old content";
 "d90-au" = "Learn More";
+
+"legacy-import-title" = "Import Settings from Previous Textual?";
+"legacy-import-body" = "Settings from a previous installation of Textual were found. Would you like to import your servers, channels, and preferences?";
+"legacy-import-ok" = "Import";
+"legacy-import-skip" = "Skip";
+"legacy-import-not-found-title" = "No Previous Installation Found";
+"legacy-import-not-found-body" = "No settings from a previous installation of Textual were found on this Mac.";

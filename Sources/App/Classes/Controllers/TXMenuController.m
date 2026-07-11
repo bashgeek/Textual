@@ -73,6 +73,7 @@
 #import "TDCWelcomeSheetPrivate.h"
 #import "TPCPathInfoPrivate.h"
 #import "TPCPreferencesImportExport.h"
+#import "TPCSandboxMigrationPrivate.h"
 #import "TPCPreferencesLocalPrivate.h"
 #import "TPCPreferencesReload.h"
 #import "TPCPreferencesUserDefaults.h"
@@ -295,6 +296,7 @@ NS_ASSUME_NONNULL_BEGIN
 			case MTMMHelpAcknowledgements: // "Acknowledgements"
 			case MTMMHelpAdvancedMenu: // "Advanced"
 			case MTMMHelpAdvancedMenuExportPreferences: // "Export Preferences"
+			case MTMMHelpAdvancedMenuImportLegacySettings: // "Import from Previous Textual…"
 			{
 				validationResult = YES;
 
@@ -2618,6 +2620,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)exportPreferences:(id)sender
 {
 	[TPCPreferencesImportExport exportInWindow:mainWindow()];
+}
+
+- (void)importLegacySettings:(id)sender
+{
+	[TPCSandboxMigration importLegacySettingsManually];
 }
 
 #pragma mark -

@@ -96,6 +96,9 @@ NS_ASSUME_NONNULL_BEGIN
 /* Whether the user wants to delete old files */
 #define MigrationUserPrefersPruningDefaultsKey			@"Sandbox Migration -> User Prefers Pruning Files"
 
+/* Whether the manual legacy import dialog has been offered (auto, on first launch) */
+#define LegacyImportOfferedDefaultsKey					@"Legacy Settings Import -> Offered"
+
 /* YES if there are no more extensions to prune
  which means we can bypass all the directory scans. */
 #define MigrationAllExtensionsPrunedDefaultsKey			@"Sandbox Migration -> All Extensions Pruned"
@@ -189,6 +192,101 @@ typedef NS_ENUM(NSUInteger, TPCMigrateSandboxInstallation)
 
 	/* No other migration path */
 	[self _setMigrationCompleteAndAcknowledged];
+}
+
++ (void)offerLegacyImportIfNeeded
+{
+	/* Skip if auto-migration already imported from a known installation */
+	if ([self _isInstallationSupported:[RZUserDefaults() unsignedIntegerForKey:MigrationInstallationMigratedDefaultsKey]]) {
+		return;
+	}
+
+	/* Only offer once on first launch */
+	if ([RZUserDefaults() boolForKey:LegacyImportOfferedDefaultsKey]) {
+		return;
+	}
+
+	[RZUserDefaults() _migrateObject:@(YES) forKey:LegacyImportOfferedDefaultsKey];
+
+	NSDictionary *preferences = [self _findLegacyPreferences];
+
+	if (preferences == nil) {
+		return;
+	}
+
+	[self _offerImportOfPreferences:preferences];
+}
+
++ (void)importLegacySettingsManually
+{
+	NSDictionary *preferences = [self _findLegacyPreferences];
+
+	if (preferences == nil) {
+		[TDCAlert modalAlertWithMessage:TXTLS(@"Prompts[legacy-import-not-found-body]")
+								  title:TXTLS(@"Prompts[legacy-import-not-found-title]")
+						  defaultButton:TXTLS(@"Prompts[zjw-bd]")
+						alternateButton:nil
+							otherButton:nil];
+
+		return;
+	}
+
+	[self _offerImportOfPreferences:preferences];
+}
+
++ (nullable NSDictionary *)_findLegacyPreferences
+{
+	NSArray *installations = @[@(TPCMigrateSandboxInstallationStandaloneClassic),
+							   @(TPCMigrateSandboxInstallationMacAppStore)];
+
+	for (NSNumber *ref in installations) {
+		TPCMigrateSandboxInstallation installation = ref.unsignedIntegerValue;
+
+		NSURL *prefsURL = [TPCPathInfo _groupContainerPreferencesURLForInstallation:installation];
+
+		if (prefsURL == nil) {
+			continue;
+		}
+
+		NSError *readError = nil;
+
+		NSDictionary *preferences = [NSDictionary dictionaryWithContentsOfURL:prefsURL error:&readError];
+
+		if (preferences == nil) {
+			if (readError) {
+				LogToConsoleDebug("Legacy import: could not read preferences for installation %lu: %{public}@",
+					(unsigned long)installation, readError.localizedDescription);
+			}
+
+			continue;
+		}
+
+		if ([preferences unsignedIntegerForKey:@"TXRunCount"] == 0) {
+			continue;
+		}
+
+		return preferences;
+	}
+
+	return nil;
+}
+
++ (void)_offerImportOfPreferences:(NSDictionary *)preferences
+{
+	NSParameterAssert(preferences != nil);
+
+	TDCAlertResponse response =
+	[TDCAlert modalAlertWithMessage:TXTLS(@"Prompts[legacy-import-body]")
+							  title:TXTLS(@"Prompts[legacy-import-title]")
+					  defaultButton:TXTLS(@"Prompts[legacy-import-ok]")
+					alternateButton:TXTLS(@"Prompts[legacy-import-skip]")
+						otherButton:nil];
+
+	if (response != TDCAlertResponseDefault) {
+		return;
+	}
+
+	[self _importPreferences:preferences];
 }
 
 #pragma mark -

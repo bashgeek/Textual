@@ -953,6 +953,12 @@ CQ
                                                 <action selector="importPreferences:" target="267" id="3090"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Import from Previous Textual…" tag="9100008" id="k9M-bA-xRf">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="importLegacySettings:" target="267" id="p3T-sQ-wNm"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" tag="9100006" id="gIQ-2m-VHD">
                                             <connections>
                                                 <binding destination="TlT-Ik-3QP" name="hidden" keyPath="values.TextualDeveloperEnvironment" id="7wz-iv-L8K">
