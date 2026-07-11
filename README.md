@@ -1,6 +1,6 @@
-# Textual
+# Textwerk
 
-A community fork of [Textual](https://github.com/Codeux-Software/Textual), the macOS IRC client originally built by Codeux Software. The upstream project is archived. This fork modernizes the codebase and targets macOS 26+.
+A community fork of [Textual](https://github.com/Codeux-Software/Textual), the macOS IRC client originally built by Codeux Software. The upstream project is archived. Textwerk modernizes the codebase and targets macOS 26+.
 
 **What changed from upstream:**
 - Fixed crashes and blank channel views on macOS 26
@@ -19,19 +19,34 @@ A community fork of [Textual](https://github.com/Codeux-Software/Textual), the m
 [![Light](docs/screenshots/YosemiteLightThumbnail.png)](docs/screenshots/YosemiteLightFullscreen.png)
 [![Dark](docs/screenshots/YosemiteDarkThumbnail.png)](docs/screenshots/YosemiteDarkFullscreen.png)
 
-## Building
+## How to install
+
+### Download a release
+
+Grab the latest build from the [Releases](https://github.com/bashgeek/Textwerk/releases) page and unzip it into your Applications folder.
+
+Releases are unsigned. macOS will block the app on first launch. To open it anyway, right-click the app and choose **Open**, then confirm in the dialog. Alternatively, remove the quarantine attribute from the terminal:
+
+```sh
+xattr -d com.apple.quarantine /Applications/Textual.app
+```
+
+### Build from source
 
 You need Xcode 16+ and a valid code signing identity (does not need to be issued by Apple).
 
 Set your signing identity in `Configurations/Build/Code Signing Identity.xcconfig` before building. Do not change it through Xcode.
 
 ```sh
+git clone https://github.com/bashgeek/Textwerk.git
+cd Textwerk
 ./build.sh
 ```
 
 The built app lands in `./build/Textual.app`.
 
-To build manually:
+<details>
+<summary>Manual xcodebuild invocation</summary>
 
 ```sh
 xcodebuild \
@@ -41,6 +56,14 @@ xcodebuild \
   CONFIGURATION_BUILD_DIR=./build \
   build
 ```
+
+</details>
+
+## Migrating from Textual
+
+If you're coming from the Mac App Store version or the standalone version from codeux.com, Textwerk will detect your existing settings on first launch and offer to import your servers, channels, and preferences.
+
+You can also trigger this at any time from **Help → Advanced → Import from Previous Textual…**
 
 ## License
 
