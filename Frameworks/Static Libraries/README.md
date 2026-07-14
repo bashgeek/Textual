@@ -10,7 +10,7 @@ Other libraries and frameworks are obtained prebuilt or built manually.
 Prebuilt:
 - [AppCenter.framework 4.2.0](https://github.com/microsoft/appcenter-sdk-apple) 
 - [AppCenterCrashes.framework 4.2.0](https://github.com/microsoft/appcenter-sdk-apple)
-- [Sparkle.framework 1.26.0](https://github.com/sparkle-project/Sparkle/)
+- [Sparkle.framework 2.9.4](https://github.com/sparkle-project/Sparkle/)
 
 Built manually:
 - [asn1c 0.9.28](https://github.com/vlm/asn1c) (used by Apple Receipt Loader, built using `Libraries/Source/Apple Receipt ASN1c/asn1c.xcodeproj`)

@@ -99,5 +99,11 @@
 			</array>
 		</dict>
 	</array>
+	<key>SUFeedURL</key>
+	<string>https://github.com/bashgeek/Textwerk/releases/latest/download/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>dNR2/wVmyQKy8mooT2NhPrjneHqhCyTFrPmpwt6gM3s=</string>
+	<key>SUEnableInstallerLauncherService</key>
+	<true/>
 </dict>
 </plist>

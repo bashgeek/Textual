@@ -57,8 +57,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, weak) TXMenuController *menuController;
 
 @property (nonatomic, assign) BOOL skipTerminateSave;
-
-- (void)checkForUpdatesFromGitHub:(BOOL)userInitiated;
 @end
 
 NS_ASSUME_NONNULL_END

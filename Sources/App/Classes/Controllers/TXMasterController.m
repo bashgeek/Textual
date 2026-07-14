@@ -220,76 +220,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)prepareThirdPartyServiceSparkleFramework
 {
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(30 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-		[self checkForUpdatesFromGitHub:NO];
-	});
-}
-
-- (void)checkForUpdatesFromGitHub:(BOOL)userInitiated
-{
-	NSURL *apiURL = [NSURL URLWithString:@"https://api.github.com/repos/bashgeek/Textwerk/releases/latest"];
-
-	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:apiURL
-	                                                       cachePolicy:NSURLRequestReloadIgnoringCacheData
-	                                                   timeoutInterval:30.0];
-
-	[request setValue:@"Textwerk IRC" forHTTPHeaderField:@"User-Agent"];
-
-	NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request
-	                                                             completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (error || data == nil) {
-				if (userInitiated) {
-					NSAlert *alert = [[NSAlert alloc] init];
-					alert.messageText = @"Update Check Failed";
-					alert.informativeText = error.localizedDescription ?: @"Could not contact GitHub.";
-					[alert addButtonWithTitle:@"OK"];
-					[alert runModal];
-				}
-				return;
-			}
-
-			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-			NSString *latestTag = json[@"tag_name"];
-
-			if (!latestTag) {
-				if (userInitiated) {
-					NSAlert *alert = [[NSAlert alloc] init];
-					alert.messageText = @"Update Check Failed";
-					alert.informativeText = @"Could not parse release information from GitHub.";
-					[alert addButtonWithTitle:@"OK"];
-					[alert runModal];
-				}
-				return;
-			}
-
-			NSString *latestVersion = [latestTag hasPrefix:@"v"] ? [latestTag substringFromIndex:1] : latestTag;
-			NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-
-			if ([currentVersion compare:latestVersion options:NSNumericSearch] == NSOrderedAscending) {
-				NSAlert *alert = [[NSAlert alloc] init];
-				alert.messageText = @"Update Available";
-				alert.informativeText = [NSString stringWithFormat:@"Textwerk %@ is available. You have %@.", latestTag, currentVersion];
-				[alert addButtonWithTitle:@"View on GitHub"];
-				[alert addButtonWithTitle:@"Later"];
-
-				if ([alert runModal] == NSAlertFirstButtonReturn) {
-					NSString *urlString = json[@"html_url"];
-					if (urlString) {
-						[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
-					}
-				}
-			} else if (userInitiated) {
-				NSAlert *alert = [[NSAlert alloc] init];
-				alert.messageText = @"You're Up to Date";
-				alert.informativeText = [NSString stringWithFormat:@"Textwerk %@ is the latest version.", currentVersion];
-				[alert addButtonWithTitle:@"OK"];
-				[alert runModal];
-			}
-		});
-	}];
-
-	[task resume];
+#if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
+	_updateController = [[SPUStandardUpdaterController alloc] initWithStartingUpdater:YES
+																	   updaterDelegate:nil
+																	userDriverDelegate:nil];
+#endif
 }
 
 - (void)prepareThirdPartyServices

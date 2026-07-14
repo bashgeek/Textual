@@ -2752,7 +2752,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)checkForUpdates:(id)sender
 {
-	[masterController() checkForUpdatesFromGitHub:YES];
+#if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
+	[masterController().updateController checkForUpdates:sender];
+#endif
 }
 
 #pragma mark -

@@ -37,16 +37,25 @@
 
 #import "TXMasterController.h"
 
+#import "BuildConfig.h"
+
+#if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
+#import <Sparkle/Sparkle.h>
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TXMasterController ()
 @property (nonatomic, assign) NSUInteger terminatingClientCount;
 
+#if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
+@property (nonatomic, strong, readonly) SPUStandardUpdaterController *updateController;
+#endif
+
 - (void)applicationWakeStepOne;
 - (void)applicationWakeStepTwo;
 
 - (void)prepareThirdPartyServiceSparkleFramework;
-- (void)checkForUpdatesFromGitHub:(BOOL)userInitiated;
 @end
 
 NS_ASSUME_NONNULL_END

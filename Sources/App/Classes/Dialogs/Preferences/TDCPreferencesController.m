@@ -38,6 +38,7 @@
 
 #import "NSViewHelper.h"
 #import "TXMasterController.h"
+#import "TXMasterControllerPrivate.h"
 #import "TXMenuController.h"
 #import "TPCPathInfoPrivate.h"
 #import "TPCPreferencesLocalPrivate.h"
