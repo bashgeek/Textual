@@ -1,0 +1,57 @@
+name: Regenerate Appcast
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing release tag to regenerate the appcast for (e.g. v0.3.0)'
+        required: true
+
+jobs:
+  regenerate:
+    runs-on: macos-26
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Download existing release zip
+        run: |
+          mkdir -p appcast-work
+          gh release download "${{ inputs.tag }}" --pattern "Textwerk-${{ inputs.tag }}.zip" --dir appcast-work
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Rebuild changelog for this tag
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 "${{ inputs.tag }}^" 2>/dev/null || true)
+          if [[ -n "$PREV_TAG" ]]; then
+            git log "${PREV_TAG}..${{ inputs.tag }}" --pretty=format:"- %s" --no-merges > "appcast-work/Textwerk-${{ inputs.tag }}.txt"
+          else
+            git log "${{ inputs.tag }}" --pretty=format:"- %s" --no-merges > "appcast-work/Textwerk-${{ inputs.tag }}.txt"
+          fi
+
+      - name: Sign update and generate appcast
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          curl -sL https://github.com/sparkle-project/Sparkle/releases/download/2.9.4/Sparkle-2.9.4.tar.xz -o sparkle-tools.tar.xz
+          mkdir -p sparkle-tools
+          tar -xJf sparkle-tools.tar.xz -C sparkle-tools bin/generate_appcast
+          chmod +x sparkle-tools/bin/*
+
+          echo "$SPARKLE_PRIVATE_KEY" | ./sparkle-tools/bin/generate_appcast appcast-work \
+            --ed-key-file - \
+            --download-url-prefix "https://github.com/${{ github.repository }}/releases/download/${{ inputs.tag }}/" \
+            --embed-release-notes \
+            -o appcast-work/appcast.xml
+
+      - name: Upload corrected appcast
+        run: |
+          gh release upload "${{ inputs.tag }}" appcast-work/appcast.xml --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}

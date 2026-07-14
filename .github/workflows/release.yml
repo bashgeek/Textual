@@ -65,6 +65,7 @@ jobs:
           echo "$SPARKLE_PRIVATE_KEY" | ./sparkle-tools/bin/generate_appcast appcast-work \
             --ed-key-file - \
             --download-url-prefix "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/" \
+            --embed-release-notes \
             -o appcast-work/appcast.xml
 
           cp appcast-work/appcast.xml build/appcast.xml
