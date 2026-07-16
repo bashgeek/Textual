@@ -1,0 +1,16 @@
+# Textwerk
+
+> Textwerk is a friendly fork of Textual, the classic macOS IRC client, rebuilt to run cleanly on today's Mac (macOS 26 or later). It is free and open source.
+
+Textwerk speaks modern IRCv3, connects over native IPv6, and supports SASL and client-certificate authentication. It works behind bouncers like ZNC and through SOCKS4/SOCKS5/HTTP proxies. The interface has native light and dark appearances, inline media previews, split-view and direct-message support, and built-in text-to-speech. It is scriptable with plain web standards plus Swift, Objective-C, Python, or AppleScript, and is fully keyboard-operable.
+
+Textwerk is derived from Textual (BSD 3-Clause, © 2010-2020 Codeux Software, LLC) and LimeChat (BSD 2-Clause, © 2008-2010 Satoshi Nakagawa). It is not affiliated with or endorsed by Codeux Software.
+
+Builds are unsigned: on first launch, users either right-click the app and choose Open, or clear the Gatekeeper quarantine flag with `xattr -d com.apple.quarantine /Applications/Textwerk.app`.
+
+## Pages
+
+- [Homepage](https://textwerk.app/): product overview, feature list, screenshots, and install instructions
+- [GitHub repository](https://github.com/bashgeek/Textwerk): source code, issues, and discussions
+- [Releases](https://github.com/bashgeek/Textwerk/releases): downloadable builds
+- [Upstream project](https://github.com/Codeux-Software/Textual): the original Textual project this is forked from

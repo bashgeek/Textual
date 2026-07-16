@@ -3,10 +3,58 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Textwerk — a modern IRC client for macOS</title>
-  <meta name="description" content="Textwerk is a friendly fork of Textual: the macOS IRC client you already know, rebuilt for today's Mac.">
-  <link rel="icon" type="image/png" href="images/icon.png">
+  <title>Textwerk: a modern IRC client for macOS</title>
+  <meta name="description" content="Textwerk is a friendly fork of Textual: the macOS IRC client you already know, rebuilt for today's Mac. Free, open source, and built for macOS 26.">
+  <link rel="canonical" href="https://textwerk.app/">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Textwerk">
+  <meta property="og:title" content="Textwerk: a modern IRC client for macOS">
+  <meta property="og:description" content="A friendly fork of Textual, the macOS IRC client you already know, rebuilt for today's Mac. Free and open source.">
+  <meta property="og:url" content="https://textwerk.app/">
+  <meta property="og:image" content="https://textwerk.app/images/screenshot-light.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="720">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Textwerk: a modern IRC client for macOS">
+  <meta name="twitter:description" content="A friendly fork of Textual, the macOS IRC client you already know, rebuilt for today's Mac. Free and open source.">
+  <meta name="twitter:image" content="https://textwerk.app/images/screenshot-light.png">
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="images/icon-512.png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+  <link rel="preload" href="fonts/cabinet-grotesk-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Textwerk",
+    "url": "https://textwerk.app/",
+    "description": "Textwerk is a friendly fork of Textual: the macOS IRC client you already know, rebuilt for today's Mac.",
+    "applicationCategory": "SocialNetworkingApplication",
+    "operatingSystem": "macOS 26 or later",
+    "image": "https://textwerk.app/images/screenshot-light.png",
+    "downloadUrl": "https://github.com/bashgeek/Textwerk/releases",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Textwerk"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -15,7 +63,10 @@
       <img src="images/icon.png" alt="" width="26" height="26">
       Textwerk
     </a>
-    <nav class="nav__links">
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav__links" id="nav-links" aria-label="Primary">
       <a href="#features">Features</a>
       <a href="#look">Look</a>
       <a href="#install">Download</a>
@@ -25,9 +76,9 @@
 
   <main>
 
-    <section class="hero" id="top">
+    <section class="hero" id="top" aria-labelledby="hero-title">
       <img class="hero__icon" src="images/icon.png" alt="Textwerk app icon" width="120" height="120">
-      <h1>Old-school IRC.<br>Brand-new Mac.</h1>
+      <h1 id="hero-title">Old-school IRC.<br class="hero__break"> Brand-new Mac.</h1>
       <p class="lead">Textwerk is a friendly fork of Textual, the chat app you already know, dusted off and rebuilt to feel right at home on today's Mac.</p>
       <div class="hero__actions">
         <a class="btn btn--primary" href="https://github.com/bashgeek/Textwerk/releases">Download</a>
@@ -36,97 +87,120 @@
       <p class="hero__note">Free and open source · macOS 26 or later</p>
     </section>
 
-    <section class="shot">
-      <img src="images/screenshot-light.png" alt="Textwerk running on macOS, showing the #general channel" loading="lazy">
+    <section class="shot" aria-label="Textwerk screenshot">
+      <button class="zoomable" type="button">
+        <img src="images/screenshot-light.png" alt="Textwerk running on macOS, showing the #general channel" fetchpriority="high">
+      </button>
     </section>
 
-    <section class="features" id="features">
+    <section class="features" id="features" aria-labelledby="features-title">
       <div class="wrap">
-        <h2>Everything you need.<br>None of the junk.</h2>
+        <h2 id="features-title">Everything you need.<br>None of the junk.</h2>
         <p class="section-lead">All the power Textual was famous for, wrapped in an interface you can run start to finish from the keyboard.</p>
-        <div class="features__grid">
-          <div class="feature">
-            <h3>Modern IRC, done right</h3>
-            <p>Speaks fluent IRCv3, connects over native IPv6, and signs in with SASL. Modern servers, zero fuss.</p>
+        <div class="features__groups">
+          <div class="feature-group">
+            <h3 class="feature-group__title">Connect</h3>
+            <div class="feature-group__grid">
+              <div class="feature">
+                <h4>Modern IRC, done right</h4>
+                <p>Speaks fluent <code>IRCv3</code>, connects over native <code>IPv6</code>, and signs in with SASL (a secure login method many networks now require). Modern servers, zero fuss.</p>
+              </div>
+              <div class="feature">
+                <h4>Client certificate auth</h4>
+                <p>Log in with a client TLS certificate, safely tucked away in the modern macOS Keychain.</p>
+              </div>
+              <div class="feature">
+                <h4>Bouncer-friendly</h4>
+                <p>Plays nicely with ZNC, plus SOCKS4, SOCKS5, and HTTP proxies, with or without TLS.</p>
+              </div>
+            </div>
           </div>
-          <div class="feature">
-            <h3>Client certificate auth</h3>
-            <p>Log in with a client TLS certificate, safely tucked away in the modern macOS Keychain.</p>
+          <div class="feature-group">
+            <h3 class="feature-group__title">Feel at home</h3>
+            <div class="feature-group__grid">
+              <div class="feature">
+                <h4>Light &amp; dark, natively</h4>
+                <p>A crisp interface with matching light and dark looks that follow whatever your Mac is wearing.</p>
+              </div>
+              <div class="feature">
+                <h4>Inline media</h4>
+                <p>Pictures, video, YouTube, and more pop open right where the conversation is happening.</p>
+              </div>
+              <div class="feature">
+                <h4>Spoken messages</h4>
+                <p>Let your Mac read the room out loud with built-in text-to-speech, now on <code>AVSpeechSynthesizer</code>.</p>
+              </div>
+            </div>
           </div>
-          <div class="feature">
-            <h3>Light &amp; dark, natively</h3>
-            <p>A crisp interface with matching light and dark looks that follow whatever your Mac is wearing.</p>
-          </div>
-          <div class="feature">
-            <h3>Inline media</h3>
-            <p>Pictures, video, YouTube, and more pop open right where the conversation is happening.</p>
-          </div>
-          <div class="feature">
-            <h3>Make it yours</h3>
-            <p>Theme it with plain web standards and write addons in Swift, Objective-C, Python, AppleScript, you name it.</p>
-          </div>
-          <div class="feature">
-            <h3>Spoken messages</h3>
-            <p>Let your Mac read the room out loud with built-in text-to-speech, now on AVSpeechSynthesizer.</p>
-          </div>
-          <div class="feature">
-            <h3>Bouncer-friendly</h3>
-            <p>Plays nicely with ZNC, plus SOCKS4, SOCKS5, and HTTP proxies, with or without TLS.</p>
-          </div>
-          <div class="feature">
-            <h3>Fast by keyboard</h3>
-            <p>Fuzzy channel search, smart auto-complete, and shortcuts for just about everything keep your hands home.</p>
-          </div>
-          <div class="feature">
-            <h3>Filters &amp; ignore rules</h3>
-            <p>Mute the noise with rule-based ignores, filter incoming messages, and tune your highlights just so.</p>
+          <div class="feature-group">
+            <h3 class="feature-group__title">Power tools</h3>
+            <div class="feature-group__grid">
+              <div class="feature">
+                <h4>Make it yours</h4>
+                <p>Theme it with plain web standards and write addons in Swift, Objective-C, Python, AppleScript, you name it.</p>
+              </div>
+              <div class="feature">
+                <h4>Fast by keyboard</h4>
+                <p>Fuzzy channel search, smart auto-complete, and shortcuts for just about everything keep your hands home.</p>
+              </div>
+              <div class="feature">
+                <h4>Filters &amp; ignore rules</h4>
+                <p>Mute the noise with rule-based ignores, filter incoming messages, and tune your highlights just so.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="look" id="look">
+    <section class="look" id="look" aria-labelledby="look-title">
       <div class="wrap look__intro">
-        <h2>Looks great after dark, too.</h2>
+        <h2 id="look-title">Looks great after dark, too.</h2>
         <p class="section-lead">A crisp interface with matching light and dark looks that follow whatever your Mac is wearing.</p>
       </div>
-      <img class="look__hero" src="images/screenshot-dark.png" alt="Textwerk in dark appearance" loading="lazy">
+      <button class="zoomable" type="button">
+        <img class="look__hero" src="images/screenshot-dark.png" alt="Textwerk in dark appearance" loading="lazy">
+      </button>
       <div class="wrap gallery">
         <figure>
-          <img src="images/split-view.png" alt="Two channels side by side in split view" loading="lazy">
+          <button class="zoomable" type="button">
+            <img src="images/split-view.png" alt="Two channels side by side in split view" loading="lazy">
+          </button>
           <figcaption><strong>Split view.</strong> Keep two conversations open at once, side by side.</figcaption>
         </figure>
         <figure>
-          <img src="images/direct-message.png" alt="A direct message showing the common-channel info bar" loading="lazy">
+          <button class="zoomable" type="button">
+            <img src="images/direct-message.png" alt="A direct message showing the common-channel info bar" loading="lazy">
+          </button>
           <figcaption><strong>Direct messages.</strong> A private query tells you which channels you share.</figcaption>
         </figure>
       </div>
     </section>
 
-    <section class="fork">
+    <section class="fork" aria-labelledby="fork-title">
       <div class="wrap wrap--narrow">
-        <h2>We gave Textual a new lease on life.</h2>
+        <h2 id="fork-title">We gave Textual a new lease on life.</h2>
         <p class="section-lead">The original Textual has retired and gone quiet. So we picked up the torch, pointed it straight at macOS 26, fixed the things that broke, and swept out the cobwebs.</p>
         <dl class="changes">
           <div class="change">
             <dt>Fixed for macOS 26</dt>
-            <dd>Squashed the crashes and blank channel views, including that nasty connection crash from NWError.wifiAware.</dd>
+            <dd>Squashed the crashes and blank channel views, including a nasty connection crash macOS 26 introduced (<code>NWError.wifiAware</code>, for the curious).</dd>
           </div>
           <div class="change">
             <dt>Rebuilt networking</dt>
-            <dd>Swapped the ancient OELReachability for Apple's own NWPathMonitor from Network.framework.</dd>
+            <dd>Swapped the ancient <code>OELReachability</code> for Apple's own <code>NWPathMonitor</code>.</dd>
           </div>
           <div class="change">
             <dt>Reliable script startup</dt>
-            <dd>Core JavaScript now loads through WKUserScript instead of document.write, so it starts up the same every time.</dd>
+            <dd>Core JavaScript now loads through <code>WKUserScript</code> instead of an old-fashioned <code>document.write</code>, so it starts up the same every time.</dd>
           </div>
           <div class="change">
             <dt>Modernized text-to-speech</dt>
-            <dd>Moved off the retired NSSpeechSynthesizer and onto today's AVSpeechSynthesizer.</dd>
+            <dd>Moved off the retired <code>NSSpeechSynthesizer</code> and onto today's <code>AVSpeechSynthesizer</code>.</dd>
           </div>
           <div class="change">
             <dt>Dead code, gone</dt>
-            <dd>Tossed out the license manager, the old OTR/Blowfish encryption, and the legacy WK1 WebView.</dd>
+            <dd>Tossed out the license manager, the old OTR/Blowfish encryption, and the legacy WebKit 1 view.</dd>
           </div>
           <div class="change">
             <dt>Tidier Help menu</dt>
@@ -140,9 +214,9 @@
       </div>
     </section>
 
-    <section class="install" id="install">
+    <section class="install" id="install" aria-labelledby="install-title">
       <div class="wrap wrap--narrow">
-        <h2 class="install__title">Get Textwerk</h2>
+        <h2 class="install__title" id="install-title">Get Textwerk</h2>
         <p class="section-lead install__lead">Grab a build, drop it in Applications, and you're chatting in about a minute.</p>
 
         <div class="steps">
@@ -155,7 +229,11 @@
           <div class="step">
             <h3>2&nbsp;&nbsp;Open it the first time</h3>
             <p>Builds are unsigned, so macOS gets nervous on the first launch. Just right-click the app and pick <strong>Open</strong>, or clear the quarantine flag from Terminal:</p>
-            <pre class="code"><code>xattr -d com.apple.quarantine /Applications/Textwerk.app</code></pre>
+            <div class="code">
+              <pre><code>xattr -d com.apple.quarantine /Applications/Textwerk.app</code></pre>
+              <button class="code__copy" type="button" data-copy>Copy</button>
+            </div>
+            <p class="step__note">Safe to run: this only clears the "downloaded from the internet" flag macOS adds automatically. It doesn't touch anything else.</p>
           </div>
 
           <div class="step">
@@ -166,9 +244,12 @@
           <div class="step step--divider">
             <h3>Rather build it yourself?</h3>
             <p>You'll need Xcode 16+ and any valid signing identity, set in <code>Configurations/Build/Code Signing Identity.xcconfig</code>.</p>
-            <pre class="code"><code>git clone https://github.com/bashgeek/Textwerk.git
+            <div class="code">
+              <pre><code>git clone https://github.com/bashgeek/Textwerk.git
 cd Textwerk
 ./build.sh</code></pre>
+              <button class="code__copy" type="button" data-copy>Copy</button>
+            </div>
           </div>
         </div>
       </div>
@@ -182,14 +263,89 @@ cd Textwerk
         <img src="images/icon.png" alt="" width="28" height="28">
         <span>Textwerk</span>
       </a>
-      <nav class="footer__links">
+      <nav class="footer__links" aria-label="Footer">
         <a href="https://github.com/bashgeek/Textwerk">GitHub</a>
         <a href="https://github.com/bashgeek/Textwerk/releases">Releases</a>
         <a href="https://github.com/Codeux-Software/Textual">Upstream</a>
       </nav>
     </div>
-    <p class="footer__legal wrap">Textwerk is derived from Textual (BSD 3-Clause, © 2010–2020 Codeux Software, LLC) and LimeChat (BSD 2-Clause, © 2008–2010 Satoshi Nakagawa). Not affiliated with or endorsed by Codeux Software. "Textual" and "Codeux Software, LLC" are used for identification only.</p>
+    <p class="footer__note wrap">Built in the open, by people who missed IRC. Bug reports, feature ideas, and questions are always welcome on <a href="https://github.com/bashgeek/Textwerk/issues">GitHub</a>.</p>
+    <p class="footer__legal wrap wrap--narrow">Textwerk is derived from Textual (BSD 3-Clause, © 2010–2020 Codeux Software, LLC) and LimeChat (BSD 2-Clause, © 2008–2010 Satoshi Nakagawa). Not affiliated with or endorsed by Codeux Software. "Textual" and "Codeux Software, LLC" are used for identification only.</p>
   </footer>
 
+  <div class="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot preview">
+    <button class="lightbox__close" type="button" aria-label="Close preview">&times;</button>
+    <img class="lightbox__img" src="" alt="">
+  </div>
+
+  <script>
+    (function () {
+      var nav = document.querySelector('.nav');
+      var toggle = nav.querySelector('.nav__toggle');
+      var links = nav.querySelector('.nav__links');
+
+      toggle.addEventListener('click', function () {
+        var open = nav.classList.toggle('nav--open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+
+      links.addEventListener('click', function (e) {
+        if (e.target.tagName === 'A') {
+          nav.classList.remove('nav--open');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      document.querySelectorAll('[data-copy]').forEach(function (button) {
+        var code = button.previousElementSibling.querySelector('code');
+        button.addEventListener('click', function () {
+          navigator.clipboard.writeText(code.textContent).then(function () {
+            var original = button.textContent;
+            button.textContent = 'Copied';
+            setTimeout(function () { button.textContent = original; }, 1500);
+          });
+        });
+      });
+
+      var lightbox = document.querySelector('.lightbox');
+      var lightboxImg = lightbox.querySelector('.lightbox__img');
+      var lightboxClose = lightbox.querySelector('.lightbox__close');
+      var lastTrigger = null;
+
+      document.querySelectorAll('.zoomable').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var img = button.querySelector('img');
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lastTrigger = button;
+          lightbox.classList.add('is-open');
+          document.body.style.overflow = 'hidden';
+          lightboxClose.focus();
+        });
+      });
+
+      function closeLightbox() {
+        lightbox.classList.remove('is-open');
+        document.body.style.overflow = '';
+        if (lastTrigger) lastTrigger.focus();
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape') return;
+        if (lightbox.classList.contains('is-open')) {
+          closeLightbox();
+        } else if (nav.classList.contains('nav--open')) {
+          nav.classList.remove('nav--open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.focus();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
