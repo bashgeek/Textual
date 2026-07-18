@@ -199,6 +199,8 @@ static NSUInteger _numberOfViews = 0;
 {
 	_numberOfViews -= 1;
 
+	[self stopObservingLoadingProperty];
+
 	self.navigationDelegate = nil;
 
 	self.UIDelegate = nil;

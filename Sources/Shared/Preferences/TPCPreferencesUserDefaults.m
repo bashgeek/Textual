@@ -110,7 +110,7 @@ NSString * const TPCPreferencesUserDefaultsDidChangeNotification = @"TPCPreferen
 
 	id oldValue = [self objectForKey:defaultName];
 
-	if (oldValue && oldValue == value) {
+	if (oldValue && [oldValue isEqual:value]) {
 		return;
 	}
 

@@ -217,15 +217,6 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 	self.backingView = [[TVCLogView alloc] initWithViewController:self];
 }
 
-- (void)rebuildBackingView
-{
-	[self buildBackingView];
-
-	if (self.visible) {
-		[self.attachedWindow updateChannelViewBoxContentViewSelection];
-	}
-}
-
 - (void)loadInitialDocument
 {
 	[self loadAlternateHTML:[self initialDocument]];
