@@ -52,6 +52,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation IRCMessageBatchMessageContainer
 
+- (instancetype)init
+{
+	if ((self = [super init])) {
+		/* Created eagerly, instead of lazily on first -queueEntry:, so that
+		 @synchronized(self.internalBatchEntries) always locks on a real
+		 object. @synchronized(nil) is a documented no-op, which otherwise
+		 leaves a race window on the very first queue/dequeue call. */
+		self.internalBatchEntries = [NSMutableDictionary dictionary];
+	}
+
+	return self;
+}
+
 - (NSDictionary *)queuedEntries
 {
 	@synchronized(self.internalBatchEntries) {
@@ -140,6 +153,16 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 @implementation IRCMessageBatchMessage
+
+- (instancetype)init
+{
+	if ((self = [super init])) {
+		/* See IRCMessageBatchMessageContainer.init for why this is eager. */
+		self.internalBatchEntries = [NSMutableArray array];
+	}
+
+	return self;
+}
 
 - (NSArray *)queuedEntries
 {
