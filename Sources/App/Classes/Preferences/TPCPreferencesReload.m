@@ -356,7 +356,7 @@ NS_ASSUME_NONNULL_BEGIN
 		[TVCLogControllerHistoricLogSharedInstance() resetMaximumLineCount];
 	}
 
-	if ((reloadAction & TPCPreferencesReloadActionScrollbackVisibleLimit) == TPCPreferencesReloadActionScrollbackSaveLimit) {
+	if ((reloadAction & TPCPreferencesReloadActionScrollbackVisibleLimit) == TPCPreferencesReloadActionScrollbackVisibleLimit) {
 		for (IRCClient *u in worldController().clientList) {
 			[u.viewController changeScrollbackLimit];
 
