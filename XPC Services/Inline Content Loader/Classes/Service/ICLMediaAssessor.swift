@@ -181,6 +181,12 @@ final class ICLMediaAssessor: NSObject, URLSessionDataDelegate, URLSessionDownlo
 	}
 
 	private func flushRequestState() {
+		// A delegate-based URLSession retains its delegate until invalidated.
+		// cancelRequest() already invalidates on the cancel path; this covers
+		// the normal-completion path, which otherwise leaks the session (and
+		// self, as its delegate) on every successfully-assessed request.
+		session?.invalidateAndCancel()
+
 		session = nil
 		task = nil
 		alternateError = nil
