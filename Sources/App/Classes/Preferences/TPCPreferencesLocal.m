@@ -1293,14 +1293,6 @@ static NSArray<NSString *> *_matchKeywords = nil;
 
 	[dynamicDefaults setBool:[TPCApplicationInfo sandboxEnabled]						forKey:@"Security -> Sandbox Enabled"];
 
-	[dynamicDefaults setBool:NO									forKey:@"System -> Running Mac OS Mountain Lion Or Newer"];
-	[dynamicDefaults setBool:YES								forKey:@"System -> Running Mac OS Mavericks Or Newer"];
-	[dynamicDefaults setBool:YES								forKey:@"System -> Running Mac OS Yosemite Or Newer"];
-	[dynamicDefaults setBool:YES								forKey:@"System -> Running Mac OS El Capitan Or Newer"];
-	[dynamicDefaults setBool:YES								forKey:@"System -> Running Mac OS Sierra Or Newer"];
-	[dynamicDefaults setBool:YES								forKey:@"System -> Running Mac OS High Sierra Or Newer"];
-	[dynamicDefaults setBool:YES								forKey:@"System -> Running Mac OS Mojave Or Newer"];
-
 #if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
 	[dynamicDefaults setBool:YES forKey:@"System -> 3rd-party Services -> Built with Sparkle Framework"];
 #else
