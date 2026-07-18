@@ -75,6 +75,7 @@ NSString * const IRCWorldWillDestroyChannelNotification = @"IRCWorldWillDestroyC
 @property (nonatomic, assign) BOOL preferencesDidChangeTimerIsActive;
 @property (nonatomic, assign) CFAbsoluteTime savePeriodicallyLastSave;
 @property (nonatomic, copy) NSDate *lastDateHasChangedDate;
+@property (nonatomic, strong, nullable) NSTimer *midnightTimer;
 @end
 
 @implementation IRCWorld
@@ -366,6 +367,12 @@ NSString * const IRCWorldWillDestroyChannelNotification = @"IRCWorldWillDestroyC
 	 the date on which our midnight timer will land. */
 	NSDate *nextMidnight = [RZCurrentCalendar() dateByAddingComponents:futureDayComponents toDate:lastMidnight options:0];
 
+	/* Invalidate any previously scheduled midnight timer before scheduling a
+	 new one. Without this, repeated calls (e.g. from NSSystemClockDidChangeNotification
+	 firing more than once before the pending timer lands) leave stale timers
+	 scheduled on the run loop indefinitely. */
+	[self.midnightTimer invalidate];
+
 	/* Create timer for midnight in future. */
 	/* We set the tolerance for the timer to absolute zero so that
 	 we are confident that OS X will not reschedule it. */
@@ -378,6 +385,8 @@ NSString * const IRCWorldWillDestroyChannelNotification = @"IRCWorldWillDestroyC
 						 repeats:NO];
 
 	midnightTimer.tolerance = 0.0;
+
+	self.midnightTimer = midnightTimer;
 
 	/* Schedule the timer on the run loop which will retain reference. */
 	[RZMainRunLoop() addTimer:midnightTimer forMode:NSDefaultRunLoopMode];
