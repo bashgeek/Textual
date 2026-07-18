@@ -5759,6 +5759,19 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	[self send:@"USER", username, modeSymbols, @"*", realName, nil];
 }
 
+/* Once -isTerminating is set, the pending disconnectCallback exists to run
+ termination cleanup. Other code paths that assign a reconnect-oriented
+ callback (retry timer, /CONN, server redirects, etc.) must not be allowed
+ to silently replace it, or termination cleanup for this client is skipped. */
+- (void)setDisconnectCallback:(nullable dispatch_block_t)disconnectCallback
+{
+	if (self.isTerminating && _disconnectCallback != nil) {
+		return;
+	}
+
+	_disconnectCallback = [disconnectCallback copy];
+}
+
 - (void)ircConnection:(IRCConnection *)sender didDisconnectWithError:(nullable NSError *)disconnectError
 {
 	NSParameterAssert(sender == self.socket);
