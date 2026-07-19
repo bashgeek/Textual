@@ -2144,6 +2144,28 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	}
 }
 
+/* Called when the user reads a channel (selects it in the main window),
+ so that other clients sharing the same bouncer/connection learn we've
+ caught up and can clear their own local unread state for it too. */
+- (void)sendMarkReadForChannel:(IRCChannel *)channel
+{
+	NSParameterAssert(channel != nil);
+
+	if ([self isCapabilityEnabled:ClientIRCv3SupportedCapabilityReadMarker] == NO) {
+		return;
+	}
+
+	if (channel.isUtility) {
+		return;
+	}
+
+	NSString *timestamp = [TXSharedISOStandardDateFormatter() stringFromDate:[NSDate date]];
+
+	channel.lastReadMarkerTimestamp = timestamp;
+
+	[self send:@"MARKREAD", channel.name, [NSString stringWithFormat:@"timestamp=%@", timestamp], nil];
+}
+
 #pragma mark -
 #pragma mark ZNC Bouncer Accessories
 
@@ -6080,6 +6102,12 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 				break;
 			}
+			case IRCRemoteCommandMarkread: // Command: MARKREAD (draft/read-marker CAP)
+			{
+				[self receiveMarkRead:message];
+
+				break;
+			}
 		} // switch
 	}
 
@@ -8165,6 +8193,49 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 }
 
 #pragma mark -
+#pragma mark MARKREAD Command (draft/read-marker CAP)
+
+- (void)receiveMarkRead:(IRCMessage *)m
+{
+	NSParameterAssert(m != nil);
+
+	NSAssertReturn([m paramsCount] >= 2);
+
+	NSString *target = [m paramAt:0];
+
+	NSArray<NSString *> *selectorPair = [[m paramAt:1] componentsSeparatedByString:@"="];
+
+	if (selectorPair.count != 2 || [selectorPair[0] isEqualToStringIgnoringCase:@"timestamp"] == NO) {
+		return;
+	}
+
+	NSString *timestamp = selectorPair[1];
+
+	if ([timestamp isEqualToString:@"*"]) {
+		return; // No marker has ever been set for this target.
+	}
+
+	IRCChannel *channel = [self findChannel:target];
+
+	if (channel == nil) {
+		return;
+	}
+
+	channel.lastReadMarkerTimestamp = timestamp;
+
+	/* If another client (or the response to our own request) confirmed
+	 we're caught up here and we are not currently looking at this channel
+	 ourselves, clear the local unread indicators to match. */
+	if ([mainWindow() isItemSelected:channel] == NO) {
+		[channel resetState];
+
+		[mainWindowServerList() refreshMessageCountForItem:channel];
+
+		[TVCDockIcon updateDockIcon];
+	}
+}
+
+#pragma mark -
 #pragma mark BATCH Command
 
 - (id)queuedBatchMessageWithToken:(NSString *)batchToken
@@ -8324,6 +8395,12 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 			break;
 		}
+		case ClientIRCv3SupportedCapabilityReadMarker:
+		{
+			stringValue = @"draft/read-marker";
+
+			break;
+		}
 		case ClientIRCv3SupportedCapabilityMessageTags:
 		{
 			stringValue = @"message-tags";
@@ -8469,6 +8546,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		return ClientIRCv3SupportedCapabilityInviteNotify;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"draft/chathistory"]) {
 		return ClientIRCv3SupportedCapabilityChatHistory;
+	} else if ([capabilityString isEqualToStringIgnoringCase:@"draft/read-marker"]) {
+		return ClientIRCv3SupportedCapabilityReadMarker;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"labeled-response"]) {
 		return ClientIRCv3SupportedCapabilityLabeledResponse;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"message-tags"]) {
@@ -8540,6 +8619,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	appendValue(ClientIRCv3SupportedCapabilityMessageTags);
 	appendValue(ClientIRCv3SupportedCapabilityMultiPrefix);
 	appendValue(ClientIRCv3SupportedCapabilityPlayback);
+	appendValue(ClientIRCv3SupportedCapabilityReadMarker);
 	appendValue(ClientIRCv3SupportedCapabilityServerTime);
 	appendValue(ClientIRCv3SupportedCapabilitySetname);
 	appendValue(ClientIRCv3SupportedCapabilityStandardReplies);
@@ -8585,6 +8665,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 			 capability == ClientIRCv3SupportedCapabilityLabeledResponse		||
 			 capability == ClientIRCv3SupportedCapabilityMessageTags			||
 			 capability == ClientIRCv3SupportedCapabilityMultiPrefix			||
+			 capability == ClientIRCv3SupportedCapabilityReadMarker				||
 			 capability == ClientIRCv3SupportedCapabilitySASLGeneric			||
 			 capability == ClientIRCv3SupportedCapabilitySetname				||
 			 capability == ClientIRCv3SupportedCapabilityStandardReplies		||
@@ -8647,6 +8728,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	 [capabilityString isEqualToStringIgnoringCase:@"batch"]					||
 	 [capabilityString isEqualToStringIgnoringCase:@"chghost"]					||
 	 [capabilityString isEqualToStringIgnoringCase:@"draft/chathistory"]		||
+	 [capabilityString isEqualToStringIgnoringCase:@"draft/read-marker"]		||
 	 [capabilityString isEqualToStringIgnoringCase:@"extended-join"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"invite-notify"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"labeled-response"]			||

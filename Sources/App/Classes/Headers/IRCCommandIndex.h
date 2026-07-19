@@ -167,6 +167,7 @@ typedef NS_ENUM(NSUInteger, IRCRemoteCommand) {
 	IRCRemoteCommandKill = 1022,
 	IRCRemoteCommandList = 1023,
 	IRCRemoteCommandLocops = 1024,
+	IRCRemoteCommandMarkread = 1063,
 	IRCRemoteCommandMode = 1026,
 	IRCRemoteCommandMonitor = 1056,
 	IRCRemoteCommandNachat = 1027,

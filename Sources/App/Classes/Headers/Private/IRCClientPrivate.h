@@ -84,6 +84,8 @@ enum {
 
 - (void)cacheHighlightInChannel:(IRCChannel *)channel withLogLine:(TVCLogLine *)logLine;
 
+- (void)sendMarkReadForChannel:(IRCChannel *)channel;
+
 /* Channels (not queries) on this connection, that we are joined to, in
  which the given nickname is also present. */
 - (NSArray<IRCChannel *> *)channelsSharedWithNickname:(NSString *)nickname;

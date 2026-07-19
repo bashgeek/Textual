@@ -1656,6 +1656,12 @@ NSString * const TVCMainWindowSelectionChangedNotification = @"TVCMainWindowSele
 		}
 
 		[itemChangedTo resetState];
+
+		/* Sync read state (IRCv3 draft/read-marker) so other clients sharing
+		 the same bouncer/connection know we've read up to here too. */
+		if ([itemChangedTo isKindOfClass:[IRCChannel class]]) {
+			[itemChangedTo.associatedClient sendMarkReadForChannel:(IRCChannel *)itemChangedTo];
+		}
 	}
 
 	/* Notify WebKit its selection status has changed */

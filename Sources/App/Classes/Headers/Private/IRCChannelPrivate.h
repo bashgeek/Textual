@@ -62,6 +62,12 @@ NS_ASSUME_NONNULL_BEGIN
  app restarts — only covers gaps within the current run of the app. */
 @property (nonatomic, copy, nullable) NSString *lastSeenMessageId;
 
+/* The most recent draft/read-marker timestamp known for this channel,
+ either sent by us when the user reads it or received from another client
+ sharing the same bouncer/connection. Stored as the raw ISO 8601 wire
+ value — nothing currently needs to parse it into an NSDate. */
+@property (nonatomic, copy, nullable) NSString *lastReadMarkerTimestamp;
+
 - (instancetype)initWithConfig:(IRCChannelConfig *)config NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithConfigDictionary:(NSDictionary<NSString *, id> *)dic;
 
