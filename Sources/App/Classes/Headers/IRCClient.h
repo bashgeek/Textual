@@ -87,7 +87,8 @@ typedef NS_OPTIONS(NSUInteger, ClientIRCv3SupportedCapability) {
 	// NOTE: 1 << 22 through 1 << 28 are used by the private capability
 	// continuation enum in IRCClientPrivate.h (SASL/ZNC-specific flags).
 	ClientIRCv3SupportedCapabilityLabeledResponse		= 1 << 29, // YES if labeled-response CAP supported
-	ClientIRCv3SupportedCapabilityStandardReplies		= 1 << 30  // YES if standard-replies CAP supported
+	ClientIRCv3SupportedCapabilityStandardReplies		= 1 << 30, // YES if standard-replies CAP supported
+	ClientIRCv3SupportedCapabilityChatHistory			= 1ULL << 31 // YES if draft/chathistory CAP supported
 };
 
 TEXTUAL_EXTERN NSNotificationName const IRCClientConfigurationWasUpdatedNotification;

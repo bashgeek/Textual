@@ -2113,6 +2113,37 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	[self send:@"PRIVMSG", @"*playback", command, nil];
 }
 
+#define _chatHistoryFetchLimit		@"100"
+
+/* IRCv3 draft/chathistory equivalent of -requestPlayback, for bouncers/
+ servers that support the standard mechanism instead of (or in addition
+ to) ZNC's proprietary one. Only requests a channel's missed messages if
+ we have already seen a message there this run of the app — a channel
+ with no known msgid yet relies on the existing local historic log
+ (or its own initial JOIN backlog) exactly as before. */
+- (void)requestChatHistoryForMissedMessages
+{
+	if ([self isCapabilityEnabled:ClientIRCv3SupportedCapabilityChatHistory] == NO) {
+		return;
+	}
+
+	for (IRCChannel *channel in self.channelList) {
+		if (channel.isChannel == NO) {
+			continue;
+		}
+
+		NSString *lastSeenMessageId = channel.lastSeenMessageId;
+
+		if (lastSeenMessageId == nil) {
+			continue;
+		}
+
+		NSString *selector = [NSString stringWithFormat:@"msgid=%@", lastSeenMessageId];
+
+		[self send:@"CHATHISTORY", @"LATEST", channel.name, selector, _chatHistoryFetchLimit, nil];
+	}
+}
+
 #pragma mark -
 #pragma mark ZNC Bouncer Accessories
 
@@ -6358,6 +6389,10 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		return;
 	}
 
+	if (m.msgid != nil) {
+		channel.lastSeenMessageId = m.msgid;
+	}
+
 	NSString *sender = m.senderNickname;
 
 	BOOL isSelfMessage = NO;
@@ -8283,6 +8318,12 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 			break;
 		}
+		case ClientIRCv3SupportedCapabilityChatHistory:
+		{
+			stringValue = @"draft/chathistory";
+
+			break;
+		}
 		case ClientIRCv3SupportedCapabilityMessageTags:
 		{
 			stringValue = @"message-tags";
@@ -8426,6 +8467,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		return ClientIRCv3SupportedCapabilityExtendedJoin;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"invite-notify"]) {
 		return ClientIRCv3SupportedCapabilityInviteNotify;
+	} else if ([capabilityString isEqualToStringIgnoringCase:@"draft/chathistory"]) {
+		return ClientIRCv3SupportedCapabilityChatHistory;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"labeled-response"]) {
 		return ClientIRCv3SupportedCapabilityLabeledResponse;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"message-tags"]) {
@@ -8486,6 +8529,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	appendValue(ClientIRCv3SupportedCapabilityAwayNotify);
 	appendValue(ClientIRCv3SupportedCapabilityBatch);
 	appendValue(ClientIRCv3SupportedCapabilityChangeHost);
+	appendValue(ClientIRCv3SupportedCapabilityChatHistory);
 	appendValue(ClientIRCv3SupportedCapabilityEchoMessage);
 	appendValue(ClientIRCv3SupportedCapabilityExtendedJoin);
 	appendValue(ClientIRCv3SupportedCapabilityIdentifyCTCP);
@@ -8532,6 +8576,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 			 capability == ClientIRCv3SupportedCapabilityAwayNotify				||
 			 capability == ClientIRCv3SupportedCapabilityBatch					||
 			 capability == ClientIRCv3SupportedCapabilityChangeHost				||
+			 capability == ClientIRCv3SupportedCapabilityChatHistory			||
 			 capability == ClientIRCv3SupportedCapabilityEchoMessage			||
 			 capability == ClientIRCv3SupportedCapabilityExtendedJoin			||
 			 capability == ClientIRCv3SupportedCapabilityIdentifyCTCP			||
@@ -8601,6 +8646,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	 [capabilityString isEqualToStringIgnoringCase:@"away-notify"]				||
 	 [capabilityString isEqualToStringIgnoringCase:@"batch"]					||
 	 [capabilityString isEqualToStringIgnoringCase:@"chghost"]					||
+	 [capabilityString isEqualToStringIgnoringCase:@"draft/chathistory"]		||
 	 [capabilityString isEqualToStringIgnoringCase:@"extended-join"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"invite-notify"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"labeled-response"]			||
@@ -9092,6 +9138,10 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 	/* Request playback since the last seen message when previously connected */
 	[self requestPlayback];
+
+	/* Same idea, but using the IRCv3-standard chathistory mechanism for
+	 servers/bouncers that support it instead of (or in addition to) ZNC's */
+	[self requestChatHistoryForMissedMessages];
 
 	/* Activate existing queries */
 	for (IRCChannel *c in self.channelList) {

@@ -57,6 +57,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL queryInitiatedByRemoteUser;
 @property (nonatomic, copy, nullable) NSString *queryInitiatorHostmaskAddress;
 
+/* The IRCv3 "msgid" of the most recent message seen in this channel, used
+ to fill in gaps with CHATHISTORY LATEST on reconnect. Not persisted across
+ app restarts — only covers gaps within the current run of the app. */
+@property (nonatomic, copy, nullable) NSString *lastSeenMessageId;
+
 - (instancetype)initWithConfig:(IRCChannelConfig *)config NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithConfigDictionary:(NSDictionary<NSString *, id> *)dic;
 
