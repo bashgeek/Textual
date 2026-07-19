@@ -252,6 +252,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 @property (nonatomic, strong, nullable) NSMutableString *zncBouncerCertificateChainDataMutable;
 @property (nonatomic, copy, nullable) NSString *temporaryServerAddressOverride;
 @property (nonatomic, assign) uint16_t temporaryServerPortOverride;
+@property (nonatomic, assign) BOOL temporaryServerConnectionPrefersSecuredConnectionOverride; // Used to force TLS for a single reconnect (e.g. an STS upgrade), without persisting it to server config.
 @property (readonly) BOOL isBrokenIRCd_aka_Twitch;
 @property (readonly) BOOL monitorAwayStatus;
 @property (readonly) BOOL supportsAdvancedTracking;
@@ -8610,6 +8611,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	 [capabilityString isEqualToStringIgnoringCase:@"identify-msg"]				||
 	 [capabilityString isEqualToStringIgnoringCase:@"multi-prefix"]				||
 	 [capabilityString isEqualToStringIgnoringCase:@"sasl"]						||
+	 [capabilityString isEqualToStringIgnoringCase:@"sts"]						||
 	 [capabilityString isEqualToStringIgnoringCase:@"server-time"]				||
 	 [capabilityString isEqualToStringIgnoringCase:@"userhost-in-names"]		||
 	 [capabilityString isEqualToStringIgnoringCase:@"plan.io/playback"]			||
@@ -8698,6 +8700,12 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 	if ([capabilityString isEqualToString:@"sasl"]) {
 		[self processPendingCapabilityForSASL:capabilityOptions];
+
+		return;
+	}
+
+	if ([capabilityString isEqualToString:@"sts"]) {
+		[self processCapabilityForSTS:capabilityOptions];
 
 		return;
 	}
@@ -8863,6 +8871,146 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	[self disablePendingCapability:ClientIRCv3SupportedCapabilityIsInSASLNegotiation];
 
 	[self disableCapability:ClientIRCv3SupportedCapabilityIsIdentifiedWithSASL];
+}
+
+#pragma mark -
+#pragma mark Strict Transport Security (STS)
+
+#define _stsPoliciesDefaultsKey		@"IRCClient Strict Transport Security Policies"
+
++ (NSDictionary<NSString *, NSDictionary *> *)stsPolicies
+{
+	NSDictionary *policies = [RZUserDefaults() dictionaryForKey:_stsPoliciesDefaultsKey];
+
+	if (policies == nil) {
+		return @{};
+	}
+
+	return policies;
+}
+
++ (void)setSTSPolicies:(NSDictionary<NSString *, NSDictionary *> *)policies
+{
+	NSParameterAssert(policies != nil);
+
+	[RZUserDefaults() setObject:policies forKey:_stsPoliciesDefaultsKey];
+}
+
++ (nullable NSNumber *)stsPolicyPortForServerAddress:(NSString *)serverAddress
+{
+	NSParameterAssert(serverAddress != nil);
+
+	NSDictionary *policy = [self stsPolicies][serverAddress.lowercaseString];
+
+	if (policy == nil) {
+		return nil;
+	}
+
+	NSDate *expiresAt = policy[@"expiresAt"];
+
+	if (expiresAt == nil || [expiresAt compare:[NSDate date]] != NSOrderedDescending) {
+		/* Policy has expired. Clean it up so it does not linger forever. */
+		[self removeSTSPolicyForServerAddress:serverAddress];
+
+		return nil;
+	}
+
+	return policy[@"port"];
+}
+
++ (void)setSTSPolicyPort:(NSUInteger)port duration:(NSUInteger)duration forServerAddress:(NSString *)serverAddress
+{
+	NSParameterAssert(serverAddress != nil);
+
+	NSMutableDictionary<NSString *, NSDictionary *> *policies = [[self stsPolicies] mutableCopy];
+
+	policies[serverAddress.lowercaseString] = @{
+		@"port" : @(port),
+		@"expiresAt" : [NSDate dateWithTimeIntervalSinceNow:duration]
+	};
+
+	[self setSTSPolicies:policies];
+}
+
++ (void)removeSTSPolicyForServerAddress:(NSString *)serverAddress
+{
+	NSParameterAssert(serverAddress != nil);
+
+	NSMutableDictionary<NSString *, NSDictionary *> *policies = [[self stsPolicies] mutableCopy];
+
+	if (policies[serverAddress.lowercaseString] == nil) {
+		return;
+	}
+
+	[policies removeObjectForKey:serverAddress.lowercaseString];
+
+	[self setSTSPolicies:policies];
+}
+
+/* sts is advertised with a value such as "port=6697,duration=2592000" (or
+ just "port=6697" when advertised over plaintext — see below). It is not
+ negotiated with CAP REQ; the advertised value is acted on directly. */
+- (void)processCapabilityForSTS:(nullable NSArray<NSString *> *)capabilityOptions
+{
+	NSUInteger port = 0;
+	NSUInteger duration = 0;
+
+	for (NSString *option in capabilityOptions) {
+		NSArray<NSString *> *pair = [option componentsSeparatedByString:@"="];
+
+		if (pair.count != 2) {
+			continue;
+		}
+
+		NSString *key = pair[0];
+		NSString *value = pair[1];
+
+		if ([key isEqualToStringIgnoringCase:@"port"]) {
+			port = value.integerValue;
+		} else if ([key isEqualToStringIgnoringCase:@"duration"]) {
+			duration = value.integerValue;
+		}
+	}
+
+	NSString *serverAddress = self.serverAddress;
+
+	if (serverAddress == nil) {
+		return;
+	}
+
+	if (self.isSecured) {
+		/* Advertised over an already-secure connection: safe to persist for
+		 future connections. A duration of 0 revokes any existing policy. */
+		if (duration > 0 && port > 0) {
+			[self.class setSTSPolicyPort:port duration:duration forServerAddress:serverAddress];
+		} else {
+			[self.class removeSTSPolicyForServerAddress:serverAddress];
+		}
+
+		return;
+	}
+
+	/* Advertised over plaintext: never persist a policy sourced from an
+	 unauthenticated connection — that would let anyone on the network path
+	 plant a permanent redirect. Only perform a one-time upgrade reconnect
+	 for this session, the same way a server-initiated redirect (RPL_REDIR)
+	 is already handled elsewhere in this file. */
+	if (port == 0) {
+		return;
+	}
+
+	__weak IRCClient *weakSelf = self;
+
+	self.disconnectCallback = ^{
+		[weakSelf connect];
+	};
+
+	[self disconnect];
+
+	/* -disconnect would destroy these so we set them after... */
+	self.temporaryServerAddressOverride = serverAddress;
+	self.temporaryServerPortOverride = port;
+	self.temporaryServerConnectionPrefersSecuredConnectionOverride = YES;
 }
 
 #pragma mark -
@@ -11472,6 +11620,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		{
 			serverPort = self.temporaryServerPortOverride;
 		}
+
+		connectionPrefersSecuredConnection = self.temporaryServerConnectionPrefersSecuredConnectionOverride;
 	}
 
 	if (serverAddress.isValidInternetAddress == NO) {
@@ -11503,6 +11653,19 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	 store. Once its defined, its to be nil'd out no matter what. */
 	self.temporaryServerAddressOverride = nil;
 	self.temporaryServerPortOverride = 0;
+	self.temporaryServerConnectionPrefersSecuredConnectionOverride = NO;
+
+	/* IRCv3 Strict Transport Security: if this host has a valid, unexpired
+	 policy learned from a prior secure connection, always honor it — even
+	 if the saved server configuration itself still says insecure. This is
+	 what protects against a downgrade attack overriding local prefs. */
+	NSNumber *stsPolicyPort = [self.class stsPolicyPortForServerAddress:serverAddress];
+
+	if (stsPolicyPort != nil) {
+		serverPort = stsPolicyPort.unsignedShortValue;
+
+		connectionPrefersSecuredConnection = YES;
+	}
 
 	/* Reset status */
 	self.connectType = connectMode;
