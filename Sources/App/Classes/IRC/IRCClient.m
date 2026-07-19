@@ -5919,6 +5919,24 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 				break;
 			}
+			case IRCRemoteCommandFail: // Command: FAIL (standard-replies CAP)
+			{
+				[self receiveFail:message];
+
+				break;
+			}
+			case IRCRemoteCommandWarn: // Command: WARN (standard-replies CAP)
+			{
+				[self receiveWarn:message];
+
+				break;
+			}
+			case IRCRemoteCommandNote: // Command: NOTE (standard-replies CAP)
+			{
+				[self receiveNote:message];
+
+				break;
+			}
 			case IRCRemoteCommandInvite: // Command: INVITE
 			{
 				[self receiveInvite:message];
@@ -7852,6 +7870,46 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	[self printError:message asCommand:m.command];
 }
 
+#pragma mark -
+#pragma mark Standard Replies (standard-replies CAP)
+
+/* FAIL/WARN/NOTE format: <command> <code> [<context>...] :<description> */
+/* These are always parsed and shown when received, regardless of whether
+ standard-replies was successfully negotiated, since a server sending one
+ is signaling something the user should know about either way. */
+- (void)receiveFail:(IRCMessage *)m
+{
+	[self receiveStandardReply:m ofType:@"FAIL"];
+}
+
+- (void)receiveWarn:(IRCMessage *)m
+{
+	[self receiveStandardReply:m ofType:@"WARN"];
+}
+
+- (void)receiveNote:(IRCMessage *)m
+{
+	[self receiveStandardReply:m ofType:@"NOTE"];
+}
+
+- (void)receiveStandardReply:(IRCMessage *)m ofType:(NSString *)replyType
+{
+	NSParameterAssert(m != nil);
+	NSParameterAssert(replyType != nil);
+
+	NSAssertReturn([m paramsCount] >= 3);
+
+	NSString *failedCommand = [m paramAt:0];
+
+	NSString *code = [m paramAt:1];
+
+	NSString *description = m.params.lastObject;
+
+	NSString *message = TXTLS(@"IRC[fwn-01]", replyType, failedCommand, code, description);
+
+	[self printError:message asCommand:m.command];
+}
+
 - (void)receiveCertInfo:(IRCMessage *)m
 {
 	NSParameterAssert(m != nil);
@@ -8230,6 +8288,12 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 			break;
 		}
+		case ClientIRCv3SupportedCapabilityStandardReplies:
+		{
+			stringValue = @"standard-replies";
+
+			break;
+		}
 		case ClientIRCv3SupportedCapabilitySetname:
 		{
 			stringValue = @"setname";
@@ -8365,6 +8429,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		return ClientIRCv3SupportedCapabilityLabeledResponse;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"message-tags"]) {
 		return ClientIRCv3SupportedCapabilityMessageTags;
+	} else if ([capabilityString isEqualToStringIgnoringCase:@"standard-replies"]) {
+		return ClientIRCv3SupportedCapabilityStandardReplies;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"setname"]) {
 		return ClientIRCv3SupportedCapabilitySetname;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"echo-message"]) {
@@ -8431,6 +8497,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	appendValue(ClientIRCv3SupportedCapabilityPlayback);
 	appendValue(ClientIRCv3SupportedCapabilityServerTime);
 	appendValue(ClientIRCv3SupportedCapabilitySetname);
+	appendValue(ClientIRCv3SupportedCapabilityStandardReplies);
 	appendValue(ClientIRCv3SupportedCapabilityUserhostInNames);
 	appendValue(ClientIRCv3SupportedCapabilityZNCCertInfoModule);
 	appendValue(ClientIRCv3SupportedCapabilityZNCPlaybackModule);
@@ -8474,6 +8541,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 			 capability == ClientIRCv3SupportedCapabilityMultiPrefix			||
 			 capability == ClientIRCv3SupportedCapabilitySASLGeneric			||
 			 capability == ClientIRCv3SupportedCapabilitySetname				||
+			 capability == ClientIRCv3SupportedCapabilityStandardReplies		||
 			 capability == ClientIRCv3SupportedCapabilityServerTime				||
 			 capability == ClientIRCv3SupportedCapabilityUserhostInNames		||
 			 capability == ClientIRCv3SupportedCapabilityPlanioPlayback			||
@@ -8536,6 +8604,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	 [capabilityString isEqualToStringIgnoringCase:@"invite-notify"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"labeled-response"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"message-tags"]				||
+	 [capabilityString isEqualToStringIgnoringCase:@"standard-replies"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"setname"]					||
 	 [capabilityString isEqualToStringIgnoringCase:@"identify-ctcp"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"identify-msg"]				||

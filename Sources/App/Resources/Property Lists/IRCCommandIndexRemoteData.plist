@@ -5,7 +5,7 @@
 	<key>Reserved Information</key>
 	<dict>
 		<key>Next Index Value</key>
-		<real>1060</real>
+		<real>1063</real>
 	</dict>
 	<key>account</key>
 	<dict>
@@ -76,6 +76,13 @@
 		<integer>1016</integer>
 		<key>outgoingColonIndex</key>
 		<integer>0</integer>
+	</dict>
+	<key>fail</key>
+	<dict>
+		<key>indexValue</key>
+		<real>1060</real>
+		<key>outgoingColonIndex</key>
+		<integer>999</integer>
 	</dict>
 	<key>gline</key>
 	<dict>
@@ -182,6 +189,13 @@
 		<key>outgoingColonIndex</key>
 		<integer>999</integer>
 	</dict>
+	<key>note</key>
+	<dict>
+		<key>indexValue</key>
+		<real>1062</real>
+		<key>outgoingColonIndex</key>
+		<integer>999</integer>
+	</dict>
 	<key>notice</key>
 	<dict>
 		<key>indexValue</key>
@@ -272,6 +286,13 @@
 		<integer>1038</integer>
 		<key>outgoingColonIndex</key>
 		<integer>0</integer>
+	</dict>
+	<key>warn</key>
+	<dict>
+		<key>indexValue</key>
+		<real>1061</real>
+		<key>outgoingColonIndex</key>
+		<integer>999</integer>
 	</dict>
 	<key>watch</key>
 	<dict>
