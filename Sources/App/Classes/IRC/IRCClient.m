@@ -8218,6 +8218,18 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 			break;
 		}
+		case ClientIRCv3SupportedCapabilityLabeledResponse:
+		{
+			stringValue = @"labeled-response";
+
+			break;
+		}
+		case ClientIRCv3SupportedCapabilityMessageTags:
+		{
+			stringValue = @"message-tags";
+
+			break;
+		}
 		case ClientIRCv3SupportedCapabilitySetname:
 		{
 			stringValue = @"setname";
@@ -8349,6 +8361,10 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		return ClientIRCv3SupportedCapabilityExtendedJoin;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"invite-notify"]) {
 		return ClientIRCv3SupportedCapabilityInviteNotify;
+	} else if ([capabilityString isEqualToStringIgnoringCase:@"labeled-response"]) {
+		return ClientIRCv3SupportedCapabilityLabeledResponse;
+	} else if ([capabilityString isEqualToStringIgnoringCase:@"message-tags"]) {
+		return ClientIRCv3SupportedCapabilityMessageTags;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"setname"]) {
 		return ClientIRCv3SupportedCapabilitySetname;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"echo-message"]) {
@@ -8409,6 +8425,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	appendValue(ClientIRCv3SupportedCapabilityIdentifyMsg);
 	appendValue(ClientIRCv3SupportedCapabilityInviteNotify);
 	appendValue(ClientIRCv3SupportedCapabilityIsIdentifiedWithSASL);
+	appendValue(ClientIRCv3SupportedCapabilityLabeledResponse);
+	appendValue(ClientIRCv3SupportedCapabilityMessageTags);
 	appendValue(ClientIRCv3SupportedCapabilityMultiPrefix);
 	appendValue(ClientIRCv3SupportedCapabilityPlayback);
 	appendValue(ClientIRCv3SupportedCapabilityServerTime);
@@ -8451,6 +8469,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 			 capability == ClientIRCv3SupportedCapabilityIdentifyCTCP			||
 			 capability == ClientIRCv3SupportedCapabilityIdentifyMsg			||
 			 capability == ClientIRCv3SupportedCapabilityInviteNotify			||
+			 capability == ClientIRCv3SupportedCapabilityLabeledResponse		||
+			 capability == ClientIRCv3SupportedCapabilityMessageTags			||
 			 capability == ClientIRCv3SupportedCapabilityMultiPrefix			||
 			 capability == ClientIRCv3SupportedCapabilitySASLGeneric			||
 			 capability == ClientIRCv3SupportedCapabilitySetname				||
@@ -8514,6 +8534,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	 [capabilityString isEqualToStringIgnoringCase:@"chghost"]					||
 	 [capabilityString isEqualToStringIgnoringCase:@"extended-join"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"invite-notify"]			||
+	 [capabilityString isEqualToStringIgnoringCase:@"labeled-response"]			||
+	 [capabilityString isEqualToStringIgnoringCase:@"message-tags"]				||
 	 [capabilityString isEqualToStringIgnoringCase:@"setname"]					||
 	 [capabilityString isEqualToStringIgnoringCase:@"identify-ctcp"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"identify-msg"]				||

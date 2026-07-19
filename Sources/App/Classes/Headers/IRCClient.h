@@ -82,7 +82,11 @@ typedef NS_OPTIONS(NSUInteger, ClientIRCv3SupportedCapability) {
 	ClientIRCv3SupportedCapabilityAccountTag			= 1 << 17, // YES if account-tag CAP supported
 	ClientIRCv3SupportedCapabilityExtendedJoin			= 1 << 18, // YES if extended-join CAP supported
 	ClientIRCv3SupportedCapabilitySetname				= 1 << 19, // YES if setname CAP supported
-	ClientIRCv3SupportedCapabilityInviteNotify			= 1 << 20  // YES if invite-notify CAP supported
+	ClientIRCv3SupportedCapabilityInviteNotify			= 1 << 20, // YES if invite-notify CAP supported
+	ClientIRCv3SupportedCapabilityMessageTags			= 1 << 21, // YES if message-tags CAP supported
+	// NOTE: 1 << 22 through 1 << 28 are used by the private capability
+	// continuation enum in IRCClientPrivate.h (SASL/ZNC-specific flags).
+	ClientIRCv3SupportedCapabilityLabeledResponse		= 1 << 29  // YES if labeled-response CAP supported
 };
 
 TEXTUAL_EXTERN NSNotificationName const IRCClientConfigurationWasUpdatedNotification;
