@@ -5,19 +5,19 @@
 	<key>Reserved Information</key>
 	<dict>
 		<key>Next Index Value</key>
+		<real>1060</real>
+	</dict>
+	<key>account</key>
+	<dict>
+		<key>indexValue</key>
 		<real>1058</real>
+		<key>outgoingColonIndex</key>
+		<integer>999</integer>
 	</dict>
 	<key>adchat</key>
 	<dict>
 		<key>indexValue</key>
 		<integer>1003</integer>
-		<key>outgoingColonIndex</key>
-		<integer>0</integer>
-	</dict>
-	<key>away</key>
-	<dict>
-		<key>indexValue</key>
-		<integer>1050</integer>
 		<key>outgoingColonIndex</key>
 		<integer>0</integer>
 	</dict>
@@ -27,6 +27,13 @@
 		<integer>1005</integer>
 		<key>outgoingColonIndex</key>
 		<integer>999</integer>
+	</dict>
+	<key>away</key>
+	<dict>
+		<key>indexValue</key>
+		<integer>1050</integer>
+		<key>outgoingColonIndex</key>
+		<integer>0</integer>
 	</dict>
 	<key>batch</key>
 	<dict>
@@ -221,6 +228,13 @@
 	<dict>
 		<key>indexValue</key>
 		<integer>1036</integer>
+		<key>outgoingColonIndex</key>
+		<integer>0</integer>
+	</dict>
+	<key>setname</key>
+	<dict>
+		<key>indexValue</key>
+		<real>1059</real>
 		<key>outgoingColonIndex</key>
 		<integer>0</integer>
 	</dict>

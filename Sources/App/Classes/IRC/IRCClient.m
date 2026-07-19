@@ -5994,6 +5994,12 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 				break;
 			}
+			case IRCRemoteCommandAccount: // Command: ACCOUNT (account-notify CAP)
+			{
+				[self receiveAccountNotifyCapability:message];
+
+				break;
+			}
 			case IRCRemoteCommandAway: // Command: AWAY (away-notify CAP)
 			{
 				[self receiveAwayNotifyCapability:message];
@@ -6015,6 +6021,12 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 			case IRCRemoteCommandChghost:
 			{
 				[self receiveChangeHost:message];
+
+				break;
+			}
+			case IRCRemoteCommandSetname: // Command: SETNAME (setname CAP)
+			{
+				[self receiveSetName:message];
 
 				break;
 			}
@@ -7067,6 +7079,18 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		userMutable.username = m.senderUsername;
 		userMutable.address = m.senderAddress;
 
+		/* extended-join appends the account name (or "*" if not logged in)
+		 and the real name as two extra JOIN params. */
+		if ([self isCapabilityEnabled:ClientIRCv3SupportedCapabilityExtendedJoin] && [m paramsCount] >= 3) {
+			NSString *accountName = [m paramAt:1];
+
+			if ([accountName isEqualToString:@"*"] == NO) {
+				userMutable.account = accountName;
+			}
+
+			userMutable.realName = [m sequence:2];
+		}
+
 		IRCUser *userAdded = [self addUserAndReturn:userMutable];
 
 		IRCChannelUser *member = [[IRCChannelUser alloc] initWithUser:userAdded];
@@ -7767,9 +7791,23 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 	NSString *sender = m.senderNickname;
 
+	NSString *invitedNickname = [m paramAt:0];
+
 	NSString *channelName = [m paramAt:1];
 
-	NSString *message = TXTLS(@"IRC[qw4-t3]", sender, m.senderUsername, m.senderAddress, channelName);
+	/* With invite-notify enabled, channel operators also receive INVITE
+	 messages for other users being invited. Only treat this as "you were
+	 invited" — with its notification and auto-join — when we are actually
+	 the invited party. */
+	BOOL invitedIsMyself = [self nicknameIsMyself:invitedNickname];
+
+	NSString *message = nil;
+
+	if (invitedIsMyself) {
+		message = TXTLS(@"IRC[qw4-t3]", sender, m.senderUsername, m.senderAddress, channelName);
+	} else {
+		message = TXTLS(@"IRC[inv-no1]", sender, m.senderUsername, m.senderAddress, invitedNickname, channelName);
+	}
 
 	/* Invite notifications are sent to frontmost channel on server of if it is
 	 not on server, then it will be redirected to console. */
@@ -7782,6 +7820,10 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 			 asType:TVCLogLineTypeInvite
 			command:m.command
 		 receivedAt:m.receivedAt];
+	}
+
+	if (invitedIsMyself == NO) {
+		return;
 	}
 
 	[self notifyEvent:TXNotificationTypeInvite lineType:TVCLogLineTypeInvite target:nil nickname:sender text:channelName];
@@ -7981,6 +8023,54 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 }
 
 #pragma mark -
+#pragma mark ACCOUNT Command (account-notify CAP)
+
+- (void)receiveAccountNotifyCapability:(IRCMessage *)m
+{
+	NSParameterAssert(m != nil);
+
+	if ([self isCapabilityEnabled:ClientIRCv3SupportedCapabilityAccountNotify] == NO) {
+		return;
+	}
+
+	NSAssertReturn([m paramsCount] > 0);
+
+	NSString *nickname = m.senderNickname;
+
+	NSString *accountName = [m paramAt:0];
+
+	if ([accountName isEqualToString:@"*"]) {
+		accountName = nil;
+	}
+
+	[self modifyUserUserWithNickname:nickname withBlock:^(IRCUserMutable *userMutable) {
+		userMutable.account = accountName;
+	}];
+}
+
+#pragma mark -
+#pragma mark SETNAME Command (setname CAP)
+
+- (void)receiveSetName:(IRCMessage *)m
+{
+	NSParameterAssert(m != nil);
+
+	if ([self isCapabilityEnabled:ClientIRCv3SupportedCapabilitySetname] == NO) {
+		return;
+	}
+
+	NSAssertReturn([m paramsCount] > 0);
+
+	NSString *nickname = m.senderNickname;
+
+	NSString *newRealName = [m sequence:0];
+
+	[self modifyUserUserWithNickname:nickname withBlock:^(IRCUserMutable *userMutable) {
+		userMutable.realName = newRealName;
+	}];
+}
+
+#pragma mark -
 #pragma mark BATCH Command
 
 - (id)queuedBatchMessageWithToken:(NSString *)batchToken
@@ -8086,6 +8176,18 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 #pragma clang diagnostic ignored "-Wswitch"
 
 	switch (capability) {
+		case ClientIRCv3SupportedCapabilityAccountNotify:
+		{
+			stringValue = @"account-notify";
+
+			break;
+		}
+		case ClientIRCv3SupportedCapabilityAccountTag:
+		{
+			stringValue = @"account-tag";
+
+			break;
+		}
 		case ClientIRCv3SupportedCapabilityAwayNotify:
 		{
 			stringValue = @"away-notify";
@@ -8101,6 +8203,24 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		case ClientIRCv3SupportedCapabilityChangeHost:
 		{
 			stringValue = @"chghost";
+
+			break;
+		}
+		case ClientIRCv3SupportedCapabilityExtendedJoin:
+		{
+			stringValue = @"extended-join";
+
+			break;
+		}
+		case ClientIRCv3SupportedCapabilityInviteNotify:
+		{
+			stringValue = @"invite-notify";
+
+			break;
+		}
+		case ClientIRCv3SupportedCapabilitySetname:
+		{
+			stringValue = @"setname";
 
 			break;
 		}
@@ -8215,12 +8335,22 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 {
 	NSParameterAssert(capabilityString != nil);
 
-	if ([capabilityString isEqualToStringIgnoringCase:@"away-notify"]) {
+	if ([capabilityString isEqualToStringIgnoringCase:@"account-notify"]) {
+		return ClientIRCv3SupportedCapabilityAccountNotify;
+	} else if ([capabilityString isEqualToStringIgnoringCase:@"account-tag"]) {
+		return ClientIRCv3SupportedCapabilityAccountTag;
+	} else if ([capabilityString isEqualToStringIgnoringCase:@"away-notify"]) {
 		return ClientIRCv3SupportedCapabilityAwayNotify;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"batch"]) {
 		return ClientIRCv3SupportedCapabilityBatch;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"chghost"]) {
 		return ClientIRCv3SupportedCapabilityChangeHost;
+	} else if ([capabilityString isEqualToStringIgnoringCase:@"extended-join"]) {
+		return ClientIRCv3SupportedCapabilityExtendedJoin;
+	} else if ([capabilityString isEqualToStringIgnoringCase:@"invite-notify"]) {
+		return ClientIRCv3SupportedCapabilityInviteNotify;
+	} else if ([capabilityString isEqualToStringIgnoringCase:@"setname"]) {
+		return ClientIRCv3SupportedCapabilitySetname;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"echo-message"]) {
 		return ClientIRCv3SupportedCapabilityEchoMessage;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"multi-prefix"]) {
@@ -8268,16 +8398,21 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		}
 	};
 
+	appendValue(ClientIRCv3SupportedCapabilityAccountNotify);
+	appendValue(ClientIRCv3SupportedCapabilityAccountTag);
 	appendValue(ClientIRCv3SupportedCapabilityAwayNotify);
 	appendValue(ClientIRCv3SupportedCapabilityBatch);
 	appendValue(ClientIRCv3SupportedCapabilityChangeHost);
 	appendValue(ClientIRCv3SupportedCapabilityEchoMessage);
+	appendValue(ClientIRCv3SupportedCapabilityExtendedJoin);
 	appendValue(ClientIRCv3SupportedCapabilityIdentifyCTCP);
 	appendValue(ClientIRCv3SupportedCapabilityIdentifyMsg);
+	appendValue(ClientIRCv3SupportedCapabilityInviteNotify);
 	appendValue(ClientIRCv3SupportedCapabilityIsIdentifiedWithSASL);
 	appendValue(ClientIRCv3SupportedCapabilityMultiPrefix);
 	appendValue(ClientIRCv3SupportedCapabilityPlayback);
 	appendValue(ClientIRCv3SupportedCapabilityServerTime);
+	appendValue(ClientIRCv3SupportedCapabilitySetname);
 	appendValue(ClientIRCv3SupportedCapabilityUserhostInNames);
 	appendValue(ClientIRCv3SupportedCapabilityZNCCertInfoModule);
 	appendValue(ClientIRCv3SupportedCapabilityZNCPlaybackModule);
@@ -8306,14 +8441,19 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 #pragma clang diagnostic ignored "-Wtautological-compare"
 
 			return
-			(capability == ClientIRCv3SupportedCapabilityAwayNotify				||
+			(capability == ClientIRCv3SupportedCapabilityAccountNotify			||
+			 capability == ClientIRCv3SupportedCapabilityAccountTag				||
+			 capability == ClientIRCv3SupportedCapabilityAwayNotify				||
 			 capability == ClientIRCv3SupportedCapabilityBatch					||
 			 capability == ClientIRCv3SupportedCapabilityChangeHost				||
 			 capability == ClientIRCv3SupportedCapabilityEchoMessage			||
+			 capability == ClientIRCv3SupportedCapabilityExtendedJoin			||
 			 capability == ClientIRCv3SupportedCapabilityIdentifyCTCP			||
 			 capability == ClientIRCv3SupportedCapabilityIdentifyMsg			||
+			 capability == ClientIRCv3SupportedCapabilityInviteNotify			||
 			 capability == ClientIRCv3SupportedCapabilityMultiPrefix			||
 			 capability == ClientIRCv3SupportedCapabilitySASLGeneric			||
+			 capability == ClientIRCv3SupportedCapabilitySetname				||
 			 capability == ClientIRCv3SupportedCapabilityServerTime				||
 			 capability == ClientIRCv3SupportedCapabilityUserhostInNames		||
 			 capability == ClientIRCv3SupportedCapabilityPlanioPlayback			||
@@ -8367,9 +8507,14 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	}
 
 	return
-	([capabilityString isEqualToStringIgnoringCase:@"away-notify"]				||
+	([capabilityString isEqualToStringIgnoringCase:@"account-notify"]			||
+	 [capabilityString isEqualToStringIgnoringCase:@"account-tag"]				||
+	 [capabilityString isEqualToStringIgnoringCase:@"away-notify"]				||
 	 [capabilityString isEqualToStringIgnoringCase:@"batch"]					||
 	 [capabilityString isEqualToStringIgnoringCase:@"chghost"]					||
+	 [capabilityString isEqualToStringIgnoringCase:@"extended-join"]			||
+	 [capabilityString isEqualToStringIgnoringCase:@"invite-notify"]			||
+	 [capabilityString isEqualToStringIgnoringCase:@"setname"]					||
 	 [capabilityString isEqualToStringIgnoringCase:@"identify-ctcp"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"identify-msg"]				||
 	 [capabilityString isEqualToStringIgnoringCase:@"multi-prefix"]				||

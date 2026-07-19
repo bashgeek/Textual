@@ -58,6 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, copy, nullable) NSString *hostmask;
 @property (readonly, copy, nullable) NSString *hostmaskFragment; // -hostmask without nickname
 @property (readonly, copy, nullable) NSString *realName;
+@property (readonly, copy, nullable) NSString *account; // Set by account-notify/account-tag/extended-join CAPs; nil if unknown or not logged in
 @property (readonly) BOOL isAway;
 @property (readonly) BOOL isIRCop;
 
@@ -87,6 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readwrite, nullable) NSString *username;
 @property (nonatomic, copy, readwrite, nullable) NSString *address;
 @property (nonatomic, copy, readwrite, nullable) NSString *realName;
+@property (nonatomic, copy, readwrite, nullable) NSString *account;
 @property (nonatomic, assign, readwrite) BOOL isAway;
 @property (nonatomic, assign, readwrite) BOOL isIRCop;
 
