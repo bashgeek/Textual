@@ -255,14 +255,12 @@ div.line.grouped {
 	margin-top: -1px;
 }
 
-div.line.grouped .senderContainer {
-	display: none;
-}
-
+div.line.grouped .senderContainer,
 div.line.grouped .time {
 	opacity: 0;
 }
 
+div.line.grouped:hover .senderContainer,
 div.line.grouped:hover .time {
 	opacity: 1;
 }
@@ -398,7 +396,6 @@ div.line[data-line-type="website"] {
 	padding-top: 2px;
 	padding-bottom: 2px;
 	color: #9a9aa0;
-	font-size: 0.93em;
 }
 
 body[dir="ltr"] div.line[data-line-type="join"] .message:before {
