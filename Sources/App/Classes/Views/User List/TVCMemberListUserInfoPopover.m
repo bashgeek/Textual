@@ -47,6 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, readwrite) IBOutlet NSTextField *realNameField;
 @property (nonatomic, weak, readwrite) IBOutlet NSTextField *privilegesField;
 @property (nonatomic, weak, readwrite) IBOutlet NSTextField *awayStatusField;
+@property (nonatomic, weak, readwrite) IBOutlet NSTextField *accountField;
 @end
 
 @implementation TVCMemberListUserInfoPopover
