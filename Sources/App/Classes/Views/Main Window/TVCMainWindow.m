@@ -174,8 +174,6 @@ NSString * const TVCMainWindowSelectionChangedNotification = @"TVCMainWindowSele
 
 	[self addAccessoryViewsToTitlebar];
 
-	[self updateTitlebarStyleToReflectPreferences];
-
 	[self updateAppearance];
 
 	[self reloadLoadingScreen];
@@ -185,6 +183,13 @@ NSString * const TVCMainWindowSelectionChangedNotification = @"TVCMainWindowSele
 	[self makeKeyAndOrderFront:nil];
 
 	[self loadWindowState];
+
+	/* Must run after the window is actually on screen and its saved frame
+	 restored: contentLayoutRect (used to measure the titlebar height) isn't
+	 reliable before the window is realized, and an early wrong reading here
+	 previously sized the vibrancy strip to cover the whole content area
+	 instead of just the titlebar strip, making the window look empty. */
+	[self updateTitlebarStyleToReflectPreferences];
 
 	[self updateChannelViewArrangement];
 
@@ -361,6 +366,18 @@ nothing for a theme's CSS to collide with. */
 
 	if (useUnifiedTitlebar) {
 		titlebarHeight = (NSHeight(self.contentView.frame) - NSHeight(self.contentLayoutRect));
+
+		/* contentLayoutRect is only meaningful once the window is actually
+		 on screen. If this is ever called before that (a future call site
+		 mistake, the window not yet visible, etc.) the math above can come
+		 out as zero, negative, or implausibly large - and since this value
+		 also sizes the vibrancy strip drawn on top of the content below,
+		 a bad reading doesn't just misplace a few pixels, it can cover the
+		 entire window. A plain titled window's titlebar is always close to
+		 28pt, so fall back to that rather than trust an implausible value. */
+		if (titlebarHeight < 20.0 || titlebarHeight > 60.0) {
+			titlebarHeight = 28.0;
+		}
 	}
 
 	self.contentSplitViewTopConstraint.constant = titlebarHeight;
