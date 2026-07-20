@@ -1704,7 +1704,7 @@
                                             <gridCell row="txw-ut-row" column="Lzf-OU-P1K" id="txw-ut-val-cell">
                                                 <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="txw-ut-btn">
                                                     <rect key="frame" x="171" y="0.0" width="250" height="18"/>
-                                                    <buttonCell key="cell" type="check" title="Use unified titlebar (experimental)" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="off" inset="2" id="txw-ut-btn-cell">
+                                                    <buttonCell key="cell" type="check" title="Use unified titlebar" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="txw-ut-btn-cell">
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
