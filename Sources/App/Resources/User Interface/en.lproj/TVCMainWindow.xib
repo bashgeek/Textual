@@ -586,7 +586,7 @@
                 <constraint firstItem="txw-ac-lbl" firstAttribute="top" secondItem="ICd-wA-BP1" secondAttribute="bottom" constant="4" id="txw-ac-top"/>
                 <constraint firstItem="txw-ac-lbl" firstAttribute="leading" secondItem="Oh2-zJ-yiT" secondAttribute="leading" constant="15" id="txw-ac-lbl-lead"/>
                 <constraint firstItem="txw-ac-lbl" firstAttribute="width" secondItem="ThT-Me-8qg" secondAttribute="width" id="txw-ac-lbl-width"/>
-                <constraint firstItem="txw-ac-9F1" firstAttribute="leading" secondItem="txw-ac-lbl" secondAttribute="trailing" constant="8" id="txw-ac-val-lead"/>
+                <constraint firstItem="txw-ac-9F1" firstAttribute="leading" secondItem="txw-ac-lbl" secondAttribute="trailing" constant="4" id="txw-ac-val-lead"/>
                 <constraint firstItem="txw-ac-9F1" firstAttribute="firstBaseline" secondItem="txw-ac-lbl" secondAttribute="firstBaseline" id="txw-ac-baseline"/>
                 <constraint firstAttribute="trailing" secondItem="txw-ac-9F1" secondAttribute="trailing" constant="15" id="txw-ac-val-trail"/>
                 <constraint firstAttribute="bottom" secondItem="txw-ac-9F1" secondAttribute="bottom" constant="10" id="txw-ac-bottom"/>

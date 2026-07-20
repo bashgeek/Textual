@@ -223,39 +223,38 @@ NS_ASSUME_NONNULL_BEGIN
 
 	[mutableStringValue endEditing];
 
-	/* Flag members with a known, logged-in services account with a small
-	 trailing dot — deliberately the minority case, not the majority one.
-	 Most networks don't require auth, so flagging the *unauthenticated*
-	 side (the common case) turned the list into a wall of markers;
-	 flagging the smaller "verified" set instead keeps the list clean in
-	 the common case and still carries the same information (unmarked ==
-	 not logged in).
+	/* Flag members with no known services account with a trailing dot.
+	 Now that WHOX (see IRCClient.m) can reliably populate account status
+	 for everyone already in a channel, not just live login/logout events,
+	 flagging the unauthenticated side reads better in practice than the
+	 earlier "flag the minority" approach: most established channels are
+	 mostly identified users, so it's the exception (someone unverified)
+	 that's worth calling out, not the norm.
 	 A trailing glyph (not dimming, not underlining) because dimming is
 	 already "away"'s signal above, and an underline reads as too heavy for
-	 something this minor — a small dot after the name is easy to ignore
-	 at a glance but there when you look for it.
-	 Only applies when the network actually tracks accounts (account-notify
-	 or extended-join) — otherwise a nil account just means "unknown", not
-	 "not logged in", and this couldn't be trusted either way. */
-	if (isSelected == NO && cellItem.user.account != nil) {
+	 something this minor.
+	 Only applies when the network actually tracks accounts (account-notify,
+	 extended-join, or WHOX) - otherwise a nil account just means "unknown",
+	 not "not logged in", and this couldn't be trusted either way. */
+	if (isSelected == NO && cellItem.user.account == nil) {
 		IRCClient *client = self.mainWindow.selectedChannel.associatedClient;
 
-		BOOL isAuthenticated = ([client isCapabilityEnabled:ClientIRCv3SupportedCapabilityAccountNotify] ||
-								 [client isCapabilityEnabled:ClientIRCv3SupportedCapabilityExtendedJoin] ||
-								 client.supportInfo.whoxSupported);
+		BOOL tracksAccounts = ([client isCapabilityEnabled:ClientIRCv3SupportedCapabilityAccountNotify] ||
+								[client isCapabilityEnabled:ClientIRCv3SupportedCapabilityExtendedJoin] ||
+								client.supportInfo.whoxSupported);
 
-		if (isAuthenticated) {
+		if (tracksAccounts) {
 			NSMutableDictionary<NSAttributedStringKey, id> *markerAttributes = [NSMutableDictionary dictionary];
 
 			if (controlFont) {
-				markerAttributes[NSFontAttributeName] = controlFont;
+				markerAttributes[NSFontAttributeName] = [NSFont fontWithName:controlFont.fontName size:(controlFont.pointSize + 3.0)];
 			}
 
 			if (controlColor) {
-				markerAttributes[NSForegroundColorAttributeName] = [controlColor colorWithAlphaComponent:0.5];
+				markerAttributes[NSForegroundColorAttributeName] = [controlColor colorWithAlphaComponent:0.6];
 			}
 
-			NSAttributedString *marker = [[NSAttributedString alloc] initWithString:@" ·" attributes:markerAttributes];
+			NSAttributedString *marker = [[NSAttributedString alloc] initWithString:@"  ·" attributes:markerAttributes];
 
 			[mutableStringValue appendAttributedString:marker];
 		}
