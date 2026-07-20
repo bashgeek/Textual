@@ -121,7 +121,7 @@ a:hover {
 	opacity: 0; /* Set by JavaScript */
 	color: #e5e5e7;
 	position: fixed;
-	padding: 4px 14px 5px;
+	padding: 4px 10px 5px;
 	border-bottom: 1px solid #3a3a3c;
 	background-color: rgba(30, 30, 30, 0.82);
 	-webkit-backdrop-filter: blur(20px) saturate(1.6);
@@ -230,7 +230,7 @@ a:hover {
 /* Base message row */
 
 div.line {
-	padding: 2px 16px;
+	padding: 2px 10px;
 	border-left: 3px solid transparent;
 }
 
