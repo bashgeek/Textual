@@ -350,11 +350,12 @@ nothing for a theme's CSS to collide with. */
 
 	self.titlebarAppearsTransparent = useUnifiedTitlebar;
 
-	if (useUnifiedTitlebar) {
-		self.titleVisibility = NSWindowTitleHidden;
-	} else {
-		self.titleVisibility = NSWindowTitleVisible;
-	}
+	/* The title text itself doesn't need to be hidden here: unlike the
+	 previous attempt at this feature, content never moves into the
+	 titlebar area (see the constant offset below), so there's nothing for
+	 the title to overlap with - it just renders in the new vibrant strip,
+	 same as it always showed channel/query information before. */
+	self.titleVisibility = NSWindowTitleVisible;
 
 	CGFloat titlebarHeight = 0.0;
 
