@@ -113,6 +113,7 @@
 #import "TVCLogViewPrivate.h"
 #import "TVCMainWindowPrivate.h"
 #import "TVCMainWindowTextViewPrivate.h"
+#import "TVCMemberListPrivate.h"
 #import "TVCServerListPrivate.h"
 #import "TDCAlert.h"
 #import "TDCChannelBanListSheetPrivate.h"
@@ -10144,7 +10145,21 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 				break;
 			}
 
+			BOOL channelJustGainedWhoxAccountData = (channel.receivedWhoxAccountData == NO);
+
 			channel.receivedWhoxAccountData = YES;
+
+			/* The per-user redraw below only fires when a specific member's
+			 own account/away state changes - a member whose account was nil
+			 before WHOX and is still nil after (i.e. genuinely not logged
+			 in) never triggers it, even though the auth-marker's meaning of
+			 that nil just changed from "unknown, WHOX pending" to
+			 "confirmed not logged in". Catch that by forcing one full
+			 redraw the first time this channel's WHOX data arrives, if it's
+			 the channel currently on screen. */
+			if (channelJustGainedWhoxAccountData && channel == mainWindow().selectedChannel) {
+				[mainWindow().memberList refreshAllDrawings];
+			}
 
 			NSString *username = [m paramAt:3];
 			NSString *address = [m paramAt:4];
