@@ -247,14 +247,14 @@ NS_ASSUME_NONNULL_BEGIN
 			NSMutableDictionary<NSAttributedStringKey, id> *markerAttributes = [NSMutableDictionary dictionary];
 
 			if (controlFont) {
-				markerAttributes[NSFontAttributeName] = [NSFont fontWithName:controlFont.fontName size:(controlFont.pointSize + 3.0)];
+				markerAttributes[NSFontAttributeName] = controlFont;
 			}
 
 			if (controlColor) {
 				markerAttributes[NSForegroundColorAttributeName] = [controlColor colorWithAlphaComponent:0.6];
 			}
 
-			NSAttributedString *marker = [[NSAttributedString alloc] initWithString:@"  ·" attributes:markerAttributes];
+			NSAttributedString *marker = [[NSAttributedString alloc] initWithString:@" •" attributes:markerAttributes];
 
 			[mutableStringValue appendAttributedString:marker];
 		}
