@@ -1952,9 +1952,17 @@ nothing for a theme's CSS to collide with. */
 		self.titlebarAccessoryView.hidden = YES;
 	}
 
-	if (self.titlebarAccessoryView.hidden == NO) {
-		[self.titlebarAccessoryViewLockButton sizeToFit];
-	}
+	/* -sizeToFit resizes the accessory's reserved width in the titlebar to
+	 match the button's own frame - it used to only run while the button
+	 was visible, so the reserved width (and whatever the private title-
+	 centering math derives from it) stayed at whatever stale value was
+	 last computed, or the XIB's untouched design-time size if the lock had
+	 never been shown yet this session. That's what made the title's
+	 position depend on incidental history (has the lock ever appeared
+	 before?) instead of the button's current, real state. Running this
+	 unconditionally keeps the reserved width - and therefore the title's
+	 position - consistent whether the lock is currently shown or not. */
+	[self.titlebarAccessoryViewLockButton sizeToFit];
 }
 
 - (void)addAccessoryViewsToTitlebar
