@@ -46,6 +46,15 @@ NS_ASSUME_NONNULL_BEGIN
 @interface IRCChannel () <IRCChannelMemberListPrivatePrototype>
 @property (nonatomic, assign, readwrite) IRCChannelStatus status;
 @property (nonatomic, assign) BOOL sentInitialWhoRequest;
+
+/* Set once at least one WHOX reply (RPL_WHOSPCRPL) has actually come back
+ for this channel - not merely requested. Until then, every member's
+ IRCUser.account is nil simply because we haven't heard back yet, not
+ because they're confirmed unauthenticated; the member list uses this to
+ avoid flagging everyone as "not logged in" while a large channel list
+ (e.g. ~100 channels through a bouncer) is still working through the
+ request queue. Not persisted - only reflects the current session. */
+@property (nonatomic, assign) BOOL receivedWhoxAccountData;
 @property (nonatomic, assign) BOOL channelModesReceived;
 @property (nonatomic, assign) BOOL channelNamesReceived;
 @property (nonatomic, assign, readwrite) BOOL errorOnLastJoinAttempt;

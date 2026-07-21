@@ -355,6 +355,7 @@ NSString * const IRCChannelConfigurationWasUpdatedNotification = @"IRCChannelCon
 	self.channelNamesReceived = NO;
 	self.errorOnLastJoinAttempt = NO;
 	self.sentInitialWhoRequest = NO;
+	self.receivedWhoxAccountData = NO;
 
 	self.channelJoinTime = 0;
 

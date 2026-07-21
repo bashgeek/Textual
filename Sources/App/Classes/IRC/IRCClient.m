@@ -10139,6 +10139,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 				break;
 			}
 
+			channel.receivedWhoxAccountData = YES;
+
 			NSString *username = [m paramAt:3];
 			NSString *address = [m paramAt:4];
 			NSString *nickname = [m paramAt:5];

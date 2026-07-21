@@ -42,6 +42,7 @@
 #import "TLOLocalization.h"
 #import "TPCPreferencesLocal.h"
 #import "IRCChannel.h"
+#import "IRCChannelPrivate.h"
 #import "IRCChannelUser.h"
 #import "IRCClient.h"
 #import "IRCISupportInfo.h"
@@ -237,11 +238,24 @@ NS_ASSUME_NONNULL_BEGIN
 	 extended-join, or WHOX) - otherwise a nil account just means "unknown",
 	 not "not logged in", and this couldn't be trusted either way. */
 	if (isSelected == NO && cellItem.user.account == nil) {
-		IRCClient *client = self.mainWindow.selectedChannel.associatedClient;
+		IRCChannel *channel = self.mainWindow.selectedChannel;
+		IRCClient *client = channel.associatedClient;
 
 		BOOL tracksAccounts = ([client isCapabilityEnabled:ClientIRCv3SupportedCapabilityAccountNotify] ||
 								[client isCapabilityEnabled:ClientIRCv3SupportedCapabilityExtendedJoin] ||
 								client.supportInfo.whoxSupported);
+
+		/* WHOX is what actually discovers account status for members who
+		 were already in the channel before we joined - until it has come
+		 back at least once for this channel, a nil account only means
+		 "unknown so far", not "confirmed not logged in". Without this,
+		 every member in a channel WHOX hasn't reached yet gets flagged,
+		 which is glaring right after connecting through a bouncer with a
+		 large channel list, since WHOX requests are throttled to a handful
+		 of channels per timer tick. */
+		if (tracksAccounts && client.supportInfo.whoxSupported && channel.receivedWhoxAccountData == NO) {
+			tracksAccounts = NO;
+		}
 
 		if (tracksAccounts) {
 			NSMutableDictionary<NSAttributedStringKey, id> *markerAttributes = [NSMutableDictionary dictionary];
@@ -538,11 +552,21 @@ is what -font.descender/-font.leading below are for. */
 
 	/* =============================================== */
 
-	IRCClient *infoPopoverClient = self.mainWindow.selectedChannel.associatedClient;
+	IRCChannel *infoPopoverChannel = self.mainWindow.selectedChannel;
+	IRCClient *infoPopoverClient = infoPopoverChannel.associatedClient;
 
-	if ([infoPopoverClient isCapabilityEnabled:ClientIRCv3SupportedCapabilityAccountNotify] ||
-		[infoPopoverClient isCapabilityEnabled:ClientIRCv3SupportedCapabilityExtendedJoin] ||
-		infoPopoverClient.supportInfo.whoxSupported)
+	BOOL infoPopoverTracksAccounts = ([infoPopoverClient isCapabilityEnabled:ClientIRCv3SupportedCapabilityAccountNotify] ||
+									   [infoPopoverClient isCapabilityEnabled:ClientIRCv3SupportedCapabilityExtendedJoin] ||
+									   infoPopoverClient.supportInfo.whoxSupported);
+
+	/* Same reasoning as the row marker above: don't trust a nil account as
+	 "confirmed not logged in" until WHOX has actually come back for this
+	 channel at least once. */
+	if (infoPopoverTracksAccounts && infoPopoverClient.supportInfo.whoxSupported && infoPopoverChannel.receivedWhoxAccountData == NO) {
+		infoPopoverTracksAccounts = NO;
+	}
+
+	if (infoPopoverTracksAccounts)
 	{
 		NSString *accountName = cellItem.user.account;
 
