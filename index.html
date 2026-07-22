@@ -89,7 +89,7 @@
 
     <section class="shot" aria-label="Textwerk screenshot">
       <button class="zoomable" type="button">
-        <img src="images/screenshot-light.png" alt="Textwerk running on macOS, showing the #general channel" fetchpriority="high">
+        <img src="images/screenshot-light.png" alt="Textwerk running on macOS, showing the #textwerk channel" fetchpriority="high">
       </button>
     </section>
 
@@ -170,9 +170,9 @@
         </figure>
         <figure>
           <button class="zoomable" type="button">
-            <img src="images/direct-message.png" alt="A direct message showing the common-channel info bar" loading="lazy">
+            <img src="images/direct-message.png" alt="A direct message, with an info bar noting shared channels with the other person" loading="lazy">
           </button>
-          <figcaption><strong>Direct messages.</strong> A private query tells you which channels you share.</figcaption>
+          <figcaption><strong>Direct messages.</strong> A private query tells you whether you share any channels.</figcaption>
         </figure>
       </div>
     </section>
@@ -184,31 +184,27 @@
         <dl class="changes">
           <div class="change">
             <dt>Fixed for macOS 26</dt>
-            <dd>Squashed the crashes and blank channel views, including a nasty connection crash macOS 26 introduced (<code>NWError.wifiAware</code>, for the curious).</dd>
+            <dd>Squashed the crashes and blank/frozen channel views, including a nasty connection crash macOS 26 introduced, plus a crash when switching theme or style settings.</dd>
           </div>
           <div class="change">
-            <dt>Rebuilt networking</dt>
-            <dd>Swapped the ancient <code>OELReachability</code> for Apple's own <code>NWPathMonitor</code>.</dd>
+            <dt>Scrollback and Keychain fixes</dt>
+            <dd>Fixed the scrollback history service crashing on every launch, and saved passwords disappearing from Keychain after the rename.</dd>
           </div>
           <div class="change">
-            <dt>Reliable script startup</dt>
-            <dd>Core JavaScript now loads through <code>WKUserScript</code> instead of an old-fashioned <code>document.write</code>, so it starts up the same every time.</dd>
+            <dt>Updates that actually update</dt>
+            <dd>Sparkle now checks GitHub Releases directly, instead of a placeholder feed that never had anything in it.</dd>
           </div>
           <div class="change">
-            <dt>Modernized text-to-speech</dt>
-            <dd>Moved off the retired <code>NSSpeechSynthesizer</code> and onto today's <code>AVSpeechSynthesizer</code>.</dd>
+            <dt>Fresh coat of paint</dt>
+            <dd>Reworked topic bar, no more gradients or drop shadows, an updated default font, taller sidebar rows, and instant theme switching with no fade delay.</dd>
           </div>
           <div class="change">
             <dt>Dead code, gone</dt>
-            <dd>Tossed out the license manager, the old OTR/Blowfish encryption, and the legacy WebKit 1 view.</dd>
+            <dd>Tossed out the old OTR/Blowfish message encryption, unmaintained crypto nobody should be relying on.</dd>
           </div>
           <div class="change">
             <dt>Tidier Help menu</dt>
-            <dd>Cleared out the FAQ, privacy, license, support, and search entries that didn't apply anymore.</dd>
-          </div>
-          <div class="change">
-            <dt>No submodules</dt>
-            <dd>Ditched every git submodule, so cloning and building is one clean step.</dd>
+            <dd>Cleared out Help-menu links to Codeux Software's now-defunct FAQ, support, and license pages.</dd>
           </div>
         </dl>
       </div>
